@@ -107,7 +107,7 @@ def write_chada_tables_plantuml(json_path, theme_name="plasma", linked=True):
     json_path : STR or pathlib.Path
         The absolute path to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on CHADA_TABLES_TEMPLATE.json.
+        based on CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json.
     theme_name : STR, optional
         The name of one of the bespoke CHADA themes in the default folder
         given by __THEMES_DIR__. Only the part of the name after "CHADA-"
@@ -192,9 +192,9 @@ def make_chada_tables(json_path, theme_name='plasma', linked=True,
                       plantuml_path=None, output_dir=None):
     """
     Taking the path to a json file, which must have a similar format
-    to that shown in CHADA_TABLES_TEMPLATE.json, write a plantuml code
-    file and generate the corresonding json diagram in .svg format for
-    each of six different cases:
+    to that shown in CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json,
+    write a plantuml code file and generate the corresponding json
+    diagram in .svg format for each of six different cases:
         1. "contents" element --> all other elements
            (Overview, User Case, Experiment, Raw Data and Data Processing),
         2. "contents" element --> Overview element.
