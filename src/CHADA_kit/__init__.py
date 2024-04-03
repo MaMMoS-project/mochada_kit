@@ -102,10 +102,6 @@ def load_config():
         __PUML_PATH__ = str(pathlib.Path(cf_json_dict["puml_path"]))
 
 
-
-load_config()
-
-
 def main():
     """
     Main application entry point
@@ -130,6 +126,10 @@ def main():
     if args.config:
         make_config(puml_path=args.puml_path)
 
+
+
+
+load_config()
 
 if __name__ == '__main__':
     main()
