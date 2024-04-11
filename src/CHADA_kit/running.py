@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """
 Functions to help running plantuml code against the plantuml.jar
+(which is stored on the local system).
 
 Created on Thu Mar 28 15:20:42 2024
 
-@author: tgw1
+@author: tgwoodcock
 """
 import subprocess
 import pathlib
 
 from . import __PUML_PATH__
 
-def run_plantuml_code(code_path, plantuml_path=None, output_dir=None):
+def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
+                      output_type="-tsvg", output_dpi=None,
+                      skinparam_opts=None):
     """
     This function takes the path to either a single file
     of plantuml code or a folder containing several
@@ -64,11 +67,38 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None):
         folder within code_path. If this folder does not already
         exist, it will be created.
         The default is None.
+    output_type : str, optional
+        String specifying the output type flag to be passed to
+        plantuml.jar. All options can be seen under this link:
+            https://plantuml.com/command-line#458de91d76a8569c
+        Common values are:
+            "-tsvg" --> svg image
+            "-tpng" --> png image
+        The default is "-tsvg"
+    output_dpi : INT or None, optional
+        For png output, you can use this argument to set the dpi
+        of the output image e.g. to increase quality. Has no effect
+        for svg output. With png output, the default dpi is 300
+        (this will be the result if output_type="-tpng" and
+         output_dpi=None).
+        The default is None
+    skinparam_opts : DICT or None, optional
+        Dict where the keys are strings giving the name of
+        a specific skin parameter e.g. "svgLinkTarget" and the
+        value is a string giving the desired value of that
+        skinparam e.g. "_top". The dict can contain any number
+        of key/value pairs. The available skinparams are listed
+        here:
+        https://plantuml-documentation.readthedocs.io/en/latest/formatting/all-skin-params.html
+        The default is None.
 
     Raises
     ------
     IOError
-        DESCRIPTION.
+        Raised if the code_path supplied does not exist.
+    IOError
+        Raised if plantuml_path was not passed AND is not
+        set in the users' config.json.
 
     Returns
     -------
@@ -97,7 +127,7 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None):
     cmd = ["java",
            "-jar",
            plantuml_path,
-           "-tsvg",
+           output_type,
            code_path
            ]
 
@@ -115,6 +145,12 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None):
         cmd.insert(4, "-o")
         cmd.insert(5, output_dir)
 
+    if output_dpi:
+        cmd.insert(-1, f"-Sdpi={output_dpi}")
+
+    if skinparam_opts:
+        for k, v in skinparam_opts.items():
+            cmd.insert(-1, f"-S{k}={v}")
 
     if code_path.is_dir():
         cwd = code_path
