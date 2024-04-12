@@ -21,7 +21,8 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
     files of plantuml code. This file/these files are then
     run against plantuml.jar to produce diagrams. You can
     specify a path to plantuml.jar or it will be read from
-    the current user's config (found in home/.CHADA_kit/config.json).
+    the current user's config
+    (found in home/.mochada_kit/config.json).
     You can optionally specify an output directory to store
     the diagrams in a different folder from the code that
     produces them. If the output path is not an absolute path,
@@ -121,7 +122,7 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
 
         if plantuml_path == "not set":
             t_1 = "plantuml_path was not passed and is also not defined"
-            t_2 = "in the user's .CHADA_kit/config.json"
+            t_2 = "in the user's .mochada_kit/config.json"
             raise IOError(" ".join([t_1, t_2])) from None
 
     cmd = ["java",

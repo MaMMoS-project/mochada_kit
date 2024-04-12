@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-CHADA_kit
+mochada_kit
 
-Python code for generating CHADA (CHAracterisation DAta) diagrams and
-tables using plantuml, with machine-readable, enhanced design based on
-bespoke CHADA themes.
+Python code for generating MODA (MOdelling DAta) and
+CHADA (CHAracterisation DAta) workflow diagrams and tables
+using plantuml, with machine-readable, enhanced design based
+on bespoke themes.
 
 @author: tgwoodcock
 """
@@ -41,13 +42,13 @@ def make_config(puml_path=None):
     """
     If it does not exist, create the directory .CHADA_kit in
     the user's home directory. Then, if the file config.json
-    does not exist in .CHADA_kit, create it and write one
+    does not exist in .mochada_kit, create it and write one
     key-value pair in the json file. The key is "puml_path".
     The asssociated value is either a path (str) supplied
     in the parameter puml_path, or if that is not supplied,
     the value will default to "not set".
 
-    NB. if .CHADA_kit/config.json does exist, it will NOT be
+    NB. if .mochada_kit/config.json does exist, it will NOT be
     overwritten by calling this function. If this is
     desired, either delete config.json and call the function
     again, or simply edit config.json in any text editor.
@@ -56,10 +57,10 @@ def make_config(puml_path=None):
     ----------
     puml_path : STR, optional
         The full path to plantuml.jar. This will be the
-        value of the key "puml_path" in .CHADA_kit/config.json
+        value of the key "puml_path" in .mochada_kit/config.json
         in the current user's home directory.
         The default is None. If None, the
-        value of "puml_path" in .CHADA_kit/config.json
+        value of "puml_path" in .mochada_kit/config.json
         will default to "not set".
 
     Returns
@@ -68,7 +69,7 @@ def make_config(puml_path=None):
 
     """
     home = pathlib.Path.home()
-    cf = home.joinpath(".CHADA_kit")
+    cf = home.joinpath(".mochada_kit")
     if not cf.exists():
         cf.mkdir()
 
@@ -85,7 +86,7 @@ def make_config(puml_path=None):
 
 def load_config():
     """
-    If .CHADA_kit/config.json exists in the current user's
+    If .mochada_kit/config.json exists in the current user's
     home directory, read the contents into a dict and set the
     constant __PUML_PATH__ to the value of the key "puml_path".
 
@@ -96,7 +97,7 @@ def load_config():
     """
     global __PUML_PATH__
     home = pathlib.Path.home()
-    cf_json = home.joinpath(".CHADA_kit", "config.json")
+    cf_json = home.joinpath(".mochada_kit", "config.json")
     if cf_json.exists():
         cf_json_dict = json.loads(cf_json.read_text())
         __PUML_PATH__ = str(pathlib.Path(cf_json_dict["puml_path"]))
@@ -107,7 +108,7 @@ def main():
     Main entry point.
 
     The user can use this function with the flag -c to generate the
-    file config.json in the folder .CHADA_kit in the current users'
+    file config.json in the folder .mochada_kit in the current users'
     home directory. Additionally supplying the flag -p and a str
     giving the path to plantuml.jar results in this being stored
     in config.json (thus negating the need to edit this file manually).
@@ -116,7 +117,7 @@ def main():
     parser.add_argument('-v', '--version', action='version',
                         version=f'%(prog)s {__version__}')
 
-    h_1 = "Write .CHADA_kit/config.json to the user's home dir."
+    h_1 = "Write .mochada_kit/config.json to the user's home dir."
     h_2 = "Optionally specify the location of plantuml.jar"
     h_3 = "using the additional flag -p or --puml_path, then"
     h_4 = "path/to/my/plantuml.jar"

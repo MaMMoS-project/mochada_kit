@@ -2,7 +2,7 @@
 """
 Functions for generating plantuml code and images of CHADA tables
 from a single json file. The json file must have the same format as
-the template in: CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json.
+the template in: mochada_kit/templates/CHADA_TABLES_TEMPLATE.json.
 The values for each key in the json file can either be plain text or
 formatting must be applied using the CREOLE or html syntax for plantuml
 shown here: https://plantuml.com/creole

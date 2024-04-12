@@ -3,8 +3,8 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "CHADA_kit"
-description = "Python code for generating CHADA (CHAracterisation DAta) diagrams and tables using plantuml, with machine-readable, enhanced design based on bespoke CHADA themes."
+name = "mochada_kit"
+description = "Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAta) workflow diagrams and tables using plantuml, with machine-readable, enhanced design based on bespoke themes."
 authors = [
     {name = "Thomas G. Woodcock"},
 ]
@@ -24,7 +24,7 @@ classifiers=[
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: Visualization',
 ]
-keywords = ["research", "data", "management", "visualization", "plantuml", "uml", "CHADA"]
+keywords = ["research", "data", "management", "visualization", "plantuml", "uml", "CHADA", "MODA"]
 requires-python = ">=3.6"
 dependencies = [
 ]
@@ -35,10 +35,10 @@ dynamic = ["version"]
 'content-type' = "text/markdown"
 
 [project.scripts]
-CHADA_kit = "CHADA_kit.__init__:main"
+mochada_kit = "mochada_kit.__init__:main"
 
 [tool.setuptools.dynamic]
-version = {attr = "CHADA_kit.__version__"}
+version = {attr = "mochada_kit.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
