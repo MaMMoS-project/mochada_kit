@@ -113,7 +113,7 @@ def write_chada_tables_plantuml(json_path, title=None,
     json_path : STR or pathlib.Path
         The absolute path to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json.
+        based on mochada_kit/templates/CHADA_TABLES_TEMPLATE.json.
     title : STR, LIST or None, optional
         Either a string or list of strings defining a title for
         the plot, or None, in which case, no title will be shown.
@@ -124,9 +124,9 @@ def write_chada_tables_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke CHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "CHADA-"
-        is needed, i.e. to apply the theme 'CHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the default folder
+        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
+        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     linked : BOOL, optional
         If True, add hyperlinks to the "contents" element
@@ -159,7 +159,7 @@ def write_chada_tables_plantuml(json_path, title=None,
 
     if not title:
         top = ["@startjson",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}",
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
                '!$DEF_JSON = {"error" : "no data loaded"}',
                f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
                ]
@@ -177,7 +177,7 @@ def write_chada_tables_plantuml(json_path, title=None,
                "end title",
                "label B [",
                "{{json",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}"
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
                ]
 
         bottom = ["}}", "]", "@enduml"]
@@ -231,7 +231,7 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
 
     Highlights will be applied to all rows of the "contents" element and
     to the first ("title") row of each other element, according to the
-    bespoke CHADA theme specified by theme_name.
+    bespoke MOCHADA theme specified by theme_name.
 
 
     Parameters
@@ -250,9 +250,9 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke CHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "CHADA-"
-        is needed, i.e. to apply the theme 'CHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the default folder
+        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
+        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     scale : STR, INT or FLOAT, optional
         A parameter which helps to scale the diagram for png output. NOT
@@ -276,7 +276,7 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
 
     if not title:
         top = ["@startjson",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}",
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
                '!$DEF_JSON = {"error" : "no data loaded"}',
                f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
                ]
@@ -294,7 +294,7 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
                "end title",
                "label B [",
                "{{json",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}"
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
                ]
 
         bottom = ["}}", "]", "@enduml"]
@@ -368,9 +368,9 @@ def write_single_chada_tables_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke CHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "CHADA-"
-        is needed, i.e. to apply the theme 'CHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the default folder
+        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
+        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     scale : STR, INT or FLOAT, optional
         A parameter which helps to scale the diagram for png output. NOT
@@ -394,7 +394,7 @@ def write_single_chada_tables_plantuml(json_path, title=None,
 
     if not title:
         top = ["@startjson",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}",
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
                '!$DEF_JSON = {"error" : "no data loaded"}',
                f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
                ]
@@ -412,7 +412,7 @@ def write_single_chada_tables_plantuml(json_path, title=None,
                "end title",
                "label B [",
                "{{json",
-               rf"!theme CHADA-{theme_name} from {__THEMES_DIR__}"
+               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
                ]
 
         bottom = ["}}", "]", "@enduml"]
@@ -485,9 +485,9 @@ def make_chada_tables(json_path, title=None, theme_name='plasma', linked=True,
         which case, no title will be shown.
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke CHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "CHADA-"
-        is needed, i.e. to apply the theme 'CHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the default folder
+        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
+        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     linked : BOOL, optional
         If True, add hyperlinks to the "contents" element
@@ -614,9 +614,9 @@ def make_single_chada_tables(json_path, title=None, theme_name='plasma',
         which case, no title will be shown.
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke CHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "CHADA-"
-        is needed, i.e. to apply the theme 'CHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the default folder
+        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
+        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     plantuml_path : STR or pathlib.Path, optional
         The full path to the plantuml.jar. If None, the function
