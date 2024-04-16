@@ -160,3 +160,30 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
 
     subprocess.run(cmd, shell=False, stderr=subprocess.STDOUT,
                    check=True, cwd=cwd)
+
+
+def run_all_gallery_puml_code(output_type="-tsvg"):
+    """
+    Runs all the plantuml code in gallery/puml_code against
+    plantuml.jar generating .svg diagrams, which are stored in gallery.
+
+    To save the diagrams as .png files, change output_type to "-tpng".
+
+    Parameters
+    ----------
+    output_type : STR, optional
+        String specifying the output type flag to be passed to
+        plantuml.jar. All options can be seen under this link:
+            https://plantuml.com/command-line#458de91d76a8569c
+        Common values are:
+            "-tsvg" --> svg image
+            "-tpng" --> png image
+        The default is "-tsvg".
+
+    Returns
+    -------
+    None.
+
+    """
+    run_plantuml_code("..\\..\\gallery\\puml_code", output_dir="../",
+                      output_type=output_type)
