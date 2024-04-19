@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Functions for generating plantuml code and images of CHADA tables
+Functions for generating plantuml code of CHADA tables
 from a single json file. The json file must have the same format as
-the template in: mochada_kit/templates/CHADA_TABLES_TEMPLATE.json.
+the template in: mochada_kit/templates/chada_tables_template.json.
 The values for each key in the json file can either be plain text or
 formatting must be applied using the CREOLE or html syntax for plantuml
 shown here: https://plantuml.com/creole
@@ -13,9 +13,9 @@ Created on Wed Mar 27 11:37:28 2024
 """
 
 import pathlib
+import json
 
 from . import __THEMES_DIR__
-from .running import run_plantuml_code
 
 
 def get_lines_from_keys(keys):
@@ -78,7 +78,8 @@ def get_lines_from_keys(keys):
     return highlights, single_HL, mid
 
 
-def write_chada_tables_plantuml(json_path, title=None,
+def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
+                                out_name=None, title=None,
                                 theme_name="plasma", linked=True,
                                 scale=None):
     """
@@ -111,9 +112,33 @@ def write_chada_tables_plantuml(json_path, title=None,
     Parameters
     ----------
     json_path : STR or pathlib.Path
-        The absolute path to the json file containing the CHADA data.
+        Absolute path or path relative to the current working directory
+        pointing to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on mochada_kit/templates/CHADA_TABLES_TEMPLATE.json.
+        based on mochada_kit/templates/chada_tables_template.json.
+    out_path : STR, pathlib.Path or None, optional
+        Specifies the folder where the plantuml code file will be
+        saved. This allows the puml code and json file to be located
+        in different folders, if desired. If None, the puml code is
+        saved in the same folder as the json_path. If not None,
+        if it is a relative path, it is assumed to be relative to
+        json_path. An absolute path can also be supplied.
+        The default is None.
+    load_path : STR, pathlib.Path or None, optional
+        Only has an effect if out_path is not None. If out_path is not
+        None, and load_path is None, the json data will be directly
+        written into the puml code rather than being loaded dynamically.
+        If out_path is not None and load_path is not None, load_path
+        is the either the absolute path to the json file containing
+        the data OR the relative path from out_path pointing to the
+        json_path. In this case, the json data will be loaded dynamically
+        and not written into the puml code.
+        The default is None.
+    out_name : STR or None, optional
+        By default, the puml code output will have the same filename
+        as the json input. To use a different filename for the output,
+        please specify a string as out_name.
+        The default is None.
     title : STR, LIST or None, optional
         Either a string or list of strings defining a title for
         the plot, or None, in which case, no title will be shown.
@@ -124,18 +149,19 @@ def write_chada_tables_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke MOCHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
-        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the
+        default folder given by __THEMES_DIR__. Only the part of the
+        name after "MOCHADA-" is needed, i.e. to apply the theme
+        'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     linked : BOOL, optional
         If True, add hyperlinks to the "contents" element
-        of diagrams 2-6. Once the puml code has been run against plantuml.jar
+        of all diagrams. Once the puml code has been run against plantuml.jar
         resulting in svg image files, if these image files are all located
         in the same directory, you can easily navigate from one image to
         another by clicking the hyperlinks (if they are opened in a browser).
         Links will not work with png output images. The also do not work
-        if you insert an svg image into Microsoft Word.
+        if you insert an svg image into Microsoft Word or jupyter notebook.
         The default is True.
     scale : STR, INT or FLOAT, optional
         A parameter which helps to scale the diagram for png output. NOT
@@ -154,40 +180,14 @@ def write_chada_tables_plantuml(json_path, title=None,
     None.
 
     """
-    if not isinstance(json_path, pathlib.Path):
-        json_path = pathlib.Path(json_path)
-
-    if not title:
-        top = ["@startjson",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
-               ]
-
-        bottom = ["@endjson"]
-
-    else:
-        if isinstance(title, str):
-            title = [title]
-        top = ["@startuml",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)",
-               "title",
-               *[f"  {t}" for t in title],
-               "end title",
-               "label B [",
-               "{{json",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
-               ]
-
-        bottom = ["}}", "]", "@enduml"]
-
-
-    if scale:
-        top.insert(1, f"scale {scale}")
-
-
-
+    j_d, out_base, top, bottom = handle_paths(json_path,
+                                              out_path=out_path,
+                                              load_path=load_path,
+                                              out_name=out_name,
+                                              title=title,
+                                              theme_name=theme_name,
+                                              scale=scale
+                                              )
 
     if linked:
         keys = [f'"[[{json_path.stem}_overview.svg{{View Overview table}} Overview]]"',
@@ -208,17 +208,23 @@ def write_chada_tables_plantuml(json_path, title=None,
 
     for i, j in enumerate(single_HL):
         mid_n = list(mid)
-        if i < 4:
+
+        if not out_path or load_path:
             mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
-            mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": $DATA.{j}"
+            q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
+            mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": {q},"
 
-        with pathlib.Path(json_path.parent, json_path.stem + f"_{j}.puml") as f:
+        if i == 4:
+            mid_n[i+1] = mid_n[i+1][:-1]
+
+        with pathlib.Path(str(out_base) + f"_{j}.puml") as f:
             f.write_text("\n".join(top + highlights + [single_HL[j]] + mid_n + bottom))
 
 
 
-def write_chada_tables_whole_plantuml(json_path, title=None,
+def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
+                                      out_name=None, title=None,
                                       theme_name="plasma",
                                       scale=None):
     """
@@ -237,9 +243,33 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
     Parameters
     ----------
     json_path : STR or pathlib.Path
-        The absolute path to the json file containing the CHADA data.
+        Absolute path or path relative to the current working directory
+        pointing to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json.
+        based on mochada_kit/templates/chada_tables_template.json.
+    out_path : STR, pathlib.Path or None, optional
+        Specifies the folder where the plantuml code file will be
+        saved. This allows the puml code and json file to be located
+        in different folders, if desired. If None, the puml code is
+        saved in the same folder as the json_path. If not None,
+        if it is a relative path, it is assumed to be relative to
+        json_path. An absolute path can also be supplied.
+        The default is None.
+    load_path : STR, pathlib.Path or None, optional
+        Only has an effect if out_path is not None. If out_path is not
+        None, and load_path is None, the json data will be directly
+        written into the puml code rather than being loaded dynamically.
+        If out_path is not None and load_path is not None, load_path
+        is the either the absolute path to the json file containing
+        the data OR the relative path from out_path pointing to the
+        json_path. In this case, the json data will be loaded dynamically
+        and not written into the puml code.
+        The default is None.
+    out_name : STR or None, optional
+        By default, the puml code output will have the same filename
+        as the json input. To use a different filename for the output,
+        please specify a string as out_name.
+        The default is None.
     title : STR, LIST or None, optional
         Either a string or list of strings defining a title for
         the plot, or None, in which case, no title will be shown.
@@ -250,9 +280,10 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke MOCHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
-        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the
+        default folder given by __THEMES_DIR__. Only the part of the
+        name after "MOCHADA-" is needed, i.e. to apply the theme
+        'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     scale : STR, INT or FLOAT, optional
         A parameter which helps to scale the diagram for png output. NOT
@@ -271,38 +302,14 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
     None.
 
     """
-    if not isinstance(json_path, pathlib.Path):
-        json_path = pathlib.Path(json_path)
-
-    if not title:
-        top = ["@startjson",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
-               ]
-
-        bottom = ["@endjson"]
-
-    else:
-        if isinstance(title, str):
-            title = [title]
-        top = ["@startuml",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)",
-               "title",
-               *[f"  {t}" for t in title],
-               "end title",
-               "label B [",
-               "{{json",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
-               ]
-
-        bottom = ["}}", "]", "@enduml"]
-
-
-    if scale:
-        top.insert(1, f"scale {scale}")
-
+    j_d, out_base, top, bottom = handle_paths(json_path,
+                                              out_path=out_path,
+                                              load_path=load_path,
+                                              out_name=out_name,
+                                              title=title,
+                                              theme_name=theme_name,
+                                              scale=scale
+                                              )
 
     keys = ['"Overview"',
             '"1. User Case"',
@@ -314,19 +321,24 @@ def write_chada_tables_whole_plantuml(json_path, title=None,
     highlights, single_HL, mid = get_lines_from_keys(keys)
 
     for i, j in enumerate(single_HL):
-        if i < 4:
+        if not out_path or load_path:
             mid[i+1] = mid[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
-            mid[i+1] = mid[i+1].split(": ")[0] + f": $DATA.{j}"
+            q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
+            mid[i+1] = mid[i+1].split(": ")[0] + f": {q},"
 
-    with pathlib.Path(json_path.parent, json_path.stem + ".puml") as f:
+        if i == 4:
+            mid[i+1] = mid[i+1][:-1]
+
+    with pathlib.Path(str(out_base) + ".puml") as f:
         f.write_text("\n".join(top + highlights + list(single_HL.values()) + mid + bottom))
 
 
 
-def write_single_chada_tables_plantuml(json_path, title=None,
-                                theme_name="plasma", linked=True,
-                                scale=None):
+def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
+                                       out_name=None, title=None,
+                                       theme_name="plasma",
+                                       scale=None):
     """
     Write a plantuml code file specifying a json diagram for each of
     five different cases:
@@ -355,9 +367,33 @@ def write_single_chada_tables_plantuml(json_path, title=None,
     Parameters
     ----------
     json_path : STR or pathlib.Path
-        The absolute path to the json file containing the CHADA data.
+        Absolute path or path relative to the current working directory
+        pointing to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json.
+        based on mochada_kit/templates/chada_tables_template.json.
+    out_path : STR, pathlib.Path or None, optional
+        Specifies the folder where the plantuml code file will be
+        saved. This allows the puml code and json file to be located
+        in different folders, if desired. If None, the puml code is
+        saved in the same folder as the json_path. If not None,
+        if it is a relative path, it is assumed to be relative to
+        json_path. An absolute path can also be supplied.
+        The default is None.
+    load_path : STR, pathlib.Path or None, optional
+        Only has an effect if out_path is not None. If out_path is not
+        None, and load_path is None, the json data will be directly
+        written into the puml code rather than being loaded dynamically.
+        If out_path is not None and load_path is not None, load_path
+        is the either the absolute path to the json file containing
+        the data OR the relative path from out_path pointing to the
+        json_path. In this case, the json data will be loaded dynamically
+        and not written into the puml code.
+        The default is None.
+    out_name : STR or None, optional
+        By default, the puml code output will have the same filename
+        as the json input. To use a different filename for the output,
+        please specify a string as out_name.
+        The default is None.
     title : STR, LIST or None, optional
         Either a string or list of strings defining a title for
         the plot, or None, in which case, no title will be shown.
@@ -368,9 +404,10 @@ def write_single_chada_tables_plantuml(json_path, title=None,
             https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke MOCHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
-        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the
+        default folder given by __THEMES_DIR__. Only the part of the
+        name after "MOCHADA-" is needed, i.e. to apply the theme
+        'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
     scale : STR, INT or FLOAT, optional
         A parameter which helps to scale the diagram for png output. NOT
@@ -389,38 +426,14 @@ def write_single_chada_tables_plantuml(json_path, title=None,
     None.
 
     """
-    if not isinstance(json_path, pathlib.Path):
-        json_path = pathlib.Path(json_path)
-
-    if not title:
-        top = ["@startjson",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)"
-               ]
-
-        bottom = ["@endjson"]
-
-    else:
-        if isinstance(title, str):
-            title = [title]
-        top = ["@startuml",
-               '!$DEF_JSON = {"error" : "no data loaded"}',
-               f"!$DATA = %load_json({json_path.name}, $DEF_JSON)",
-               "title",
-               *[f"  {t}" for t in title],
-               "end title",
-               "label B [",
-               "{{json",
-               rf"!theme MOCHADA-{theme_name} from {__THEMES_DIR__}"
-               ]
-
-        bottom = ["}}", "]", "@enduml"]
-
-
-    if scale:
-        top.insert(1, f"scale {scale}")
-
+    j_d, out_base, top, bottom = handle_paths(json_path,
+                                              out_path=out_path,
+                                              load_path=load_path,
+                                              out_name=out_name,
+                                              title=title,
+                                              theme_name=theme_name,
+                                              scale=scale
+                                              )
 
     highlights = {"overview" : '#highlight "Overview" <<overview>>',
                   "user_case" : '#highlight "1. User Case" <<user_case>>',
@@ -430,262 +443,169 @@ def write_single_chada_tables_plantuml(json_path, title=None,
                   }
 
     for i, j in highlights.items():
-        mid_n = [f" $DATA.{i}"]
+        if not out_path or load_path:
+            mid_n = [f"$DATA.{i}"]
+        else:
+            q = json.dumps(j_d[i], indent='  ', ensure_ascii=False)
+            mid_n = [f"{q}"]
 
-        with pathlib.Path(json_path.parent, json_path.stem + f"_{i}.puml") as f:
+        with pathlib.Path(str(out_base) + f"_{i}.puml") as f:
             f.write_text("\n".join(top + [j] + mid_n + bottom))
 
 
 
-def make_chada_tables(json_path, title=None, theme_name='plasma', linked=True,
-                      plantuml_path=None, output_dir=None,
-                      output_type="-tsvg", output_dpi=None,
-                      scale=None, add_whole=False):
+def handle_paths(json_path, out_path=None, load_path=None,
+                 out_name=None, title=None, theme_name="plasma",
+                 scale=None):
     """
-    Taking the path to a json file, which must have a similar format
-    to that shown in CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json,
-    write a plantuml code file and generate the corresponding json
-    diagram in .svg format for each of six different cases:
-        1. "contents" element --> all other elements
-           (Overview, User Case, Experiment, Raw Data and Data Processing),
-        2. "contents" element --> Overview element.
-        3. "contents" element --> User Case element.
-        4. "contents" element --> Experiment element.
-        5. "contents" element --> Raw Data element.
-        6. "contents" element --> Data Processing element.
-
-    The plantuml code files will be saved in the same directory as the json
-    file specified by json_path. The svg diagrams will also be in this
-    directory unless output_dir is not None, then they will be located
-    in the folder specified by this argument.
-
-    Highlights will be applied to all rows of the "contents" element and
-    to the first ("title") row of each other element, according to the
-    bespoke CHADA theme specified by theme_name.
-
-    Specifying linked=True will add hyperlinks to the "contents" element
-    of diagrams 2-6. Once the puml code has been run against plantuml.jar
-    resulting in svg image files, if these image files are all located
-    in the same directory, you can easily navigate from one image to
-    another by clicking the hyperlinks.
-
-    Running this function for a second time with the same json_path
-    and either the same or different other arguments results in the
-    plantuml code files and diagram files being overwritten.
+    Handles paths for input and output, collects strings to be
+    written at the top and bottom of the puml code, and supplies
+    the json data as a dict, if required.
 
 
     Parameters
     ----------
     json_path : STR or pathlib.Path
-        The absolute path to the json file containing the CHADA data.
+        Absolute path or path relative to the current working directory
+        pointing to the json file containing the CHADA data.
         The format of the json file that this path points to must be
-        based on CHADA_TABLES_TEMPLATE.json.
-    title : STR or None, optional
-        Either a string defining a title for the plot, or None, in
-        which case, no title will be shown.
+        based on mochada_kit/templates/chada_tables_template.json.
+    out_path : STR, pathlib.Path or None, optional
+        Specifies the folder where the plantuml code file will be
+        saved. This allows the puml code and json file to be located
+        in different folders, if desired. If None, the puml code is
+        saved in the same folder as the json_path. If not None,
+        if it is a relative path, it is assumed to be relative to
+        json_path. An absolute path can also be supplied.
+        The default is None.
+    load_path : STR, pathlib.Path or None, optional
+        Only has an effect if out_path is not None. If out_path is not
+        None, and load_path is None, the json data will be directly
+        written into the puml code rather than being loaded dynamically.
+        If out_path is not None and load_path is not None, load_path
+        is the either the absolute path to the json file containing
+        the data OR the relative path from out_path pointing to the
+        json_path. In this case, the json data will be loaded dynamically
+        and not written into the puml code.
+        The default is None.
+    out_name : STR or None, optional
+        By default, the puml code output will have the same filename
+        as the json input. To use a different filename for the output,
+        please specify a string as out_name.
+        The default is None.
+    title : STR, LIST or None, optional
+        Either a string or list of strings defining a title for
+        the plot, or None, in which case, no title will be shown.
+        If a list of strings is supplied, each item in the list will
+        appear in a new row of the title. You can apply CREOLE syntax
+        to the title strings e.g. to change the colour, make a table,
+        make a link etc. All options are here:
+            https://plantuml.com/creole
         The default is None.
     theme_name : STR, optional
-        The name of one of the bespoke MOCHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
-        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
+        The name of one of the bespoke MOCHADA themes in the
+        default folder given by __THEMES_DIR__. Only the part of the
+        name after "MOCHADA-" is needed, i.e. to apply the theme
+        'MOCHADA-plasma', theme_name='plasma'.
         The default is 'plasma'.
-    linked : BOOL, optional
-        If True, add hyperlinks to the "contents" element
-        of diagrams 2-6. Once the puml code has been run against plantuml.jar
-        resulting in svg image files, if these image files are all located
-        in the same directory, you can easily navigate from one image to
-        another by clicking the hyperlinks. The default is True.
-    plantuml_path : STR or pathlib.Path, optional
-        The full path to the plantuml.jar. If None, the function
-        tries to take the path from the current user's config,
-        found in the home directory under .CHADA_kit/config.json.
-        If the value has not been set there and was not supplied
-        in this function, an error will be raised because the
-        function will not be able to find plantuml.jar.
-        The default is None.
-    output_dir : STR or pathlib.Path, optional
-        Path to an output directory where the images should be
-        placed. If None, the images will be placed in the same
-        directory as the code_path. If not None, it can either
-        be an absolute path or a relative path pointing to a
-        folder within code_path. If this folder does not already
-        exist, it will be created.
-        The default is None.
-    output_type : str, optional
-        String specifying the output type flag to be passed to
-        plantuml.jar. All options can be seen under this link:
-            https://plantuml.com/command-line#458de91d76a8569c
-        Common values are:
-            "-tsvg" --> svg image
-            "-tpng" --> png image
-        The default is "-tsvg"
-    output_dpi : INT or None, optional
-        For png output, you can use this argument to set the dpi
-        of the output image e.g. to increase quality. Has no effect
-        for svg output. With png output, the default dpi is 300
-        (this will be the result if output_type="-tpng" and
-         output_dpi=None).
-        The default is None
     scale : STR, INT or FLOAT, optional
-        A parameter which helps to scale the diagram. Docs are here:
+        A parameter which helps to scale the diagram for png output. NOT
+        necessary to use this with svg output as these can be scaled to
+        any size later.
+        Docs are here:
             https://plantuml.com/commons#4252b72e6ebcd4d4
         Common values could be:
             1.5 (to set the aspect ratio),
             "1/3" (to set the aspect ratio)
             "1024 width" (to set the width to 1024 pixels)
             "100*200" (to set the output size to 100 by 200 pixels)
-    add_whole : Bool, optional
-        If True, add a further diagram with a "contents" element joined
-        to all the other elements. No hyperlinks will be put in this
-        diagram.
-        The default is False.
 
     Returns
     -------
-    None.
+    j_d : DICT or None
+        .
+    out_base : pathlib.Path
+        Path to the stem of the output puml code file i.e. everything
+        except the file extension.
+    top : LIST
+        List of strings to be written at the top of the puml code.
+    bottom : LIST
+        List of strings to be written at the bottom of the puml code.
 
     """
-    json_path = pathlib.Path(json_path)
+    if not isinstance(json_path, pathlib.Path):
+        json_path = pathlib.Path(json_path)
 
-    write_chada_tables_plantuml(json_path,
-                                title=title,
-                                theme_name=theme_name,
-                                linked=linked,
-                                scale=scale
-                                )
+    if not out_path:
+        # write puml code to same folder as json, load json dynamically
+        output_path = json_path.parent
+        j_name = json_path.name
+    else:
+        output_path = pathlib.Path(out_path)
+        if not output_path.is_absolute():
+            output_path = json_path.parent.joinpath(output_path)
 
-    if add_whole:
-        write_chada_tables_whole_plantuml(json_path,
-                                          title=title,
-                                          theme_name=theme_name,
-                                          scale=scale
-                                          )
+        if load_path:
+            # write puml code to different folder to json, load json dynamically
+            # load_path is a relative path from out_path to json_path
+            j_name = pathlib.Path(load_path).as_posix()
+        else:
+            # write puml code to different folder to json,
+            # write json data into puml code and don't load anything
+            j_name = None
 
-    run_plantuml_code(json_path.parent,
-                      plantuml_path=plantuml_path,
-                      output_dir=output_dir,
-                      output_type=output_type,
-                      output_dpi=output_dpi
-                      )
+    if not out_name:
+        out_base = output_path.joinpath(json_path.stem)
+    else:
+        out_base = output_path.joinpath(out_name)
 
+    json_lines = ['!$DEF_JSON = {"error" : "no data loaded"}',
+                  f"!$DATA = %load_json({j_name}, $DEF_JSON)"
+                  ]
 
-def make_single_chada_tables(json_path, title=None, theme_name='plasma',
-                             plantuml_path=None, output_dir=None,
-                             output_type="-tsvg", output_dpi=None,
-                             scale=None, add_whole=False):
-    """
-    Taking the path to a json file, which must have a similar format
-    to that shown in CHADA_kit/templates/CHADA_TABLES_TEMPLATE.json,
-    write a plantuml code file and generate the corresponding json
-    diagram in .svg format for each of five different cases:
-        1. Overview element.
-        2. User Case element.
-        3. Experiment element.
-        4. Raw Data element.
-        5. Data Processing element.
-
-    NB. a "contents" element is not drawn by this function. If you want
-    5 diagrams where a "contents" element is joined to one of the other
-    elements, please use make_chada_tables(). If you want a diagram
-    with a "contents" element joined to ALL other elements, you can
-    specify add_whole=True in the current function.
-
-    The plantuml code files will be saved in the same directory as the json
-    file specified by json_path. The svg diagrams will also be in this
-    directory unless output_dir is not None, then they will be located
-    in the folder specified by this argument.
-
-    Highlights will be applied to the first row, according to the
-    bespoke CHADA theme specified by theme_name.
-
-    Running this function for a second time with the same json_path
-    and either the same or different other arguments results in the
-    plantuml code files and diagram files being overwritten.
+    if output_path.match("gallery/puml_code"):
+        themes_dir = "../../themes"
+    else:
+        themes_dir = __THEMES_DIR__
 
 
-    Parameters
-    ----------
-    json_path : STR or pathlib.Path
-        The absolute path to the json file containing the CHADA data.
-        The format of the json file that this path points to must be
-        based on CHADA_TABLES_TEMPLATE.json.
-    title : STR or None, optional
-        Either a string defining a title for the plot, or None, in
-        which case, no title will be shown.
-        The default is None.
-    theme_name : STR, optional
-        The name of one of the bespoke MOCHADA themes in the default folder
-        given by __THEMES_DIR__. Only the part of the name after "MOCHADA-"
-        is needed, i.e. to apply the theme 'MOCHADA-plasma', theme_name='plasma'.
-        The default is 'plasma'.
-    plantuml_path : STR or pathlib.Path, optional
-        The full path to the plantuml.jar. If None, the function
-        tries to take the path from the current user's config,
-        found in the home directory under .CHADA_kit/config.json.
-        If the value has not been set there and was not supplied
-        in this function, an error will be raised because the
-        function will not be able to find plantuml.jar.
-        The default is None.
-    output_dir : STR or pathlib.Path, optional
-        Path to an output directory where the images should be
-        placed. If None, the images will be placed in the same
-        directory as the code_path. If not None, it can either
-        be an absolute path or a relative path pointing to a
-        folder within code_path. If this folder does not already
-        exist, it will be created.
-        The default is None.
-    output_type : str, optional
-        String specifying the output type flag to be passed to
-        plantuml.jar. All options can be seen under this link:
-            https://plantuml.com/command-line#458de91d76a8569c
-        Common values are:
-            "-tsvg" --> svg image
-            "-tpng" --> png image
-        The default is "-tsvg"
-    output_dpi : INT or None, optional
-        For png output, you can use this argument to set the dpi
-        of the output image e.g. to increase quality. Has no effect
-        for svg output. With png output, the default dpi is 300
-        (this will be the result if output_type="-tpng" and
-         output_dpi=None).
-        The default is None
-    scale : STR, INT or FLOAT, optional
-        A parameter which helps to scale the diagram. Docs are here:
-            https://plantuml.com/commons#4252b72e6ebcd4d4
-        Common values could be:
-            1.5 (to set the aspect ratio),
-            "1/3" (to set the aspect ratio)
-            "1024 width" (to set the width to 1024 pixels)
-            "100*200" (to set the output size to 100 by 200 pixels)
-    add_whole : Bool, optional
-        If True, add a further diagram with a "contents" element joined
-        to all the other elements. No hyperlinks will be put in this
-        diagram.
-        The default is False.
+    if not title:
+        top = ["@startjson",
+               rf"!theme MOCHADA-{theme_name} from {themes_dir}",
+               ]
 
-    Returns
-    -------
-    None.
+        if not out_path or load_path:
+            top.insert(len(top), json_lines[0])
+            top.insert(len(top), json_lines[1])
 
-    """
-    json_path = pathlib.Path(json_path)
+        bottom = ["@endjson"]
 
-    write_single_chada_tables_plantuml(json_path,
-                                       title=title,
-                                       theme_name=theme_name,
-                                       scale=scale
-                                       )
+    else:
+        if isinstance(title, str):
+            title = [title]
+        top = ["@startuml",
+               "title",
+               *[f"  {t}" for t in title],
+               "end title",
+               "label B [",
+               "{{json",
+               rf"!theme MOCHADA-{theme_name} from {themes_dir}"
+               ]
 
-    if add_whole:
-        write_chada_tables_whole_plantuml(json_path,
-                                          title=title,
-                                          theme_name=theme_name,
-                                          scale=scale
-                                          )
+        if not out_path or load_path:
+            top.insert(1, json_lines[0])
+            top.insert(2, json_lines[1])
 
-    run_plantuml_code(json_path.parent,
-                      plantuml_path=plantuml_path,
-                      output_dir=output_dir,
-                      output_type=output_type,
-                      output_dpi=output_dpi
-                      )
+        bottom = ["}}", "]", "@enduml"]
+
+
+    if scale:
+        top.insert(1, f"scale {scale}")
+
+    j_d = None
+    if out_path and not load_path:
+        with open(json_path, "r") as f:
+            j_d = json.load(f)
+
+    return (j_d, out_base, top, bottom)
+

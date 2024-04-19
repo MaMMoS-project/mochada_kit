@@ -185,5 +185,9 @@ def run_all_gallery_puml_code(output_type="-tsvg"):
     None.
 
     """
-    run_plantuml_code("..\\..\\gallery\\puml_code", output_dir="../",
-                      output_type=output_type)
+    c_p = pathlib.Path(__file__).parent.joinpath("..",
+                                                 "..",
+                                                 "gallery",
+                                                 "puml_code").resolve()
+
+    run_plantuml_code(c_p, output_dir="../",  output_type=output_type)

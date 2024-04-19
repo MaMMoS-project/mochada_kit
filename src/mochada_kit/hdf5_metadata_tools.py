@@ -98,9 +98,9 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
 
     Parameters
     ----------
-    hdf5_file : STR
+    hdf5_file : STR or pathlib.Path
         Full path to the hdf5 file containing the metadata to be extracted.
-    group_path : STR
+    group_path : STR or pathlib.Path
         Path WITHIN the hdf5 file to the Group where the metadata is located,
         e.g. "/1/EBSD/Header".
     output_path : STR
@@ -176,10 +176,10 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
 
 
     if save_json_and_load:
-        with open(output_path+".json", "w") as f:
+        with open(f"{output_path}.json", "w") as f:
             json.dump(dic_final, f, indent="  ")
 
-        with open(output_path+".puml", "w") as f:
+        with open(f"{output_path}.puml", "w") as f:
             f.write("@startjson\n")
             if highlight_style:
                 f.write(highlight_style + "\n")
@@ -191,7 +191,7 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
             f.write("\n@endjson")
 
     else:
-        with open(output_path+".puml", "w") as f:
+        with open(f"{output_path}.puml", "w") as f:
             f.write("@startjson\n")
             if highlight_style:
                 f.write(highlight_style + "\n")

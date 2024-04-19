@@ -20,16 +20,12 @@ __version__ = '0.1.0'
 
 # Build the path to the folder containing the bespoke plantuml CHADA themes,
 # two directories above this file in the tree.
-_themes_path = pathlib.os.path.join(pathlib.os.path.dirname(__file__),
-                                    "..",
-                                    "..",
-                                    "themes"
-                                    )
+_themes_path = pathlib.Path(__file__).parent.joinpath("..", "..", "themes")
 
 # Define a constant containing the resolved path to the themes folder
 # as a posix path i.e. with forward slash separators, for use in plantuml
 # code files:
-__THEMES_DIR__ = pathlib.Path(_themes_path).resolve().as_posix()
+__THEMES_DIR__ = _themes_path.resolve().as_posix()
 
 
 # Define a constant giving the location of the plantuml.jar.
@@ -89,6 +85,9 @@ def load_config():
     If .mochada_kit/config.json exists in the current user's
     home directory, read the contents into a dict and set the
     constant __PUML_PATH__ to the value of the key "puml_path".
+    We take the string of the pathlib.Path (rather than Path.as_posix())
+    in order to get an appropriate string for whichever operating
+    system is present.
 
     Returns
     -------
