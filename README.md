@@ -5,9 +5,30 @@ Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAt
 ### **Main uses**
 **1. Generate MODA and/or CHADA workflow diagrams with bespoke themes, making them machine readable.**
 
-| flow diagram legend &nbsp; &nbsp; &nbsp;| plantuml code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
-|:---:|:-------------|
-|![Image](./gallery/legend_chada_plasma_theme.svg) | <code>@startuml<br>!theme MOCHADA-plasma from ../../themes<br>:User Case; \<\<user_case>><br>:Experiment; \<\<experiment>><br>:Raw Data; \<\<raw_data>><br>:Data Processing; \<\<data_processing>><br>:Final Data; \<\<final_data>><br>@enduml |
+<table>
+<tr>
+<td> flow diagram legend </td> <td> plantuml code </td>
+</tr>
+<tr>
+<td> <img src="./gallery/legend_chada_plasma_theme.svg" width="150" /> </td>
+<td>
+
+
+```
+@startuml
+!theme MOCHADA-plasma from ../../themes
+:User Case; <<user_case>>
+:Experiment; <<experiment>>
+:Raw Data; <<raw_data>>
+:Data Processing; <<data_processing>>
+:Final Data; <<final_data>>
+@enduml</code>
+```
+
+
+</td>
+</tr>
+</table>
 
 <br>
 
