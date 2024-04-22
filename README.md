@@ -1,9 +1,9 @@
-# mochada_kit
+# **mochada_kit**
 
 Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAta) workflow diagrams and tables using [plantuml](https://plantuml.com/), with machine-readable, enhanced design based on bespoke themes.
 
-### Main uses
-1. Generate MODA and/or CHADA workflow diagrams with bespoke themes, making them machine readable.
+### **Main uses**
+**1. Generate MODA and/or CHADA workflow diagrams with bespoke themes, making them machine readable.**
 
 | flow diagram legend &nbsp; &nbsp; &nbsp;| plantuml code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
 |:---:|:-------------|
@@ -13,22 +13,27 @@ Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAt
 
 ![Image](./gallery/chada_workflow_SEM_EBSD_EDX_nested_techniques.svg)
 
-2. Generate CHADA tables from a single json file, with bespoke themes, and optionally hyperlinking different tables
+<br>
+
+**2. Generate CHADA tables from a single json file, with bespoke themes, and optionally hyperlinking different tables**
 
 ![Image](./gallery/demo_formatting.svg)
 
-3. Extract and display metadata from an HDF5 file as an easy-to-read diagram with optional bespoke highlighting
+<br>
+
+**3. Extract and display metadata from an HDF5 file as an easy-to-read diagram with optional bespoke highlighting**
 
 <img src="./gallery/json_SEM_metadata_with_highlights.svg" width="350" />
 
+<br>
 
-4. Define your own colour schemes and stereotypes
+**4. Define your own colour schemes and stereotypes**
 
 ![Image](./gallery/legend_chada_all_themes.svg)
 
 <br>
 
-### Installation
+### **Installation**
 Please clone this repository and install it as an editable package using pip (that way you can easily pull updates from the repo and they will be active without needing to reinstall anything):
 
 ```
@@ -38,7 +43,7 @@ pip install -e .
 
 <br>
 
-### Dependencies
+### **Dependencies**
 - **h5py**: if you do not already have it, [h5py](https://docs.h5py.org/en/stable/index.html) will be installed by pip during installation of `mochada_kit`
 
 - to generate the diagrams, you need to have `plantuml.jar` saved on your system. Please see [here](https://plantuml.com/download) for download and licensing options
@@ -47,7 +52,7 @@ pip install -e .
 
 <br>
 
-### Setup
+### **Setup**
 In order that `mochada_kit` can use plantuml, we need to provide the path to `plantuml.jar` to the Python functions. You can do this each time simply by passing in the path, or you can also generate a configuration file which will save this information in your home folder, so that you don't have to enter it in the Python functions every time. To set up the configuration, run:
 ```
 mochada_kit -c -p path/to/my/plantuml.jar
@@ -56,7 +61,7 @@ and this will write `.mochada_kit/config.json` to the current user's home folder
 
 <br>
 
-### Getting started
+### **Getting started**
 - to get an idea of what the workflow diagrams, tables and json diagrams look like, please have a look at the .svg images in `mochada_kit/gallery`. You can open .svg files in any browser. The plantuml (puml) code on which they are based is available in `mochada_kit/gallery/puml_code`.
 
 - detailed examples are provided as jupyter notebooks in `mochada_kit/examples` and as Python scripts in `mochada_kit/examples/python_scripts`. Here is a short description of each example:
@@ -74,7 +79,7 @@ and this will write `.mochada_kit/config.json` to the current user's home folder
 
 <br>
 
-### Reference
+### **Reference**
 This package is being developed as part of the EU project: [MaMMoS](https://mammos-project.github.io/index.html)
 
-![Image](./data/MaMMoS_logo.png)
+<img src="./data/MaMMoS_logo.png" width="350" />
