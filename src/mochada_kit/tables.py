@@ -125,14 +125,13 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
         json_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        Only has an effect if out_path is not None. If out_path is not
-        None, and load_path is None, the json data will be directly
-        written into the puml code rather than being loaded dynamically.
-        If out_path is not None and load_path is not None, load_path
-        is the either the absolute path to the json file containing
-        the data OR the relative path from out_path pointing to the
-        json_path. In this case, the json data will be loaded dynamically
-        and not written into the puml code.
+        If None, the json data will be directly written into the
+        puml code rather than being loaded dynamically. If load_path
+        is not None, load_path is the either the absolute path to the
+        json file containing the data OR the relative path from
+        out_path pointing to the json_path. In this case, the json
+        data will be loaded dynamically and not written into the
+        puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -209,7 +208,7 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
     for i, j in enumerate(single_HL):
         mid_n = list(mid)
 
-        if not out_path or load_path:
+        if load_path:
             mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
             q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
@@ -256,14 +255,13 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
         json_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        Only has an effect if out_path is not None. If out_path is not
-        None, and load_path is None, the json data will be directly
-        written into the puml code rather than being loaded dynamically.
-        If out_path is not None and load_path is not None, load_path
-        is the either the absolute path to the json file containing
-        the data OR the relative path from out_path pointing to the
-        json_path. In this case, the json data will be loaded dynamically
-        and not written into the puml code.
+        If None, the json data will be directly written into the
+        puml code rather than being loaded dynamically. If load_path
+        is not None, load_path is the either the absolute path to the
+        json file containing the data OR the relative path from
+        out_path pointing to the json_path. In this case, the json
+        data will be loaded dynamically and not written into the
+        puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -321,7 +319,7 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
     highlights, single_HL, mid = get_lines_from_keys(keys)
 
     for i, j in enumerate(single_HL):
-        if not out_path or load_path:
+        if load_path:
             mid[i+1] = mid[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
             q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
@@ -380,14 +378,13 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
         json_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        Only has an effect if out_path is not None. If out_path is not
-        None, and load_path is None, the json data will be directly
-        written into the puml code rather than being loaded dynamically.
-        If out_path is not None and load_path is not None, load_path
-        is the either the absolute path to the json file containing
-        the data OR the relative path from out_path pointing to the
-        json_path. In this case, the json data will be loaded dynamically
-        and not written into the puml code.
+        If None, the json data will be directly written into the
+        puml code rather than being loaded dynamically. If load_path
+        is not None, load_path is the either the absolute path to the
+        json file containing the data OR the relative path from
+        out_path pointing to the json_path. In this case, the json
+        data will be loaded dynamically and not written into the
+        puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -443,7 +440,7 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
                   }
 
     for i, j in highlights.items():
-        if not out_path or load_path:
+        if load_path:
             mid_n = [f"$DATA.{i}"]
         else:
             q = json.dumps(j_d[i], indent='  ', ensure_ascii=False)
@@ -456,7 +453,7 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
 
 def handle_paths(json_path, out_path=None, load_path=None,
                  out_name=None, title=None, theme_name="plasma",
-                 scale=None):
+                 scale=None, return_out_base_only=False):
     """
     Handles paths for input and output, collects strings to be
     written at the top and bottom of the puml code, and supplies
@@ -479,14 +476,13 @@ def handle_paths(json_path, out_path=None, load_path=None,
         json_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        Only has an effect if out_path is not None. If out_path is not
-        None, and load_path is None, the json data will be directly
-        written into the puml code rather than being loaded dynamically.
-        If out_path is not None and load_path is not None, load_path
-        is the either the absolute path to the json file containing
-        the data OR the relative path from out_path pointing to the
-        json_path. In this case, the json data will be loaded dynamically
-        and not written into the puml code.
+        If None, the json data will be directly written into the
+        puml code rather than being loaded dynamically. If load_path
+        is not None, load_path is the either the absolute path to the
+        json file containing the data OR the relative path from
+        out_path pointing to the json_path. In this case, the json
+        data will be loaded dynamically and not written into the
+        puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -519,6 +515,12 @@ def handle_paths(json_path, out_path=None, load_path=None,
             "1/3" (to set the aspect ratio)
             "1024 width" (to set the width to 1024 pixels)
             "100*200" (to set the output size to 100 by 200 pixels)
+    return_out_base_only : BOOL, optional
+        If True, return only out_base. This is useful if you just want
+        to construct the full path to the puml code, e.g. if you want
+        to run it and generate a diagram. If False, complete the function
+        and return all returns.
+        The default is False.
 
     Returns
     -------
@@ -537,20 +539,26 @@ def handle_paths(json_path, out_path=None, load_path=None,
         json_path = pathlib.Path(json_path)
 
     if not out_path:
-        # write puml code to same folder as json, load json dynamically
+        # write puml code to same folder as json
         output_path = json_path.parent
-        j_name = json_path.name
+        if load_path:
+            # load json dynamically
+            j_name = json_path.name
+        else:
+            # write json data into puml code and don't load anything
+            j_name = None
+
     else:
+        # write puml code to different folder to json
         output_path = pathlib.Path(out_path)
         if not output_path.is_absolute():
             output_path = json_path.parent.joinpath(output_path)
 
         if load_path:
-            # write puml code to different folder to json, load json dynamically
-            # load_path is a relative path from out_path to json_path
+            # load json dynamically, this time load_path is a
+            # relative path from out_path to json_path
             j_name = pathlib.Path(load_path).as_posix()
         else:
-            # write puml code to different folder to json,
             # write json data into puml code and don't load anything
             j_name = None
 
@@ -558,6 +566,9 @@ def handle_paths(json_path, out_path=None, load_path=None,
         out_base = output_path.joinpath(json_path.stem)
     else:
         out_base = output_path.joinpath(out_name)
+
+    if return_out_base_only:
+        return out_base
 
     json_lines = ['!$DEF_JSON = {"error" : "no data loaded"}',
                   f"!$DATA = %load_json({j_name}, $DEF_JSON)"
@@ -568,13 +579,12 @@ def handle_paths(json_path, out_path=None, load_path=None,
     else:
         themes_dir = __THEMES_DIR__
 
-
     if not title:
         top = ["@startjson",
                rf"!theme MOCHADA-{theme_name} from {themes_dir}",
                ]
 
-        if not out_path or load_path:
+        if load_path:
             top.insert(len(top), json_lines[0])
             top.insert(len(top), json_lines[1])
 
@@ -592,7 +602,7 @@ def handle_paths(json_path, out_path=None, load_path=None,
                rf"!theme MOCHADA-{theme_name} from {themes_dir}"
                ]
 
-        if not out_path or load_path:
+        if load_path:
             top.insert(1, json_lines[0])
             top.insert(2, json_lines[1])
 
@@ -603,7 +613,7 @@ def handle_paths(json_path, out_path=None, load_path=None,
         top.insert(1, f"scale {scale}")
 
     j_d = None
-    if out_path and not load_path:
+    if not load_path:
         with open(json_path, "r") as f:
             j_d = json.load(f)
 
