@@ -3,8 +3,6 @@
 Functions to help running plantuml code against the plantuml.jar
 (which is stored on the local system).
 
-Created on Thu Mar 28 15:20:42 2024
-
 @author: tgwoodcock
 """
 import subprocess

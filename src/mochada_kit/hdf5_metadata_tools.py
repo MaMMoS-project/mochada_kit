@@ -4,12 +4,12 @@ Functions to extract metadata from an hdf5 file into a json format
 and write plantuml code to display that json data, optionally with
 highlights.
 
-Created on Mon Apr 15 15:31:30 2024
-
 @author: tgwoodcock
 """
 import json
+
 import h5py
+
 
 def get_ds_dictionaries(name, node):
     """

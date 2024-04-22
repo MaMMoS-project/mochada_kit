@@ -7,8 +7,6 @@ The values for each key in the json file can either be plain text or
 formatting must be applied using the CREOLE or html syntax for plantuml
 shown here: https://plantuml.com/creole
 
-Created on Wed Mar 27 11:37:28 2024
-
 @author: tgwoodcock
 """
 
