@@ -1,0 +1,577 @@
+@startuml
+label l1 [
+{{
+!theme MOCHADA-CWA from ../../themes
+title MOCHADA-CWA
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l2 [
+{{
+!theme MOCHADA-bwr from ../../themes
+title MOCHADA-bwr
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l3 [
+{{
+!theme MOCHADA-bwr_5 from ../../themes
+title MOCHADA-bwr_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l4 [
+{{
+!theme MOCHADA-cividis from ../../themes
+title MOCHADA-cividis
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l5 [
+{{
+!theme MOCHADA-cividis_5 from ../../themes
+title MOCHADA-cividis_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l6 [
+{{
+!theme MOCHADA-coolwarm from ../../themes
+title MOCHADA-coolwarm
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l7 [
+{{
+!theme MOCHADA-coolwarm_5 from ../../themes
+title MOCHADA-coolwarm_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l8 [
+{{
+!theme MOCHADA-jet from ../../themes
+title MOCHADA-jet
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l9 [
+{{
+!theme MOCHADA-jet_5 from ../../themes
+title MOCHADA-jet_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l10 [
+{{
+!theme MOCHADA-PiYG from ../../themes
+title MOCHADA-PiYG
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l11 [
+{{
+!theme MOCHADA-PiYG_5 from ../../themes
+title MOCHADA-PiYG_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l12 [
+{{
+!theme MOCHADA-plasma from ../../themes
+title MOCHADA-plasma
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l13 [
+{{
+!theme MOCHADA-plasma_5 from ../../themes
+title MOCHADA-plasma_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l14 [
+{{
+!theme MOCHADA-rainbow from ../../themes
+title MOCHADA-rainbow
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l15 [
+{{
+!theme MOCHADA-rainbow_5 from ../../themes
+title MOCHADA-rainbow_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l16 [
+{{
+!theme MOCHADA-RdBu from ../../themes
+title MOCHADA-RdBu
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l17 [
+{{
+!theme MOCHADA-RdBu_5 from ../../themes
+title MOCHADA-RdBu_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l18 [
+{{
+!theme MOCHADA-seismic from ../../themes
+title MOCHADA-seismic
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l19 [
+{{
+!theme MOCHADA-seismic_5 from ../../themes
+title MOCHADA-seismic_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l20 [
+{{
+!theme MOCHADA-Set1 from ../../themes
+title MOCHADA-Set1
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l21 [
+{{
+!theme MOCHADA-Set1_5 from ../../themes
+title MOCHADA-Set1_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l22 [
+{{
+!theme MOCHADA-Set2 from ../../themes
+title MOCHADA-Set2
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l23 [
+{{
+!theme MOCHADA-Set2_5 from ../../themes
+title MOCHADA-Set2_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l24 [
+{{
+!theme MOCHADA-viridis from ../../themes
+title MOCHADA-viridis
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+label l25 [
+{{
+!theme MOCHADA-viridis_5 from ../../themes
+title MOCHADA-viridis_5
+group CHADA <<group_chada>>
+  :User Case; <<user_case>>
+  :Experiment; <<experiment>>
+  :Raw Data; <<raw_data>>
+  :Data Processing; <<data_processing>>
+  :Final Data; <<final_data>>
+end group
+group MODA <<group_moda>>
+  :User Case Input; <<user_case_input>>
+  split
+    :Model; <<model>>
+  split again
+    :Data Based Model; <<data_based_model>>
+  end split
+  :Raw Output; <<raw_output>>
+  :Processed Output; <<processed_output>>
+end group
+}}
+]
+@enduml

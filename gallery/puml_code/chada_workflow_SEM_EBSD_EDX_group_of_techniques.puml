@@ -1,0 +1,24 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+:Bulk sample or thin film; <<user_case>>
+group SEM-EBSD-EDX <<group_collection>>
+  :Set up experimental geometry:\n sample tilt (<U+00B0>), working distance (mm),\ndetector distance (mm); <<experiment>>
+  :Acquire electron image (SE, BSE, FSE); <<experiment>>
+  :Electron image(s); <<raw_data>>
+  :Define rectangular ROI, step size,\ndetector and indexing parameters; <<experiment>>
+  split
+    :Acquire EBSD patterns at all points in ROI; <<experiment>>
+    :EBSD pattern for each point; <<raw_data>>
+    :Hough indexing (automatic); <<data_processing>>
+  split again
+    :Acquire EDX spectra at all points in ROI; <<experiment>>
+    :EDX spectrum for each point; <<raw_data>>
+    :Analyse composition (automatic) //e.g.//:\nno. counts for element 1 > x; <<data_processing>>
+  end split
+  :Assign phase and orientation to each point\n(automatic); <<data_processing>>
+  :Euler angles and phase ID\nfor each point in map; <<final_data>>
+  :Analysis of orientations (user controlled); <<data_processing>>
+  :Orientation maps, Pole figures\nQuantitative measures //e.g.// grain size; <<final_data>>
+  detach
+end group
+@enduml

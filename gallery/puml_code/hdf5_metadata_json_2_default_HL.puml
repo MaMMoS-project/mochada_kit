@@ -1,0 +1,78 @@
+@startjson
+#highlight "1" / "EBSD" / "Header" / "Phases" / "1" / "Lattice Dimensions"
+#highlight "1" / "EBSD" / "Header" / "Phases" / "1" / "Phase Name"
+{
+  "1": {
+    "EBSD": {
+      "Header": {
+        "Acquisition Date": "2024-03-06T14:24:08",
+        "Acquisition Speed": "1.1787364",
+        "Acquisition Time": "319.83398",
+        "Analysis Label": "Elementverteilungsdaten 2",
+        "Analysis Unique Identifier": "12345",
+        "Auto Background Correction": "1",
+        "Band Detection Mode": "Center",
+        "Beam Voltage": "20.0",
+        "Bounding Box Size": "2.10000, 1.80000",
+        "Camera Binning Mode": "Resolution",
+        "Camera Exposure Time": "24.782534",
+        "Camera Gain": "1.0",
+        "Detector Insertion Distance": "164.59364",
+        "Detector Orientation Euler": "6.25944, 1.72326, 0.00484",
+        "Drift Correction": "0",
+        "Hit Rate": "100.0",
+        "Hough Resolution": "120",
+        "Indexing Mode": "Refined Accuracy",
+        "Lens Distortion": "0.0",
+        "Lens Field View": "23.986015",
+        "Magnification": "48938.0",
+        "Number Bands Detected": "12",
+        "Number Frames Averaged": "34",
+        "Pattern Height": "1024",
+        "Pattern Width": "1244",
+        "Phases": {
+          "1": {
+            "Color": "255.00000, 255.00000, 0.00000",
+            "Database Id": "0",
+            "Lattice Angles": "1.57080, 1.57080, 1.57080",
+            "Lattice Dimensions": "2.30000, 2.30000, 2.30000",
+            "Laue Group": "7",
+            "Number Reflectors": "195",
+            "Phase Id": "0",
+            "Phase Name": "Cubic_Phase",
+            "Reference": "Author, Jounal, Volume, Page",
+            "Space Group": "123"
+          }
+        },
+        "Processed Static Background": "Several values, array with shape (512, 622)",
+        "Project File": "C:/path/to/my_project",
+        "Project Label": "my_project",
+        "Project Notes": "my_project",
+        "Relative Offset": "0.52035, 0.31957",
+        "Relative Size": "0.24283, 0.30275",
+        "Scanning Rotation Angle": "3.1415927",
+        "Site Label": "Arbeitsbereich 2",
+        "Site Notes": "",
+        "Specimen Label": "Probe 1",
+        "Specimen Notes": "magnet specimen",
+        "Specimen Orientation Euler": "0.00000, 0.00000, 0.00000",
+        "Stage Position": {
+          "Rotation": "0.00010530264",
+          "Tilt": "1.2216749",
+          "X": "-2.29784",
+          "Y": "0.18001",
+          "Z": "12.81005"
+        },
+        "Static Background Correction": "1",
+        "Tilt Angle": "1.2216749",
+        "Tilt Axis": "0.0",
+        "Working Distance": "12.812612",
+        "X Cells": "21",
+        "X Step": "0.1",
+        "Y Cells": "18",
+        "Y Step": "0.1"
+      }
+    }
+  }
+}
+@endjson

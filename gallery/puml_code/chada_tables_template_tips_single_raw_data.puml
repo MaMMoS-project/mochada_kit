@@ -1,0 +1,7 @@
+@startjson
+!theme MOCHADA-plasma_A4w from ../../themes
+!$DEF_JSON = {"error" : "no data loaded"}
+!$DATA = %load_json(../../templates/chada_tables_template_tips.json, $DEF_JSON)
+#highlight "3. Raw Data" <<raw_data>>
+$DATA.raw_data
+@endjson

@@ -1,0 +1,45 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+
+:Magnetic film\nspecimens; <<user_case>>
+split
+  :Electron-tranpsarent\nlamella from\nmagnetic film; <<user_case>>
+  group TEM <<group_collection>>
+    split
+      group Imaging <<group_single>>
+        :Acquire images\n(BF, DF, HAADF); <<experiment>>
+        :Electron images; <<raw_data>>
+        :Image processing\nand analysis; <<data_processing>>
+        :Grain size,\nmorphology\nphase distribution; <<final_data>>
+        detach
+      end group
+
+    split again
+      group Diffraction <<group_single>>
+        :Acquire electron\ndiffraction\npatterns\n(SAD, CBED); <<experiment>>
+        :Diffraction patterns; <<raw_data>>
+        :Index patterns; <<data_processing>>
+        :crystal structure,\nlattice parameters\ngrain orientations; <<final_data>>
+        detach
+      end group
+
+    split again
+      group EELS <<group_single>>
+        :Acquire \nEELS spectra\npoints, linescans, maps; <<experiment>>
+        :EELS spectra; <<raw_data>>
+        :Multivariate\nstatistical\nanalysis; <<data_processing>>
+        :Chemical profiles\nat interfaces; <<final_data>>
+        detach
+      end group
+    end split
+  end group
+split again
+  group PPMS-VSM <<group_single>>
+    :Measure \nM(H) at T = 4 K, 100 K, 300 K\nM(T) in applied field <U+03BC><sub>0</sub>H = 0.001 T; <<experiment>>
+    :M(H) and M(T) data; <<raw_data>>
+    :Convert to SI units\nConvert to volume-specific units; <<data_processing>>
+    :Hysteresis loops, M(H)\nand derived properties\nM(T) curves and Curie temp.; <<final_data>>
+    detach
+  end group
+end split
+@enduml

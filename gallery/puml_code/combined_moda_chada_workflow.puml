@@ -1,0 +1,49 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+group CHADA <<group_chada>>
+  :Bulk sample or thin film; <<user_case>>
+  group SEM-EBSD-EDX <<group_collection>>
+    :Set up experimental geometry:\n sample tilt (<U+00B0>), working distance (mm),\ndetector distance (mm); <<experiment>>
+    :Acquire electron image (SE, BSE, FSE); <<experiment>>
+    :Electron image(s); <<raw_data>>
+    :Define rectangular ROI, step size,\ndetector and indexing parameters; <<experiment>>
+    split
+      group EBSD <<group_single>>
+        :Acquire EBSD patterns at all points in ROI; <<experiment>>
+        :EBSD pattern for each point; <<raw_data>>
+        :Hough indexing (automatic); <<data_processing>>
+      end group
+    split again
+      group EDX <<group_single>>
+        :Acquire EDX spectra at all points in ROI; <<experiment>>
+        :EDX spectrum for each point; <<raw_data>>
+        :Analyse composition (automatic) //e.g.//:\nno. counts for element 1 > x; <<data_processing>>
+      end group
+    end split
+    :Assign phase and orientation to each point\n(automatic); <<data_processing>>
+    :Euler angles and phase ID\nfor each point in map; <<final_data>>
+    :Analysis of orientations (user controlled); <<data_processing>>
+    :Orientation maps, Pole figures\nQuantitative measures //e.g.// grain size; <<final_data>>
+  end group
+end group
+group MODA <<group_moda>>
+  :EBSD orientation map; <<user_case_input>>
+  split
+    group Finite Element Micromagnetics <<group_single>>
+      :Generate finite element mesh; <<model>>
+      :Adaptive mesh; <<raw_output>>
+      :Micromagnetic simulation; <<model>>
+      :Magnetisation vectors (t, H); <<raw_output>>
+      :Hysteresis loops; <<processed_output>>
+    end group
+  split again
+    group Machine Learning Model <<group_single>>
+      :Grain size predictor - random forest; <<data_based_model>>
+      :Predicted grain size; <<raw_output>>
+      :Data fusion; <<data_based_model>>
+      :Corrected grain size prediction; <<processed_output>>
+    end group
+  end split
+  :Grain size corrected magnetic properties; <<processed_output>>
+end group
+@enduml

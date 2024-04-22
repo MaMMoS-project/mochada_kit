@@ -1,0 +1,23 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+:User Case; <<user_case>>
+group Group of techniques <<group_collection>>
+  split
+    group Single technique 1<<group_single>>
+      :Experiment; <<experiment>>
+      :Raw Data; <<raw_data>>
+      :Data Processing; <<data_processing>>
+      :Final Data; <<final_data>>
+      detach
+    end group
+  split again
+    group Single technique 2<<group_single>>
+      :Experiment; <<experiment>>
+      :Raw Data; <<raw_data>>
+      :Data Processing; <<data_processing>>
+      :Final Data; <<final_data>>
+      detach
+    end group
+  end split
+end group
+@enduml

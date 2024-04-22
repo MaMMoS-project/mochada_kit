@@ -1,0 +1,12 @@
+@startjson
+!theme MOCHADA-plasma from ../../themes
+#highlight "0. Overview" <<overview>>
+#highlight "1. User Case" <<user_case>>
+#highlight "2. Experiment" <<experiment>>
+#highlight "3. Raw Data" <<raw_data>>
+#highlight "4. Data Processing" <<data_processing>>
+#highlight "2. Experiment" / "2. Experiment" <<experiment>>
+!$DEF_JSON={"status":"No data found"}
+!$DATA = %load_json("../../data/demo_formatting.json", $DEF_JSON)
+$DATA
+@endjson

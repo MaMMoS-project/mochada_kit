@@ -1,0 +1,59 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+
+:Magnetic film\nspecimens; <<user_case>>
+note left
+  Made at CNRS
+  Composition Nd<sub>2</sub>Fe<sub>14</sub>B
+end note
+group TEM <<group_collection>>
+  split
+    group Imaging <<group_single>>
+      :Acquire images\n(BF, DF, HAADF); <<experiment>>
+      note left
+        BF = Bright Field
+        DF = Dark Field
+        HAADF = High Angle Annular DF
+      end note
+      :Electron images; <<raw_data>>
+      note left
+        * **Data files:** Images/TEM_images[0...3].h5
+        * **Data path within file:** /Images/Data
+        * **MetaData path within file:** /Images/MetaData
+      end note
+      :Image processing\nand analysis; <<data_processing>>
+      note left
+        Processing procedure in Images/image_processing.ipynb
+        <latex>d = \int_0^1\dfrac{x + y}{z^{\mu i \pi}}dx</latex>
+      end note
+      :Grain size,\nmorphology\nphase distribution; <<final_data>>
+      note left
+        Grain size = 3.5 <U+00B1> 0.2 <U+03BC>m
+        |= |= Phase |= V<sub>f</sub> |
+        | a | Nd<sub>2</sub>Fe<sub>14</sub>B | 0.83 |
+        |<#FF8080> red |<#80FF80> green |<#8080FF> blue |
+        <#yellow>| b | table | row |
+      end note
+      detach
+    end group
+
+  split again
+    group Diffraction <<group_single>>
+      :Acquire electron\ndiffraction\npatterns\n(SAD, CBED); <<experiment>>
+      :Diffraction patterns; <<raw_data>>
+      :Index patterns; <<data_processing>>
+      :crystal structure,\nlattice parameters\ngrain orientations; <<final_data>>
+      detach
+    end group
+
+  split again
+    group EELS <<group_single>>
+      :Acquire \nEELS spectra\npoints, linescans, maps; <<experiment>>
+      :EELS spectra; <<raw_data>>
+      :Multivariate\nstatistical\nanalysis; <<data_processing>>
+      :Chemical profiles\nat interfaces; <<final_data>>
+      detach
+    end group
+  end split
+end group
+@enduml

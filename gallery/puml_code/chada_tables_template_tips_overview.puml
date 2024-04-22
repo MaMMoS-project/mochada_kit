@@ -1,0 +1,18 @@
+@startjson
+!theme MOCHADA-plasma from ../../themes
+!$DEF_JSON = {"error" : "no data loaded"}
+!$DATA = %load_json(../../templates/chada_tables_template_tips.json, $DEF_JSON)
+#highlight "[[chada_tables_template_tips_overview.svg{View Overview table} Overview]]" <<overview>>
+#highlight "[[chada_tables_template_tips_user_case.svg{View User Case table} 1. User Case]]" <<user_case>>
+#highlight "[[chada_tables_template_tips_experiment.svg{View Experiment table} 2. Experiment]]" <<experiment>>
+#highlight "[[chada_tables_template_tips_raw_data.svg{View Raw Data table} 3. Raw Data]]" <<raw_data>>
+#highlight "[[chada_tables_template_tips_data_processing.svg{View Data Processing table} 4. Data Processing]]" <<data_processing>>
+#highlight "[[chada_tables_template_tips_overview.svg{View Overview table} Overview]]" / "Overview" <<overview>>
+{
+  "[[chada_tables_template_tips_overview.svg{View Overview table} Overview]]" : $DATA.overview,
+  "[[chada_tables_template_tips_user_case.svg{View User Case table} 1. User Case]]" : " ",
+  "[[chada_tables_template_tips_experiment.svg{View Experiment table} 2. Experiment]]" : " ",
+  "[[chada_tables_template_tips_raw_data.svg{View Raw Data table} 3. Raw Data]]" : " ",
+  "[[chada_tables_template_tips_data_processing.svg{View Data Processing table} 4. Data Processing]]" : " "
+}
+@endjson

@@ -1,0 +1,22 @@
+@startjson
+!theme MOCHADA-plasma_wide from ../../themes
+!$DEF_JSON = {"error" : "no data loaded"}
+!$DATA = %load_json(../../data/chada_tables_SEM-EBSD.json, $DEF_JSON)
+#highlight "Overview" <<overview>>
+#highlight "1. User Case" <<user_case>>
+#highlight "2. Experiment" <<experiment>>
+#highlight "3. Raw Data" <<raw_data>>
+#highlight "4. Data Processing" <<data_processing>>
+#highlight "Overview" / "Overview" <<overview>>
+#highlight "1. User Case" / "1. User Case" <<user_case>>
+#highlight "2. Experiment" / "2. Experiment" <<experiment>>
+#highlight "3. Raw Data" / "3. Raw Data" <<raw_data>>
+#highlight "4. Data Processing" / "4. Data Processing" <<data_processing>>
+{
+  "Overview" : $DATA.overview,
+  "1. User Case" : $DATA.user_case,
+  "2. Experiment" : $DATA.experiment,
+  "3. Raw Data" : $DATA.raw_data,
+  "4. Data Processing" : $DATA.data_processing
+}
+@endjson

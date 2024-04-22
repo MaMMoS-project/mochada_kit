@@ -1,0 +1,75 @@
+@startjson
+<style>
+  .h1 {
+    BackGroundColor green
+    FontColor white
+    FontStyle italic
+  }
+  .h2 {
+    BackGroundColor red
+    FontColor white
+    FontStyle bold
+  }
+</style>
+#highlight "Detector"
+#highlight "Detector" / "Name" <<h1>>
+#highlight "Image" / "PixelWidth" <<h2>>
+{
+  "General": {
+    "Date": "01/19/2022",
+    "Time": "10:01:44 PM",
+    "User": "user",
+    "SystemType": "Helios NanoLab\" 600i"
+  },
+  "SEM": {
+    "HV": "10000",
+    "ChPressure": "0.000251035"
+  },
+  "Beam": {
+    "ApertureDiameter": "0.001",
+    "Spot": "2",
+    "BeamCurrent": "1.1e-008",
+    "SpecimenCurrent": "-2.84262e-009",
+    "StigmatorX": "-1.27695e-005",
+    "StigmatorY": "0.00356054",
+    "BeamShiftX": "-1.98749e-005",
+    "BeamShiftY": "7.18575e-006"
+  },
+  "Scanning": {
+    "FrameTime": "64.5584",
+    "LineTime": "0.0314",
+    "Dwelltime": "1e-005",
+    "Average": "0",
+    "Integrate": "1",
+    "ScanRotation": "0",
+    "TiltCorrectionIsOn": "no",
+    "DynamicFocusIsOn": "yes",
+    "MinimumDwellTime": "1e-007"
+  },
+  "Detector": {
+    "Number": "1",
+    "Name": "vCD",
+    "Signal": "BSE",
+    "Mode": "None",
+    "Contrast": "55.0995",
+    "Brightness": "30.6549"
+  },
+  "Image": {
+    "ResolutionX": "3072",
+    "ResolutionY": "2048",
+    "PixelWidth": "4.85677e-007",
+    "HFW": "0.001492",
+    "VFW": "0.000994667",
+    "Brightness": "0",
+    "Contrast": "55.0995"
+  },
+  "Stage": {
+    "StageX": "-0.0104883",
+    "StageY": "-0.0154792",
+    "StageZ": "0.0065",
+    "StageR": "-0.0104353",
+    "StageTa": "1.309e-005",
+    "WD": "0.00674993"
+  }
+}
+@endjson

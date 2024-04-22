@@ -1,0 +1,8 @@
+@startuml
+!theme MOCHADA-plasma from ../../themes
+:User Case; <<user_case>>
+:Experiment; <<experiment>>
+:Raw Data; <<raw_data>>
+:Data Processing; <<data_processing>>
+:Final Data; <<final_data>>
+@enduml
