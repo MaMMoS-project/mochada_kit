@@ -5,6 +5,14 @@ Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAt
 ### **Main uses**
 **1. Generate MODA and/or CHADA workflow diagrams with bespoke themes, making them machine readable.**
 
+The diagram below is a legend for a CHADA workflow, showing the types of the elements. The plantuml code used to produce this diagram is below on the right. After a command signalling the start of the code, we load one of the bespoke themes. This allows us to apply a "stereotype" to each element, giving it a colour according to its type. Each theme has different colours for the various elements (see section 4. below for the available colour schemes).
+
+- The text to be displayed in an element is defined between a colon and a semicolon *e.g.* :User Case;
+- The type of the element is specified by applying a stereotype between two sets of angled brackets *e.g.* \<\<user_case\>\>
+- This allows the code to be machine readable: the text of each element can be easily associated with the type of element and connected to the antecedent and descendant elements.
+
+<br>
+
 <table>
 <tr>
 <td> flow diagram legend </td> <td> plantuml code </td>
@@ -22,13 +30,63 @@ Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAt
 :Raw Data; <<raw_data>>
 :Data Processing; <<data_processing>>
 :Final Data; <<final_data>>
-@enduml</code>
+@enduml
 ```
 
 
 </td>
 </tr>
 </table>
+
+<br>
+
+<br>
+
+Below is an example of a CHADA workflow diagram for EBSD in the SEM and the code used to produce the diagram is shown on the right. Note that the definition of the element can be split over multiple lines.
+
+<br>
+
+<table>
+<tr>
+<td> chada workflow EBSD </td> <td> plantuml code </td>
+</tr>
+<tr>
+<td> <img src="./gallery/chada_workflow_SEM_EBSD_simple.svg" width="300" /> </td>
+<td>
+
+
+```
+@startuml
+!theme MOCHADA-plasma from ../../themes
+:Bulk sample or thin film; <<user_case>>
+:Set up experimental geometry:
+sample tilt (<U+00B0>), working distance (mm),
+detector distance (mm); <<experiment>>
+:Acquire electron image (SE, BSE, FSE); <<experiment>>
+:Electron image(s); <<raw_data>>
+:Define rectangular ROI, step size,
+detector and indexing parameters; <<experiment>>
+:Acquire EBSD patterns at all points in ROI; <<experiment>>
+:EBSD pattern for each point; <<raw_data>>
+:Hough indexing (automatic); <<data_processing>>
+:Euler angles and phase ID
+for each point in map; <<final_data>>
+:Analysis of orientations (user controlled); <<data_processing>>
+:Orientation maps, Pole figures
+Quantitative measures //e.g.// grain size; <<final_data>>
+@enduml
+```
+
+
+</td>
+</tr>
+</table>
+
+<br>
+
+<br>
+
+We can group techniques in order to provide a clear overview of more complex cases *e.g.* for SEM-EDX-EBSD:
 
 <br>
 
