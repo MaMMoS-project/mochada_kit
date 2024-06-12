@@ -4,7 +4,10 @@
 '' The colormap was evaluated at 0, 0.333, 0.667 and 1 to obtain the colours.
 '' This is a perceptually uniform colormap which does not contain
 '' both red and green colours and should therefore be suitable for
-'' people who have difficulty distinguishing those colours
+'' people who have difficulty distinguishing those colours.
+'' This theme is designed for CHADA/MODA TABLES which need to be inserted
+'' into a document. The MaximumWidth parameter for json diagrams is
+'' therefore set to 400, which fits better to A4 paper.
 ''
 '' Author: Thomas G. Woodcock
 ''
