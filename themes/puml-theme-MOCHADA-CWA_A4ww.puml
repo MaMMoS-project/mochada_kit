@@ -1,0 +1,194 @@
+''
+'' Theme for MODA and CHADA diagrams based on the colours in the current
+'' working agreement (cwa) of the European Materials Characterisation
+'' Council (EMCC) and the European Materials Modelling Council (EMMC).
+'' Available here: http://characterisation.eu/publications-output/
+'' and here: https://emmc.eu/moda/
+'' CHADA elements:
+'' This theme gives different colours to the elements 'user_case',
+'' 'experiment', 'raw_data' and 'data_processing'. There is also the
+'' element 'final_data' which has the same colour as 'data_processing'
+'' and an additional blue line around the rectangle.
+'' In addition to this style defined in the cwa, I have added style
+'' definitions for two different kinds of groups of elements in order
+'' to handle the case where several characterisation techniques or
+'' groups of techniques are presented in one diagram.
+'' MODA elements:
+'' This theme gives different colours to the elements 'user_case_input',
+'' 'model', 'raw_output', 'processed_output' and 'data_based_model'.
+'' This follows the cwa exactly but could be extended to include an
+'' "output_processing" element, in which case, 'processed_output'
+'' would be modified to resemble the CHADA element:'final_data'.
+'' Style definitions for two further groups "group_moda" and
+'' "group_chada" are also given, which may be useful for diagrams
+'' integrating elements of both genres.
+'' This version is designed for CHADA/MODA TABLES which need to be inserted
+'' into a document. The MaximumWidth parameter for json diagrams is
+'' therefore set to 400, which fits better to A4 paper, and the node
+'' BackGroundColor is set to white.
+''
+'' Author: Thomas G. Woodcock
+''
+'' Definition block:
+''   here we define some variables for the style. These can easily be changed
+''   programatically to generate many different themes, regardless of any
+''   extra lines added to the style block below.
+''   HyperlinkColor is currently hardwired to be the same as FontColor, but
+''   this could easily be changed.
+'' Start definition block
+!$PUML_THEME = "MOCHADA-TEMPLATE"
+!$THEME      = "MOCHADA-TEMPLATE"
+!$OVERVIEW_BACKGROUNDCOLOR = Gray
+!$OVERVIEW_FONTCOLOR = White
+!$USER_CASE_BACKGROUNDCOLOR = Pink
+!$USER_CASE_FONTCOLOR = Black
+!$EXPERIMENT_BACKGROUNDCOLOR = LightBlue
+!$EXPERIMENT_FONTCOLOR = Black
+!$RAW_DATA_BACKGROUNDCOLOR = ForestGreen
+!$RAW_DATA_FONTCOLOR = White
+!$DATA_PROCESSING_BACKGROUNDCOLOR = TECHNOLOGY
+!$DATA_PROCESSING_FONTCOLOR = Black
+!$USER_CASE_INPUT_BACKGROUNDCOLOR = Pink
+!$USER_CASE_INPUT_FONTCOLOR = Black
+!$MODEL_BACKGROUNDCOLOR = LightBlue
+!$MODEL_FONTCOLOR = Black
+!$RAW_OUTPUT_BACKGROUNDCOLOR = ForestGreen
+!$RAW_OUTPUT_FONTCOLOR = White
+!$PROCESSED_OUTPUT_BACKGROUNDCOLOR = TECHNOLOGY
+!$PROCESSED_OUTPUT_FONTCOLOR = Black
+!$DATA_BASED_MODEL_BACKGROUNDCOLOR = Yellow
+!$DATA_BASED_MODEL_FONTCOLOR = Black
+!$FINAL_DATA_BACKGROUNDCOLOR = TECHNOLOGY
+!$FINAL_DATA_FONTCOLOR = Black
+!$FINAL_DATA_LINECOLOR = Blue
+!$FINAL_DATA_LINETHICKNESS = "2.0"
+!$USER_CASE_HYPERLINKCOLOR = $USER_CASE_FONTCOLOR
+!$EXPERIMENT_HYPERLINKCOLOR = $EXPERIMENT_FONTCOLOR
+!$RAW_DATA_HYPERLINKCOLOR = $DAW_DATA_FONTCOLOR
+!$DATA_PROCESSING_HYPERLINKCOLOR = $DATA_PROCESSING_FONTCOLOR
+!$USER_CASE_INPUT_HYPERLINKCOLOR = $USER_CASE_INPUT_FONTCOLOR
+!$MODEL_HYPERLINKCOLOR = $MODEL_FONTCOLOR
+!$RAW_OUTPUT_HYPERLINKCOLOR = $RAW_OUTPUT_FONTCOLOR
+!$PROCESSED_OUTPUT_HYPERLINKCOLOR = $PROCESSED_OTUPUT_FONTCOLOR
+!$DATA_BASED_MODEL_HYPERLINKCOLOR = $DATA_BASED_MODEL_FONTCOLOR
+!$FINAL_DATA_HYPERLINKCOLOR = $FINAL_DATA_FONTCOLOR
+''
+skinparam defaultTextAlignment center
+skinparam noteTextAlignment left
+''
+'' When mixing skinparam and <style>, it is very important to put <style> after skinparam
+''
+'' Style settings:
+''   we give each of the 5 CHADA elements its own style and define styles
+''   for groups containing one characterisation technique (group_single)
+''   and several characterisation techniques (group_collection).
+''   Each of the five MODA elements also gets it's own style. These are
+''   similar to those of the CHADA elements but have different names,
+''   allowing them to be distibguished. Two further groups are also
+''   defined for groups of CHADA elements and groups of MODA elements.
+''
+<style>
+jsonDiagram {
+  MaximumWidth 400
+  node {
+    BackGroundColor White
+  }
+}
+.overview {
+  BackgroundColor $OVERVIEW_BACKGROUNDCOLOR
+  FontColor $OVERVIEW_FONTCOLOR
+  HyperlinkColor $OVERVIEW_HYPERLINKCOLOR
+}
+.user_case {
+  BackgroundColor $USER_CASE_BACKGROUNDCOLOR
+  FontColor $USER_CASE_FONTCOLOR
+  HyperlinkColor $USER_CASE_HYPERLINKCOLOR
+}
+.experiment {
+  BackgroundColor $EXPERIMENT_BACKGROUNDCOLOR
+  FontColor $EXPERIMENT_FONTCOLOR
+  HyperlinkColor $EXPERIMENT_HYPERLINKCOLOR
+}
+.raw_data {
+  BackgroundColor $RAW_DATA_BACKGROUNDCOLOR
+  FontColor $RAW_DATA_FONTCOLOR
+  HyperlinkColor $RAW_DATA_HYPERLINKCOLOR
+}
+.data_processing {
+  BackgroundColor $DATA_PROCESSING_BACKGROUNDCOLOR
+  FontColor $DATA_PROCESSING_FONTCOLOR
+  HyperlinkColor $DATA_PROCESSING_HYPERLINKCOLOR
+}
+.final_data {
+  BackgroundColor $FINAL_DATA_BACKGROUNDCOLOR
+  FontColor $FINAL_DATA_FONTCOLOR
+  HyperlinkColor $FINAL_DATA_HYPERLINKCOLOR
+  LineColor $FINAL_DATA_LINECOLOR
+  LineThickness $FINAL_DATA_LINETHICKNESS
+}
+.user_case_input {
+  BackgroundColor $USER_CASE_INPUT_BACKGROUNDCOLOR
+  FontColor $USER_CASE_INPUT_FONTCOLOR
+  HyperlinkColor $USER_CASE_INPUT_HYPERLINKCOLOR
+}
+.model {
+  BackgroundColor $MODEL_BACKGROUNDCOLOR
+  FontColor $MODEL_FONTCOLOR
+  HyperlinkColor $MODEL_HYPERLINKCOLOR
+}
+.raw_output {
+  BackgroundColor $RAW_OUTPUT_BACKGROUNDCOLOR
+  FontColor $RAW_OUTPUT_FONTCOLOR
+  HyperlinkColor $RAW_OUTPUT_HYPERLINKCOLOR
+}
+.processed_output {
+  BackgroundColor $PROCESSED_OUTPUT_BACKGROUNDCOLOR
+  FontColor $PROCESSED_OUTPUT_FONTCOLOR
+  HyperlinkColor $PROCESSED_OUTPUT_HYPERLINKCOLOR
+}
+.data_based_model {
+  BackgroundColor $DATA_BASED_MODEL_BACKGROUNDCOLOR
+  FontColor $DATA_BASED_MODEL_FONTCOLOR
+  HyperlinkColor $DATA_BASED_MODEL_HYPERLINKCOLOR
+}
+.group_single {
+  LineColor DodgerBlue
+  FontColor DodgerBlue
+  HyperlinkColor DodgerBlue
+  RoundCorner 10
+  BackgroundColor Beige
+}
+.group_collection {
+  LineColor MediumBlue
+  FontColor MediumBlue
+  HyperlinkColor MediumBlue
+  RoundCorner 10
+  BackgroundColor Silver
+}
+.group_chada {
+  LineColor Purple
+  LineStyle 3
+  FontColor Purple
+  LineThickness 2
+  HyperlinkColor Purple
+  RoundCorner 10
+  BackgroundColor White
+}
+.group_moda {
+  LineColor Blue
+  LineStyle 3
+  FontColor Blue
+  LineThickness 2
+  HyperlinkColor Blue
+  RoundCorner 10
+  BackgroundColor White
+}
+note {
+  FontColor Black
+  LineColor Navy
+  BackgroundColor WhiteSmoke
+}
+document {
+   BackgroundColor White
+}
+</style>
