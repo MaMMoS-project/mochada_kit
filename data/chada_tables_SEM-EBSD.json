@@ -28,9 +28,9 @@
   },
   "raw_data" : {
     "3. Raw Data" : " ",
-    "3.1 Raw Data" : "Diffraction patterns: images of diffracted intensity on the detector. Orientation data: exported as h5oina containing all metadata, orientations as Euler angles, and optionally the original diffraction patterns.",
+    "3.1 Raw Data" : "Diffraction patterns: images of diffracted intensity on the detector. Orientation data: exported as h5oina (HDF5 format) containing all metadata, orientations as Euler angles, and optionally the original diffraction patterns.",
     "3.2 Unit" : "EBSD patterns: lateral pixel size in µm, Euler angles in degrees or Radians",
-    "3.3 Data acquisition rate" : "Typically ~80 to ~ 400 patterns per second"
+    "3.3 Data acquisition rate" : "Typically ~ 8 to ~ 400 patterns per second"
   },
   "data_processing" : {
     "4. Data Processing" : " ",
