@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 Functions for generating plantuml code of CHADA tables
-from a single json file. The json file must have the same format as
-the template in: mochada_kit/templates/chada_tables_template.json.
-The values for each key in the json file can either be plain text or
+from a single json or yaml file. A json source file must have
+the same format as the template in:
+mochada_kit/templates/chada_tables_template.json.
+A yaml source file must have the same format as the template in:
+mochada_kit/templates/chada_tables_template.yaml.
+The values for each key in the json/yaml file can either be plain text or
 formatting must be applied using the CREOLE or html syntax for plantuml
 shown here: https://plantuml.com/creole
 
@@ -12,6 +15,8 @@ shown here: https://plantuml.com/creole
 
 import pathlib
 import json
+
+import yaml
 
 from . import __THEMES_DIR__
 
@@ -76,7 +81,7 @@ def get_lines_from_keys(keys):
     return highlights, single_HL, mid
 
 
-def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
+def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
                                 out_name=None, title=None,
                                 theme_name="plasma", linked=True,
                                 scale=None):
@@ -94,8 +99,10 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
         5. "contents" element --> Data Processing element.
            Filename: same as the json plus _data_processing.puml.
 
-    The files will be saved in the same directory as the json
-    file specified by json_path.
+    By default, the puml code files will be saved in the same
+    directory as the json/yaml file specified by data_path. If
+    the argument out_path is not None, the puml code files will be
+    saved to the path specified by out_path.
 
     Highlights will be applied to all rows of the "contents" element and
     to the first ("title") row of each other element, according to the
@@ -109,27 +116,32 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
 
     Parameters
     ----------
-    json_path : STR or pathlib.Path
+    data_path : STR or pathlib.Path
         Absolute path or path relative to the current working directory
-        pointing to the json file containing the CHADA data.
-        The format of the json file that this path points to must be
+        pointing to a json or yaml file containing the CHADA data.
+        If data_path points to a json file, the format of the file must be
         based on mochada_kit/templates/chada_tables_template.json.
+        If data_path points to a yaml file, the format of the file must be
+        based on mochada_kit/templates/chada_tables_template.yaml.
     out_path : STR, pathlib.Path or None, optional
         Specifies the folder where the plantuml code file will be
-        saved. This allows the puml code and json file to be located
+        saved. This allows the puml code and json/yaml file to be located
         in different folders, if desired. If None, the puml code is
-        saved in the same folder as the json_path. If not None,
+        saved in the same folder as the data_path. If not None,
         if it is a relative path, it is assumed to be relative to
-        json_path. An absolute path can also be supplied.
+        data_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        If None, the json data will be directly written into the
+        If data_path points to a json file: if load_path = None,
+        the json data will be directly written into the
         puml code rather than being loaded dynamically. If load_path
         is not None, load_path is the either the absolute path to the
         json file containing the data OR the relative path from
-        out_path pointing to the json_path. In this case, the json
+        out_path pointing to the data_path. In this case, the json
         data will be loaded dynamically and not written into the
         puml code.
+        If data_path points to a yaml file: load_path has no
+        effect, the data must always be written into the puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -177,7 +189,7 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
     None.
 
     """
-    j_d, out_base, top, bottom = handle_paths(json_path,
+    t_d, out_base, top, bottom = handle_paths(data_path,
                                               out_path=out_path,
                                               load_path=load_path,
                                               out_name=out_name,
@@ -187,11 +199,11 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
                                               )
 
     if linked:
-        keys = [f'"[[{json_path.stem}_overview.svg{{View Overview table}} Overview]]"',
-                f'"[[{json_path.stem}_user_case.svg{{View User Case table}} 1. User Case]]"',
-                f'"[[{json_path.stem}_experiment.svg{{View Experiment table}} 2. Experiment]]"',
-                f'"[[{json_path.stem}_raw_data.svg{{View Raw Data table}} 3. Raw Data]]"',
-                f'"[[{json_path.stem}_data_processing.svg{{View Data Processing table}} 4. Data Processing]]"'
+        keys = [f'"[[{data_path.stem}_overview.svg{{View Overview table}} Overview]]"',
+                f'"[[{data_path.stem}_user_case.svg{{View User Case table}} 1. User Case]]"',
+                f'"[[{data_path.stem}_experiment.svg{{View Experiment table}} 2. Experiment]]"',
+                f'"[[{data_path.stem}_raw_data.svg{{View Raw Data table}} 3. Raw Data]]"',
+                f'"[[{data_path.stem}_data_processing.svg{{View Data Processing table}} 4. Data Processing]]"'
                 ]
     else:
         keys = ['"Overview"',
@@ -209,18 +221,18 @@ def write_chada_tables_plantuml(json_path, out_path=None, load_path=None,
         if load_path:
             mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
-            q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
+            q = json.dumps(t_d[j], indent='    ', ensure_ascii=False)
             mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": {q},"
 
         if i == 4:
             mid_n[i+1] = mid_n[i+1][:-1]
 
-        with pathlib.Path(str(out_base) + f"_{j}.puml") as f:
-            f.write_text("\n".join(top + highlights + [single_HL[j]] + mid_n + bottom))
+        t_a = "\n".join(top + highlights + [single_HL[j]] + mid_n + bottom)
+        pathlib.Path(str(out_base) + f"_{j}.puml").write_text(t_a)
 
 
 
-def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
+def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
                                       out_name=None, title=None,
                                       theme_name="plasma",
                                       scale=None):
@@ -229,8 +241,10 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
     "contents" element --> all other elements (Overview, User Case,
     Experiment, Raw Data and Data Processing).
 
-    The file will be saved in the same directory as the json
-    file specified by json_path.
+    By default, the puml code files will be saved in the same
+    directory as the json/yaml file specified by data_path. If
+    the argument out_path is not None, the puml code files will be
+    saved to the path specified by out_path.
 
     Highlights will be applied to all rows of the "contents" element and
     to the first ("title") row of each other element, according to the
@@ -239,27 +253,32 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
 
     Parameters
     ----------
-    json_path : STR or pathlib.Path
+    data_path : STR or pathlib.Path
         Absolute path or path relative to the current working directory
-        pointing to the json file containing the CHADA data.
-        The format of the json file that this path points to must be
+        pointing to a json or yaml file containing the CHADA data.
+        If data_path points to a json file, the format of the file must be
         based on mochada_kit/templates/chada_tables_template.json.
+        If data_path points to a yaml file, the format of the file must be
+        based on mochada_kit/templates/chada_tables_template.yaml.
     out_path : STR, pathlib.Path or None, optional
         Specifies the folder where the plantuml code file will be
-        saved. This allows the puml code and json file to be located
+        saved. This allows the puml code and json/yaml file to be located
         in different folders, if desired. If None, the puml code is
-        saved in the same folder as the json_path. If not None,
+        saved in the same folder as the data_path. If not None,
         if it is a relative path, it is assumed to be relative to
-        json_path. An absolute path can also be supplied.
+        data_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        If None, the json data will be directly written into the
+        If data_path points to a json file: if load_path = None,
+        the json data will be directly written into the
         puml code rather than being loaded dynamically. If load_path
         is not None, load_path is the either the absolute path to the
         json file containing the data OR the relative path from
-        out_path pointing to the json_path. In this case, the json
+        out_path pointing to the data_path. In this case, the json
         data will be loaded dynamically and not written into the
         puml code.
+        If data_path points to a yaml file: load_path has no
+        effect, the data must always be written into the puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -298,7 +317,7 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
     None.
 
     """
-    j_d, out_base, top, bottom = handle_paths(json_path,
+    t_d, out_base, top, bottom = handle_paths(data_path,
                                               out_path=out_path,
                                               load_path=load_path,
                                               out_name=out_name,
@@ -320,18 +339,18 @@ def write_chada_tables_whole_plantuml(json_path, out_path=None, load_path=None,
         if load_path:
             mid[i+1] = mid[i+1].split(": ")[0] + f": $DATA.{j},"
         else:
-            q = json.dumps(j_d[j], indent='    ', ensure_ascii=False)
+            q = json.dumps(t_d[j], indent='    ', ensure_ascii=False)
             mid[i+1] = mid[i+1].split(": ")[0] + f": {q},"
 
         if i == 4:
             mid[i+1] = mid[i+1][:-1]
 
-    with pathlib.Path(str(out_base) + ".puml") as f:
-        f.write_text("\n".join(top + highlights + list(single_HL.values()) + mid + bottom))
+    t_a = "\n".join(top + highlights + list(single_HL.values()) + mid + bottom)
+    pathlib.Path(str(out_base) + ".puml").write_text(t_a)
 
 
 
-def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
+def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
                                        out_name=None, title=None,
                                        theme_name="plasma",
                                        scale=None):
@@ -349,8 +368,10 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
         5. Data Processing element.
            Filename: same as the json plus _data_processing.puml.
 
-    The files will be saved in the same directory as the json
-    file specified by json_path.
+    By default, the puml code files will be saved in the same
+    directory as the json/yaml file specified by data_path. If
+    the argument out_path is not None, the puml code files will be
+    saved to the path specified by out_path.
 
     Highlights will be applied to the first ("title") row,
     according to the bespoke CHADA theme specified by theme_name.
@@ -362,27 +383,32 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
 
     Parameters
     ----------
-    json_path : STR or pathlib.Path
+    data_path : STR or pathlib.Path
         Absolute path or path relative to the current working directory
-        pointing to the json file containing the CHADA data.
-        The format of the json file that this path points to must be
+        pointing to a json or yaml file containing the CHADA data.
+        If data_path points to a json file, the format of the file must be
         based on mochada_kit/templates/chada_tables_template.json.
+        If data_path points to a yaml file, the format of the file must be
+        based on mochada_kit/templates/chada_tables_template.yaml.
     out_path : STR, pathlib.Path or None, optional
         Specifies the folder where the plantuml code file will be
-        saved. This allows the puml code and json file to be located
+        saved. This allows the puml code and json/yaml file to be located
         in different folders, if desired. If None, the puml code is
-        saved in the same folder as the json_path. If not None,
+        saved in the same folder as the data_path. If not None,
         if it is a relative path, it is assumed to be relative to
-        json_path. An absolute path can also be supplied.
+        data_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        If None, the json data will be directly written into the
+        If data_path points to a json file: if load_path = None,
+        the json data will be directly written into the
         puml code rather than being loaded dynamically. If load_path
         is not None, load_path is the either the absolute path to the
         json file containing the data OR the relative path from
-        out_path pointing to the json_path. In this case, the json
+        out_path pointing to the data_path. In this case, the json
         data will be loaded dynamically and not written into the
         puml code.
+        If data_path points to a yaml file: load_path has no
+        effect, the data must always be written into the puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
@@ -421,7 +447,7 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
     None.
 
     """
-    j_d, out_base, top, bottom = handle_paths(json_path,
+    t_d, out_base, top, bottom = handle_paths(data_path,
                                               out_path=out_path,
                                               load_path=load_path,
                                               out_name=out_name,
@@ -441,50 +467,56 @@ def write_chada_tables_single_plantuml(json_path, out_path=None, load_path=None,
         if load_path:
             mid_n = [f"$DATA.{i}"]
         else:
-            q = json.dumps(j_d[i], indent='  ', ensure_ascii=False)
+            q = json.dumps(t_d[i], indent='  ', ensure_ascii=False)
             mid_n = [f"{q}"]
 
-        with pathlib.Path(str(out_base) + f"_{i}.puml") as f:
-            f.write_text("\n".join(top + [j] + mid_n + bottom))
+        t_a = "\n".join(top + [j] + mid_n + bottom)
+        pathlib.Path(str(out_base) + f"_{i}.puml").write_text(t_a)
 
 
 
-def handle_paths(json_path, out_path=None, load_path=None,
+def handle_paths(data_path, out_path=None, load_path=None,
                  out_name=None, title=None, theme_name="plasma",
                  scale=None, return_out_base_only=False):
     """
     Handles paths for input and output, collects strings to be
     written at the top and bottom of the puml code, and supplies
-    the json data as a dict, if required.
+    the data read from the json/yaml source file as a dict,
+    if required.
 
 
     Parameters
     ----------
-    json_path : STR or pathlib.Path
+    data_path : STR or pathlib.Path
         Absolute path or path relative to the current working directory
-        pointing to the json file containing the CHADA data.
-        The format of the json file that this path points to must be
+        pointing to a json or yaml file containing the CHADA data.
+        If data_path points to a json file, the format of the file must be
         based on mochada_kit/templates/chada_tables_template.json.
+        If data_path points to a yaml file, the format of the file must be
+        based on mochada_kit/templates/chada_tables_template.yaml.
     out_path : STR, pathlib.Path or None, optional
         Specifies the folder where the plantuml code file will be
-        saved. This allows the puml code and json file to be located
+        saved. This allows the puml code and json/yaml file to be located
         in different folders, if desired. If None, the puml code is
-        saved in the same folder as the json_path. If not None,
+        saved in the same folder as the data_path. If not None,
         if it is a relative path, it is assumed to be relative to
-        json_path. An absolute path can also be supplied.
+        data_path. An absolute path can also be supplied.
         The default is None.
     load_path : STR, pathlib.Path or None, optional
-        If None, the json data will be directly written into the
+        If data_path points to a json file: if load_path = None,
+        the json data will be directly written into the
         puml code rather than being loaded dynamically. If load_path
         is not None, load_path is the either the absolute path to the
         json file containing the data OR the relative path from
-        out_path pointing to the json_path. In this case, the json
+        out_path pointing to the data_path. In this case, the json
         data will be loaded dynamically and not written into the
         puml code.
+        If data_path points to a yaml file: load_path has no
+        effect, the data must always be written into the puml code.
         The default is None.
     out_name : STR or None, optional
         By default, the puml code output will have the same filename
-        as the json input. To use a different filename for the output,
+        as the json/yaml input. To use a different filename for the output,
         please specify a string as out_name.
         The default is None.
     title : STR, LIST or None, optional
@@ -522,8 +554,8 @@ def handle_paths(json_path, out_path=None, load_path=None,
 
     Returns
     -------
-    j_d : DICT or None
-        .
+    t_d : DICT or None
+        Either the data for the tables read from file or None.
     out_base : pathlib.Path
         Path to the stem of the output puml code file i.e. everything
         except the file extension.
@@ -533,35 +565,40 @@ def handle_paths(json_path, out_path=None, load_path=None,
         List of strings to be written at the bottom of the puml code.
 
     """
-    if not isinstance(json_path, pathlib.Path):
-        json_path = pathlib.Path(json_path)
+    if not isinstance(data_path, pathlib.Path):
+        data_path = pathlib.Path(data_path)
+
+    if data_path.suffix == ".yaml":
+        data_type = "yaml"
+    elif data_path.suffix == ".json":
+        data_type = "json"
 
     if not out_path:
-        # write puml code to same folder as json
-        output_path = json_path.parent
-        if load_path:
+        # write puml code to same folder as json/yaml
+        output_path = data_path.parent
+        if load_path and data_type == "json":
             # load json dynamically
-            j_name = json_path.name
+            j_name = data_path.name
         else:
-            # write json data into puml code and don't load anything
+            # write json/yaml data into puml code and don't load anything
             j_name = None
 
     else:
-        # write puml code to different folder to json
+        # write puml code to different folder to json/yaml
         output_path = pathlib.Path(out_path)
         if not output_path.is_absolute():
-            output_path = json_path.parent.joinpath(output_path)
+            output_path = data_path.parent.joinpath(output_path)
 
-        if load_path:
+        if load_path and data_type == "json":
             # load json dynamically, this time load_path is a
-            # relative path from out_path to json_path
+            # relative path from out_path to data_path
             j_name = pathlib.Path(load_path).as_posix()
         else:
-            # write json data into puml code and don't load anything
+            # write json/yaml data into puml code and don't load anything
             j_name = None
 
     if not out_name:
-        out_base = output_path.joinpath(json_path.stem)
+        out_base = output_path.joinpath(data_path.stem)
     else:
         out_base = output_path.joinpath(out_name)
 
@@ -582,7 +619,7 @@ def handle_paths(json_path, out_path=None, load_path=None,
                rf"!theme MOCHADA-{theme_name} from {themes_dir}",
                ]
 
-        if load_path:
+        if load_path and data_type == "json":
             top.insert(len(top), json_lines[0])
             top.insert(len(top), json_lines[1])
 
@@ -600,7 +637,7 @@ def handle_paths(json_path, out_path=None, load_path=None,
                rf"!theme MOCHADA-{theme_name} from {themes_dir}"
                ]
 
-        if load_path:
+        if load_path and data_type == "json":
             top.insert(1, json_lines[0])
             top.insert(2, json_lines[1])
 
@@ -610,10 +647,13 @@ def handle_paths(json_path, out_path=None, load_path=None,
     if scale:
         top.insert(1, f"scale {scale}")
 
-    j_d = None
+    t_d = None
     if not load_path:
-        with open(json_path, "r") as f:
-            j_d = json.load(f)
+        with open(data_path, "r") as f:
+            if data_type == "json":
+                t_d = json.load(f)
+            elif data_type == "yaml":
+                t_d = yaml.load(f, Loader=yaml.Loader)
 
-    return (j_d, out_base, top, bottom)
+    return (t_d, out_base, top, bottom)
 
