@@ -94,7 +94,7 @@ We can group techniques in order to provide a clear overview of more complex cas
 
 <br>
 
-**2. Generate CHADA tables from a single json file, with bespoke themes, and optionally hyperlinking different tables**
+**2. Generate CHADA tables from a single json or yaml file, with bespoke themes, and optionally hyperlinking different tables**
 
 ![Image](./gallery/demo_formatting.svg)
 
@@ -106,7 +106,7 @@ We can group techniques in order to provide a clear overview of more complex cas
 
 <br>
 
-**4. Define your own colour schemes and stereotypes**
+**4. Choose from the available colour schemes and stereotypes or define your own**
 
 ![Image](./gallery/legend_chada_all_themes.svg)
 
@@ -124,6 +124,8 @@ pip install -e .
 
 ### **Dependencies**
 - **h5py**: if you do not already have it, [h5py](https://docs.h5py.org/en/stable/index.html) will be installed by pip during installation of `mochada_kit`
+
+- **pyyaml**: if you do not already have it, [pyyaml](https://pyyaml.org/) will be installed by pip during installation of `mochada_kit`
 
 - to generate the diagrams, you need to have `plantuml.jar` saved on your system. Please see [here](https://plantuml.com/download) for download and licensing options
 
@@ -149,7 +151,7 @@ and this will write `.mochada_kit/config.json` to the current user's home folder
 |:---|:---|
 |`make_workflow_diagram.ipynb` | basic introduction to making workflow diagrams |
 |`using_hyperlinks_in_workflow_digarams.ipynb` | how to use hyperlinks to link several diagrams or to link to an external resource |
-|`make_CHADA_tables_from_json.ipynb` | how to use plantuml to generate CHADA tables from a single json file |
+|`make_CHADA_tables_from_json_or_yaml.ipynb` | how to use plantuml to generate CHADA tables from a single json or yaml file |
 |`json_diagram_from_hdf5_metadata.ipynb` | extract metadata from an hdf5 file and plot it as a json diagram with plantuml with optional bespoke highlighting|
 |`generating_mochada_themes.ipynb` | how to make MOCHADA themes with different colour schemes |
 |`CHADA_and_MODA_legend_all_themes.ipynb` | put a legend for MODA and CHADA elements for all the different themes in one plot for comparison |

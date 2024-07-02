@@ -89,7 +89,7 @@ for k, v in theme_colors.items():
 
 # Now we read theme template, which was created manually and is based on the colours in the [current working agreement](http://characterisation.eu/publications-output/)
 # 
-# You can inspect this file in a text editor to see it's structure. There are also some comment lines in the file giving further explanations.
+# You can inspect this file in a text editor to see its structure. There are also some comment lines in the file giving further explanations.
 
 # In[4]:
 

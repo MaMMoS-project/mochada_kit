@@ -1,7 +1,7 @@
 {
-  "0. Overview" : " ",
-  "1. User Case" : " ",
-  "2. Experiment" : {
+  "overview" : " ",
+  "user_case" : " ",
+  "experiment" : {
     "2. Experiment" : " ",
     "2.1 Probe/\\nPhysics of Interaction" : "Electron beam. 20 kV accelerating voltage. Secondary electrons, backscattered electrons",
     "2.2 Interaction Volume" : "Pear shaped, approximately 5 micrometres deep and wide\\nlatex: <latex>\\large{y = ax^{2} + bx + c\\pi}</latex>",
@@ -11,6 +11,6 @@
     "2.6 Measurement time" : "<i>Hello</i> 3.5 <U+00B1> 0.2 <U+03BC>m",
     "2.7 Measurement parameters" : "[[./json_SEM_metadata_with_highlights.svg{View metadata} Link]]"
   },
-  "3. Raw Data" : " ",
-  "4. Data Processing" : " "
+  "raw_data" : " ",
+  "data_processing" : " "
 }

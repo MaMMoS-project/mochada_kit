@@ -27,7 +27,8 @@ classifiers=[
 keywords = ["research", "data", "management", "visualization", "plantuml", "uml", "CHADA", "MODA"]
 requires-python = ">=3.6"
 dependencies = [
-    "h5py"
+    "h5py",
+    "pyyaml"
 ]
 dynamic = ["version"]
 

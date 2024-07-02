@@ -19,7 +19,7 @@
   "experiment" : {
     "2. Experiment" : " ",
     "2.1 Probe/\\nPhysics of Interaction" : "Electron beam. 20 kV accelerating voltage. Backscattered electrons are diffracted from lattice planes.",
-    "2.2 Interaction Volume" : "Highly anisotropic shape due to 70° sample tilt angle, approximately 5 µm wide and 15 µm long (perprediclar to tilt axis)",
+    "2.2 Interaction Volume" : "Highly anisotropic shape due to 70° sample tilt angle, approximately 5 µm wide and 15 µm long (perpendicular to tilt axis)",
     "2.3 Calibration Process" : "Experimental geometry (working distance and detector distance) calibrated using single crystal Si sample, approx. yearly.",
     "2.4 Detector" : "Oxford Instruments CNano+ EBSD detector (phosphor screen with fibre optics).",
     "2.5 Signal" : "Backscattered and diffracted electrons are detected and a diffraction pattern is recorded for each beam position",

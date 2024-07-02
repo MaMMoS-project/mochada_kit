@@ -8,5 +8,11 @@
 #highlight "2. Experiment" / "2. Experiment" <<experiment>>
 !$DEF_JSON={"status":"No data found"}
 !$DATA = %load_json("../../data/demo_formatting.json", $DEF_JSON)
-$DATA
+{
+  "Overview" : " ",
+  "1. User Case" : " ",
+  "2. Experiment" : $DATA.experiment,
+  "3. Raw Data" : " ",
+  "4. Data Processing" : " "
+}
 @endjson
