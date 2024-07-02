@@ -162,7 +162,7 @@ and this will write `.mochada_kit/config.json` to the current user's home folder
 
 ### **Reference**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12547641.svg)](https://doi.org/10.5281/zenodo.12547641)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12623332.svg)](https://doi.org/10.5281/zenodo.12623332)
 
 This package is being developed as part of the EU project: [MaMMoS](https://mammos-project.github.io/index.html)
 
