@@ -15,7 +15,7 @@ import json
 import argparse
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 
 # Build the path to the folder containing the bespoke plantuml CHADA themes,

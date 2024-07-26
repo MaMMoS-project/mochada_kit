@@ -15,6 +15,7 @@ shown here: https://plantuml.com/creole
 
 import pathlib
 import json
+import shutil
 
 import yaml
 
@@ -83,7 +84,9 @@ def get_lines_from_keys(keys):
 
 def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
                                 out_name=None, title=None,
-                                theme_name="plasma", linked=True,
+                                theme_name="plasma",
+                                copy_theme_to_local=False,
+                                linked=True,
                                 scale=None):
     """
     Write a plantuml code file specifying a json diagram for each of
@@ -195,6 +198,7 @@ def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
                                               out_name=out_name,
                                               title=title,
                                               theme_name=theme_name,
+                                              copy_theme_to_local=copy_theme_to_local,
                                               scale=scale
                                               )
 
@@ -235,6 +239,7 @@ def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
 def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
                                       out_name=None, title=None,
                                       theme_name="plasma",
+                                      copy_theme_to_local=False,
                                       scale=None):
     """
     Write a plantuml code file specifying a json diagram showing a
@@ -323,6 +328,7 @@ def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
                                               out_name=out_name,
                                               title=title,
                                               theme_name=theme_name,
+                                              copy_theme_to_local=copy_theme_to_local,
                                               scale=scale
                                               )
 
@@ -353,6 +359,7 @@ def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
 def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
                                        out_name=None, title=None,
                                        theme_name="plasma",
+                                       copy_theme_to_local=False,
                                        scale=None):
     """
     Write a plantuml code file specifying a json diagram for each of
@@ -453,6 +460,7 @@ def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
                                               out_name=out_name,
                                               title=title,
                                               theme_name=theme_name,
+                                              copy_theme_to_local=copy_theme_to_local,
                                               scale=scale
                                               )
 
@@ -477,7 +485,8 @@ def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
 
 def handle_paths(data_path, out_path=None, load_path=None,
                  out_name=None, title=None, theme_name="plasma",
-                 scale=None, return_out_base_only=False):
+                 copy_theme_to_local=False, scale=None,
+                 return_out_base_only=False):
     """
     Handles paths for input and output, collects strings to be
     written at the top and bottom of the puml code, and supplies
@@ -612,7 +621,11 @@ def handle_paths(data_path, out_path=None, load_path=None,
     if output_path.match("gallery/puml_code"):
         themes_dir = "../../themes"
     else:
-        themes_dir = __THEMES_DIR__
+        if copy_theme_to_local:
+            copy_theme_to_local_folder(theme_name, output_path)
+            themes_dir = "themes"
+        else:
+            themes_dir = __THEMES_DIR__
 
     if not title:
         top = ["@startjson",
@@ -657,3 +670,38 @@ def handle_paths(data_path, out_path=None, load_path=None,
 
     return (t_d, out_base, top, bottom)
 
+
+def copy_theme_to_local_folder(theme_name, output_path):
+    """
+    Makes a directory "themes" in output_path, then
+    copies the theme "theme_name" from __THEMES_DIR__
+    to output_path/themes.
+
+
+    Parameters
+    ----------
+    theme_name : STR
+        The name of one of the bespoke MOCHADA themes in the
+        default folder given by __THEMES_DIR__. Only the part of the
+        name after "MOCHADA-" is needed, i.e. to apply the theme
+        'MOCHADA-plasma', theme_name='plasma'.
+    output_path : pathlib.Path
+        Specifies the folder where the plantuml code file will be
+        saved. Absolute or relative paths can be supplied.
+
+
+
+    Returns
+    -------
+    None
+
+    """
+    local_themes_dir = output_path.joinpath("themes")
+    if not local_themes_dir.exists():
+        local_themes_dir.mkdir()
+
+    theme_file = f"puml-theme-MOCHADA-{theme_name}.puml"
+    theme_path = pathlib.Path(__THEMES_DIR__).joinpath(theme_file)
+    dest_path = local_themes_dir.joinpath(theme_file)
+    if not dest_path.exists():
+        shutil.copy(theme_path, dest_path)
