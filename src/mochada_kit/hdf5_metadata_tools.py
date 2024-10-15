@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Functions to extract metadata from an hdf5 file into a json format
 and write plantuml code to display that json data, optionally with
@@ -6,6 +5,7 @@ highlights.
 
 @author: tgwoodcock
 """
+
 import json
 
 import h5py
@@ -89,10 +89,14 @@ def nested_set(dic, keys, value):
     dic[keys[-1]] = value
 
 
-def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
-                                      save_json_and_load=True,
-                                      highlights=None,
-                                      highlight_style=None):
+def write_puml_code_for_hdf5_metadata(
+    hdf5_file,
+    group_path,
+    output_path,
+    save_json_and_load=True,
+    highlights=None,
+    highlight_style=None,
+):
     """
 
 
@@ -155,7 +159,7 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
     """
     global ds_dict
 
-    with h5py.File(hdf5_file,'r') as h5f:
+    with h5py.File(hdf5_file, "r") as h5f:
         ds_dict = {}
         h5f[group_path].visititems(get_ds_dictionaries)
 
@@ -166,14 +170,13 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
     highlights_f = []
     if isinstance(highlights, list):
         for h in highlights:
-            h_f = " / ".join(['"'+i+'"' for i in h.split("/")])
+            h_f = " / ".join(['"' + i + '"' for i in h.split("/")])
             highlights_f.append(h_f)
     elif isinstance(highlights, dict) and highlight_style:
         for k, v in highlights.items():
-            h_f = " / ".join(['"'+i+'"' for i in k.split("/")])
+            h_f = " / ".join(['"' + i + '"' for i in k.split("/")])
             h_f += f" {v}"
             highlights_f.append(h_f)
-
 
     if save_json_and_load:
         with open(f"{output_path}.json", "w") as f:
@@ -184,10 +187,10 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
             if highlight_style:
                 f.write(highlight_style + "\n")
             for h in highlights_f:
-                f.write(f'#highlight {h}\n')
+                f.write(f"#highlight {h}\n")
             f.write('!$DEF_JSON={"status":"No data found"}\n')
             f.write(f'!$DATA = %load_json("{output_path}.json", $DEF_JSON)\n')
-            f.write('$DATA')
+            f.write("$DATA")
             f.write("\n@endjson")
 
     else:
@@ -196,6 +199,6 @@ def write_puml_code_for_hdf5_metadata(hdf5_file, group_path, output_path,
             if highlight_style:
                 f.write(highlight_style + "\n")
             for h in highlights_f:
-                f.write(f'#highlight {h}\n')
+                f.write(f"#highlight {h}\n")
             json.dump(dic_final, f, indent="  ")
             f.write("\n@endjson")

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 mochada_kit
 
@@ -10,12 +9,11 @@ on bespoke themes.
 @author: tgwoodcock
 """
 
-import pathlib
-import json
 import argparse
+import json
+import pathlib
 
-
-__version__ = '0.1.2'
+__version__ = "0.1.2"
 
 
 # Build the path to the folder containing the bespoke plantuml CHADA themes,
@@ -78,8 +76,6 @@ def make_config(puml_path=None):
             cf_json.write_text('{\n  "puml_path" : "not set"\n}')
 
 
-
-
 def load_config():
     """
     If .mochada_kit/config.json exists in the current user's
@@ -113,19 +109,31 @@ def main():
     in config.json (thus negating the need to edit this file manually).
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--version', action='version',
-                        version=f'%(prog)s {__version__}')
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {__version__}"
+    )
 
     h_1 = "Write .mochada_kit/config.json to the user's home dir."
     h_2 = "Optionally specify the location of plantuml.jar"
     h_3 = "using the additional flag -p or --puml_path, then"
     h_4 = "path/to/my/plantuml.jar"
 
-    parser.add_argument("-c", "--config", action='store_true', required=False,
-                        help=" ".join([h_1, h_2, h_3, h_4]))
+    parser.add_argument(
+        "-c",
+        "--config",
+        action="store_true",
+        required=False,
+        help=" ".join([h_1, h_2, h_3, h_4]),
+    )
 
-    parser.add_argument("-p", "--puml_path", type=str, required=False,
-                        const=None, help="Full path to plantuml.jar (default: %(default)s)")
+    parser.add_argument(
+        "-p",
+        "--puml_path",
+        type=str,
+        required=False,
+        const=None,
+        help="Full path to plantuml.jar (default: %(default)s)",
+    )
 
     args = parser.parse_args()
 
@@ -133,9 +141,7 @@ def main():
         make_config(puml_path=args.puml_path)
 
 
-
-
 load_config()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Functions for generating plantuml code of CHADA tables
 from a single json or yaml file. A json source file must have
@@ -13,8 +12,8 @@ shown here: https://plantuml.com/creole
 @author: tgwoodcock
 """
 
-import pathlib
 import json
+import pathlib
 import shutil
 
 import yaml
@@ -56,38 +55,48 @@ def get_lines_from_keys(keys):
         display one or all of the other elements.
 
     """
-    highlights = [f'#highlight {keys[0]} <<overview>>',
-                  f'#highlight {keys[1]} <<user_case>>',
-                  f'#highlight {keys[2]} <<experiment>>',
-                  f'#highlight {keys[3]} <<raw_data>>',
-                  f'#highlight {keys[4]} <<data_processing>>'
-                  ]
+    highlights = [
+        f"#highlight {keys[0]} <<overview>>",
+        f"#highlight {keys[1]} <<user_case>>",
+        f"#highlight {keys[2]} <<experiment>>",
+        f"#highlight {keys[3]} <<raw_data>>",
+        f"#highlight {keys[4]} <<data_processing>>",
+    ]
 
-    single_HL = {"overview" : f'#highlight {keys[0]} / "Overview" <<overview>>',
-                 "user_case" : f'#highlight {keys[1]} / "1. User Case" <<user_case>>',
-                 "experiment" : f'#highlight {keys[2]} / "2. Experiment" <<experiment>>',
-                 "raw_data" : f'#highlight {keys[3]} / "3. Raw Data" <<raw_data>>',
-                 "data_processing" : f'#highlight {keys[4]} / "4. Data Processing" <<data_processing>>'
-                 }
+    single_HL = {
+        "overview": f'#highlight {keys[0]} / "Overview" <<overview>>',
+        "user_case": f'#highlight {keys[1]} / "1. User Case" <<user_case>>',
+        "experiment": f'#highlight {keys[2]} / "2. Experiment" <<experiment>>',
+        "raw_data": f'#highlight {keys[3]} / "3. Raw Data" <<raw_data>>',
+        "data_processing": (
+            f'#highlight {keys[4]} / "4. Data Processing" " <<data_processing>>"'
+        ),
+    }
 
-    mid = ['{',
-           f'  {keys[0]} : " ",',
-           f'  {keys[1]} : " ",',
-           f'  {keys[2]} : " ",',
-           f'  {keys[3]} : " ",',
-           f'  {keys[4]} : " "',
-           '}'
-           ]
+    mid = [
+        "{",
+        f'  {keys[0]} : " ",',
+        f'  {keys[1]} : " ",',
+        f'  {keys[2]} : " ",',
+        f'  {keys[3]} : " ",',
+        f'  {keys[4]} : " "',
+        "}",
+    ]
 
     return highlights, single_HL, mid
 
 
-def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
-                                out_name=None, title=None,
-                                theme_name="plasma",
-                                copy_theme_to_local=False,
-                                linked=True,
-                                scale=None):
+def write_chada_tables_plantuml(
+    data_path,
+    out_path=None,
+    load_path=None,
+    out_name=None,
+    title=None,
+    theme_name="plasma",
+    copy_theme_to_local=False,
+    linked=True,
+    scale=None,
+):
     """
     Write a plantuml code file specifying a json diagram for each of
     five different cases:
@@ -192,30 +201,42 @@ def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
     None.
 
     """
-    t_d, out_base, top, bottom = handle_paths(data_path,
-                                              out_path=out_path,
-                                              load_path=load_path,
-                                              out_name=out_name,
-                                              title=title,
-                                              theme_name=theme_name,
-                                              copy_theme_to_local=copy_theme_to_local,
-                                              scale=scale
-                                              )
+    t_d, out_base, top, bottom = handle_paths(
+        data_path,
+        out_path=out_path,
+        load_path=load_path,
+        out_name=out_name,
+        title=title,
+        theme_name=theme_name,
+        copy_theme_to_local=copy_theme_to_local,
+        scale=scale,
+    )
 
     if linked:
-        keys = [f'"[[{data_path.stem}_overview.svg{{View Overview table}} Overview]]"',
-                f'"[[{data_path.stem}_user_case.svg{{View User Case table}} 1. User Case]]"',
-                f'"[[{data_path.stem}_experiment.svg{{View Experiment table}} 2. Experiment]]"',
-                f'"[[{data_path.stem}_raw_data.svg{{View Raw Data table}} 3. Raw Data]]"',
-                f'"[[{data_path.stem}_data_processing.svg{{View Data Processing table}} 4. Data Processing]]"'
-                ]
+        keys = [
+            f'"[[{data_path.stem}_overview.svg{{View Overview table}} Overview]]"',
+            (
+                f'"[[{data_path.stem}_user_case.svg{{View User Case table}}'
+                ' 1. User Case]]"'
+            ),
+            (
+                f'"[[{data_path.stem}_experiment.svg{{View Experiment table}}'
+                ' 2. Experiment]]"'
+            ),
+            f'"[[{data_path.stem}_raw_data.svg{{View Raw Data table}} 3. Raw Data]]"',
+            (
+                f'"[[{data_path.stem}_data_processing.svg{{View Data Processing table}}'
+                ' 4. Data Processing]]"'
+            ),
+        ]
     else:
-        keys = ['"Overview"',
-                '"1. User Case"',
-                '"2. Experiment"',
-                '"3. Raw Data"',
-                '"4. Data Processing"'
-                ]
+        keys = [
+            '"Overview"',
+            '"1. User Case"',
+            '"2. Experiment"',
+            '"3. Raw Data"',
+            '"4. Data Processing"',
+        ]
 
     highlights, single_HL, mid = get_lines_from_keys(keys)
 
@@ -223,24 +244,28 @@ def write_chada_tables_plantuml(data_path, out_path=None, load_path=None,
         mid_n = list(mid)
 
         if load_path:
-            mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": $DATA.{j},"
+            mid_n[i + 1] = mid_n[i + 1].split(": ")[0] + f": $DATA.{j},"
         else:
-            q = json.dumps(t_d[j], indent='    ', ensure_ascii=False)
-            mid_n[i+1] = mid_n[i+1].split(": ")[0] + f": {q},"
+            q = json.dumps(t_d[j], indent="    ", ensure_ascii=False)
+            mid_n[i + 1] = mid_n[i + 1].split(": ")[0] + f": {q},"
 
         if i == 4:
-            mid_n[i+1] = mid_n[i+1][:-1]
+            mid_n[i + 1] = mid_n[i + 1][:-1]
 
         t_a = "\n".join(top + highlights + [single_HL[j]] + mid_n + bottom)
         pathlib.Path(str(out_base) + f"_{j}.puml").write_text(t_a)
 
 
-
-def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
-                                      out_name=None, title=None,
-                                      theme_name="plasma",
-                                      copy_theme_to_local=False,
-                                      scale=None):
+def write_chada_tables_whole_plantuml(
+    data_path,
+    out_path=None,
+    load_path=None,
+    out_name=None,
+    title=None,
+    theme_name="plasma",
+    copy_theme_to_local=False,
+    scale=None,
+):
     """
     Write a plantuml code file specifying a json diagram showing a
     "contents" element --> all other elements (Overview, User Case,
@@ -322,45 +347,51 @@ def write_chada_tables_whole_plantuml(data_path, out_path=None, load_path=None,
     None.
 
     """
-    t_d, out_base, top, bottom = handle_paths(data_path,
-                                              out_path=out_path,
-                                              load_path=load_path,
-                                              out_name=out_name,
-                                              title=title,
-                                              theme_name=theme_name,
-                                              copy_theme_to_local=copy_theme_to_local,
-                                              scale=scale
-                                              )
+    t_d, out_base, top, bottom = handle_paths(
+        data_path,
+        out_path=out_path,
+        load_path=load_path,
+        out_name=out_name,
+        title=title,
+        theme_name=theme_name,
+        copy_theme_to_local=copy_theme_to_local,
+        scale=scale,
+    )
 
-    keys = ['"Overview"',
-            '"1. User Case"',
-            '"2. Experiment"',
-            '"3. Raw Data"',
-            '"4. Data Processing"'
-            ]
+    keys = [
+        '"Overview"',
+        '"1. User Case"',
+        '"2. Experiment"',
+        '"3. Raw Data"',
+        '"4. Data Processing"',
+    ]
 
     highlights, single_HL, mid = get_lines_from_keys(keys)
 
     for i, j in enumerate(single_HL):
         if load_path:
-            mid[i+1] = mid[i+1].split(": ")[0] + f": $DATA.{j},"
+            mid[i + 1] = mid[i + 1].split(": ")[0] + f": $DATA.{j},"
         else:
-            q = json.dumps(t_d[j], indent='    ', ensure_ascii=False)
-            mid[i+1] = mid[i+1].split(": ")[0] + f": {q},"
+            q = json.dumps(t_d[j], indent="    ", ensure_ascii=False)
+            mid[i + 1] = mid[i + 1].split(": ")[0] + f": {q},"
 
         if i == 4:
-            mid[i+1] = mid[i+1][:-1]
+            mid[i + 1] = mid[i + 1][:-1]
 
     t_a = "\n".join(top + highlights + list(single_HL.values()) + mid + bottom)
     pathlib.Path(str(out_base) + ".puml").write_text(t_a)
 
 
-
-def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
-                                       out_name=None, title=None,
-                                       theme_name="plasma",
-                                       copy_theme_to_local=False,
-                                       scale=None):
+def write_chada_tables_single_plantuml(
+    data_path,
+    out_path=None,
+    load_path=None,
+    out_name=None,
+    title=None,
+    theme_name="plasma",
+    copy_theme_to_local=False,
+    scale=None,
+):
     """
     Write a plantuml code file specifying a json diagram for each of
     five different cases:
@@ -454,39 +485,47 @@ def write_chada_tables_single_plantuml(data_path, out_path=None, load_path=None,
     None.
 
     """
-    t_d, out_base, top, bottom = handle_paths(data_path,
-                                              out_path=out_path,
-                                              load_path=load_path,
-                                              out_name=out_name,
-                                              title=title,
-                                              theme_name=theme_name,
-                                              copy_theme_to_local=copy_theme_to_local,
-                                              scale=scale
-                                              )
+    t_d, out_base, top, bottom = handle_paths(
+        data_path,
+        out_path=out_path,
+        load_path=load_path,
+        out_name=out_name,
+        title=title,
+        theme_name=theme_name,
+        copy_theme_to_local=copy_theme_to_local,
+        scale=scale,
+    )
 
-    highlights = {"overview" : '#highlight "Overview" <<overview>>',
-                  "user_case" : '#highlight "1. User Case" <<user_case>>',
-                  "experiment" : '#highlight "2. Experiment" <<experiment>>',
-                  "raw_data" : '#highlight "3. Raw Data" <<raw_data>>',
-                  "data_processing" : '#highlight "4. Data Processing" <<data_processing>>'
-                  }
+    highlights = {
+        "overview": '#highlight "Overview" <<overview>>',
+        "user_case": '#highlight "1. User Case" <<user_case>>',
+        "experiment": '#highlight "2. Experiment" <<experiment>>',
+        "raw_data": '#highlight "3. Raw Data" <<raw_data>>',
+        "data_processing": '#highlight "4. Data Processing" <<data_processing>>',
+    }
 
     for i, j in highlights.items():
         if load_path:
             mid_n = [f"$DATA.{i}"]
         else:
-            q = json.dumps(t_d[i], indent='  ', ensure_ascii=False)
+            q = json.dumps(t_d[i], indent="  ", ensure_ascii=False)
             mid_n = [f"{q}"]
 
         t_a = "\n".join(top + [j] + mid_n + bottom)
         pathlib.Path(str(out_base) + f"_{i}.puml").write_text(t_a)
 
 
-
-def handle_paths(data_path, out_path=None, load_path=None,
-                 out_name=None, title=None, theme_name="plasma",
-                 copy_theme_to_local=False, scale=None,
-                 return_out_base_only=False):
+def handle_paths(
+    data_path,
+    out_path=None,
+    load_path=None,
+    out_name=None,
+    title=None,
+    theme_name="plasma",
+    copy_theme_to_local=False,
+    scale=None,
+    return_out_base_only=False,
+):
     """
     Handles paths for input and output, collects strings to be
     written at the top and bottom of the puml code, and supplies
@@ -614,9 +653,10 @@ def handle_paths(data_path, out_path=None, load_path=None,
     if return_out_base_only:
         return out_base
 
-    json_lines = ['!$DEF_JSON = {"error" : "no data loaded"}',
-                  f"!$DATA = %load_json({j_name}, $DEF_JSON)"
-                  ]
+    json_lines = [
+        '!$DEF_JSON = {"error" : "no data loaded"}',
+        f"!$DATA = %load_json({j_name}, $DEF_JSON)",
+    ]
 
     if output_path.match("gallery/puml_code"):
         themes_dir = "../../themes"
@@ -628,9 +668,10 @@ def handle_paths(data_path, out_path=None, load_path=None,
             themes_dir = __THEMES_DIR__
 
     if not title:
-        top = ["@startjson",
-               rf"!theme MOCHADA-{theme_name} from {themes_dir}",
-               ]
+        top = [
+            "@startjson",
+            rf"!theme MOCHADA-{theme_name} from {themes_dir}",
+        ]
 
         if load_path and data_type == "json":
             top.insert(len(top), json_lines[0])
@@ -641,14 +682,15 @@ def handle_paths(data_path, out_path=None, load_path=None,
     else:
         if isinstance(title, str):
             title = [title]
-        top = ["@startuml",
-               "title",
-               *[f"  {t}" for t in title],
-               "end title",
-               "label B [",
-               "{{json",
-               rf"!theme MOCHADA-{theme_name} from {themes_dir}"
-               ]
+        top = [
+            "@startuml",
+            "title",
+            *[f"  {t}" for t in title],
+            "end title",
+            "label B [",
+            "{{json",
+            rf"!theme MOCHADA-{theme_name} from {themes_dir}",
+        ]
 
         if load_path and data_type == "json":
             top.insert(1, json_lines[0])
@@ -656,13 +698,12 @@ def handle_paths(data_path, out_path=None, load_path=None,
 
         bottom = ["}}", "]", "@enduml"]
 
-
     if scale:
         top.insert(1, f"scale {scale}")
 
     t_d = None
     if not load_path:
-        with open(data_path, "r") as f:
+        with open(data_path) as f:
             if data_type == "json":
                 t_d = json.load(f)
             elif data_type == "yaml":
