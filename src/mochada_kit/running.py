@@ -1,18 +1,24 @@
-# -*- coding: utf-8 -*-
 """
 Functions to help running plantuml code against the plantuml.jar
 (which is stored on the local system).
 
 @author: tgwoodcock
 """
-import subprocess
+
 import pathlib
+import subprocess
 
 from . import __PUML_PATH__
 
-def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
-                      output_type="-tsvg", output_dpi=None,
-                      skinparam_opts=None):
+
+def run_plantuml_code(
+    code_path,
+    plantuml_path=None,
+    output_dir=None,
+    output_type="-tsvg",
+    output_dpi=None,
+    skinparam_opts=None,
+):
     """
     This function takes the path to either a single file
     of plantuml code or a folder containing several
@@ -113,7 +119,7 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
     else:
         t_1 = f"{__name__}.{run_plantuml_code.__name__}:"
         t_2 = "the 'code_path' supplied is not an existing path"
-        raise IOError(" ".join([t_1, t_2])) from None
+        raise OSError(" ".join([t_1, t_2])) from None
 
     if not plantuml_path:
         plantuml_path = __PUML_PATH__
@@ -121,14 +127,9 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
         if plantuml_path == "not set":
             t_1 = "plantuml_path was not passed and is also not defined"
             t_2 = "in the user's .mochada_kit/config.json"
-            raise IOError(" ".join([t_1, t_2])) from None
+            raise OSError(" ".join([t_1, t_2])) from None
 
-    cmd = ["java",
-           "-jar",
-           plantuml_path,
-           output_type,
-           code_path
-           ]
+    cmd = ["java", "-jar", plantuml_path, output_type, code_path]
 
     if output_dir:
         if not isinstance(output_dir, pathlib.Path):
@@ -151,13 +152,9 @@ def run_plantuml_code(code_path, plantuml_path=None, output_dir=None,
         for k, v in skinparam_opts.items():
             cmd.insert(-1, f"-S{k}={v}")
 
-    if code_path.is_dir():
-        cwd = code_path
-    else:
-        cwd = code_path.parent
+    cwd = code_path if code_path.is_dir() else code_path.parent
 
-    subprocess.run(cmd, shell=False, stderr=subprocess.STDOUT,
-                   check=True, cwd=cwd)
+    subprocess.run(cmd, shell=False, stderr=subprocess.STDOUT, check=True, cwd=cwd)
 
 
 def run_all_gallery_puml_code(output_type="-tsvg"):
@@ -183,9 +180,10 @@ def run_all_gallery_puml_code(output_type="-tsvg"):
     None.
 
     """
-    c_p = pathlib.Path(__file__).parent.joinpath("..",
-                                                 "..",
-                                                 "gallery",
-                                                 "puml_code").resolve()
+    c_p = (
+        pathlib.Path(__file__)
+        .parent.joinpath("..", "..", "gallery", "puml_code")
+        .resolve()
+    )
 
-    run_plantuml_code(c_p, output_dir="../",  output_type=output_type)
+    run_plantuml_code(c_p, output_dir="../", output_type=output_type)
