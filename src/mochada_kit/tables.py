@@ -18,7 +18,7 @@ import shutil
 
 import yaml
 
-from . import __THEMES_DIR__
+from mochada_kit import _THEMES_DIR
 
 
 def get_lines_from_keys(keys):
@@ -69,7 +69,7 @@ def get_lines_from_keys(keys):
         "experiment": f'#highlight {keys[2]} / "2. Experiment" <<experiment>>',
         "raw_data": f'#highlight {keys[3]} / "3. Raw Data" <<raw_data>>',
         "data_processing": (
-            f'#highlight {keys[4]} / "4. Data Processing" " <<data_processing>>"'
+            f'#highlight {keys[4]} / "4. Data Processing" <<data_processing>>'
         ),
     }
 
@@ -665,7 +665,7 @@ def handle_paths(
             copy_theme_to_local_folder(theme_name, output_path)
             themes_dir = "themes"
         else:
-            themes_dir = __THEMES_DIR__
+            themes_dir = _THEMES_DIR
 
     if not title:
         top = [
@@ -742,7 +742,7 @@ def copy_theme_to_local_folder(theme_name, output_path):
         local_themes_dir.mkdir()
 
     theme_file = f"puml-theme-MOCHADA-{theme_name}.puml"
-    theme_path = pathlib.Path(__THEMES_DIR__).joinpath(theme_file)
+    theme_path = pathlib.Path(_THEMES_DIR).joinpath(theme_file)
     dest_path = local_themes_dir.joinpath(theme_file)
     if not dest_path.exists():
         shutil.copy(theme_path, dest_path)
