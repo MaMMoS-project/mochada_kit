@@ -8,12 +8,14 @@ Functions to help running plantuml code against the plantuml.jar
 import pathlib
 import subprocess
 
-from . import __PUML_PATH__
+from mochada_kit.config import read_config
+
+_puml_path = read_config()["puml_path"]
 
 
 def run_plantuml_code(
     code_path,
-    plantuml_path=None,
+    plantuml_path=_puml_path,
     output_dir=None,
     output_type="-tsvg",
     output_dpi=None,
@@ -57,13 +59,12 @@ def run_plantuml_code(
         .apt, .pu, .puml, .hpp, .hh or .md in the folder and
         will run them all.
     plantuml_path : STR or pathlib.Path, optional
-        The full path to the plantuml.jar. If None, the function
+        The full path to the plantuml.jar. By default, the function
         tries to take the path from the current user's config,
         found in the home directory under .CHADA_kit/config.json.
         If the value has not been set there and was not supplied
         in this function, an error will be raised because the
         function will not be able to find plantuml.jar.
-        The default is None.
     output_dir : STR or pathlib.Path, optional
         Path to an output directory where the images should be
         placed. If None, the images will be placed in the same
@@ -99,9 +100,13 @@ def run_plantuml_code(
 
     Raises
     ------
-    IOError
+    TypeError
+        Raised if code_path is not pathlib.Path or str.
+    TypeError
+        Raised if output_dir is not None, pathlib.Path or str.
+    OSError
         Raised if the code_path supplied does not exist.
-    IOError
+    OSError
         Raised if plantuml_path was not passed AND is not
         set in the users' config.json.
 
@@ -110,40 +115,37 @@ def run_plantuml_code(
     None.
 
     """
-    if not isinstance(code_path, pathlib.Path):
-        code_path = pathlib.Path(code_path)
-
-    if code_path.exists():
-        if not code_path.is_absolute():
-            code_path = code_path.absolute()
-    else:
-        t_1 = f"{__name__}.{run_plantuml_code.__name__}:"
-        t_2 = "the 'code_path' supplied is not an existing path"
-        raise OSError(" ".join([t_1, t_2])) from None
-
     if not plantuml_path:
-        plantuml_path = __PUML_PATH__
+        raise OSError(
+            "plantuml_path was not passed and is also not defined "
+            "in the user's .mochada_kit/config.json."
+        )
 
-        if plantuml_path == "not set":
-            t_1 = "plantuml_path was not passed and is also not defined"
-            t_2 = "in the user's .mochada_kit/config.json"
-            raise OSError(" ".join([t_1, t_2])) from None
+    if not isinstance(code_path, (pathlib.Path, str)):
+        raise TypeError("code_path must be either pathlib.Path or str.")
+    else:
+        code_path = (
+            pathlib.Path(code_path).absolute()
+            if isinstance(code_path, str)
+            else code_path.absolute()
+        )
+
+    if not code_path.exists():
+        raise OSError("The code_path supplied is not an existing path.")
 
     cmd = ["java", "-jar", plantuml_path, output_type, code_path]
 
-    if output_dir:
-        if not isinstance(output_dir, pathlib.Path):
-            output_dir = pathlib.Path(output_dir)
-        if not output_dir.is_absolute():
-            if code_path.is_dir():
-                output_dir = code_path.joinpath(output_dir)
-            else:
-                output_dir = code_path.parent.joinpath(output_dir)
-        if not output_dir.exists():
-            output_dir.mkdir()
-
+    if output_dir and isinstance(output_dir, (pathlib.Path, str)):
+        output_dir = (
+            pathlib.Path(output_dir).absolute()
+            if isinstance(output_dir, str)
+            else output_dir.absolute()
+        )
+        output_dir.mkdir(exist_ok=True)
         cmd.insert(4, "-o")
         cmd.insert(5, output_dir)
+    elif output_dir is not None:
+        raise TypeError("output_dir must be either pathlib.Path or str.")
 
     if output_dpi:
         cmd.insert(-1, f"-Sdpi={output_dpi}")
