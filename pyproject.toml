@@ -83,7 +83,7 @@ known-local-folder = ["src"]
 'content-type' = "text/markdown"
 
 [project.scripts]
-mochadakit = "mochada_kit.cli:cli"
+mochada_kit = "mochada_kit.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]
