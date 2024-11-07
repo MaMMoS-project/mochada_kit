@@ -13,6 +13,6 @@ import importlib.metadata
 import pathlib
 
 _THEMES_DIR = (
-    pathlib.Path(__file__).absolute().parent.parent.joinpath("themes").as_posix()
+    pathlib.Path(__file__).absolute().parent.parent.parent.joinpath("themes").as_posix()
 )
 __version__ = importlib.metadata.version(__package__)
