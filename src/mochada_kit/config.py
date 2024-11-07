@@ -8,11 +8,11 @@ def read_config():
         with open(config_file_path) as handle:
             return json.load(handle)
     else:
-        error = (
+        warning = (
             f"Cannot find configuration file at: {config_file_path}."
-            "To fix, please run: mochadakit -c -p <path to plantuml.jar>"
+            "To fix, please run: mochadakit config -p <path to plantuml.jar>"
         )
-        raise OSError(error)
+        warnings.warn(warning, stacklevel=2)
 
 
 def write_config(puml_path=None):
