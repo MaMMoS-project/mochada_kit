@@ -1,0 +1,27 @@
+abstract: "Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAta) workflow diagrams and tables using plantuml, with machine-readable, enhanced design based on bespoke themes."
+authors:
+  - family-names: Woodcock
+    given-names: Thomas George
+    orcid: "https://orcid.org/0000-0003-2351-973X"
+    affiliation: "Leibniz Institute for Solid State and Materials Research (ROR: https://ror.org/04zb59n70)"
+  - family-names: Pathak
+    given-names: Swapneel Amit
+    orcid: "https://orcid.org/0000-0003-3840-955X"
+    affiliation: "Max Planck Institute for the Structure and Dynamics of Matter (ROR: https://ror.org/0411b0f77)"
+  - name: The mochada_kit Contributors
+    website: "https://github.com/MaMMoS-project/mochada_kit/graphs/contributors"
+cff-version: 1.2.0
+date-released: "2024-07-02"
+doi: 10.5281/zenodo.12547640
+keywords:
+  - research
+  - data
+  - plantuml
+  - chada
+  - moda
+  - workflow
+license: MIT
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/MaMMoS-project/mochada_kit"
+title: "mochada_kit"
+version: 0.1.1
