@@ -8,9 +8,7 @@ mochada_kit/templates/chada_tables_template.yaml.
 The values for each key in the json/yaml file can either be plain text or
 formatting must be applied using the CREOLE or html syntax for plantuml
 shown here: https://plantuml.com/creole
-
-@author: tgwoodcock
-"""
+"""  # noqa: D400
 
 import json
 import pathlib
@@ -53,7 +51,6 @@ def get_lines_from_keys(keys):
         "contents" element. One or more of these will be
         overwritten later in the process, in order to
         display one or all of the other elements.
-
     """
     highlights = [
         f"#highlight {keys[0]} <<overview>>",
@@ -99,17 +96,20 @@ def write_chada_tables_plantuml(
 ):
     """
     Write a plantuml code file specifying a json diagram for each of
-    five different cases:
-        1. "contents" element --> Overview element.
-           Filename: same as the json plus _overview.puml.
-        2. "contents" element --> User Case element.
-           Filename: same as the json plus _user_case.puml.
-        3. "contents" element --> Experiment element.
-           Filename: same as the json plus _experiment.puml.
-        4. "contents" element --> Raw Data element.
-           Filename: same as the json plus _raw_data.puml.
-        5. "contents" element --> Data Processing element.
-           Filename: same as the json plus _data_processing.puml.
+    five different cases.
+
+    These are:
+
+    1. "contents" element --> Overview element.
+       Filename: same as the json plus _overview.puml.
+    2. "contents" element --> User Case element.
+       Filename: same as the json plus _user_case.puml.
+    3. "contents" element --> Experiment element.
+       Filename: same as the json plus _experiment.puml.
+    4. "contents" element --> Raw Data element.
+       Filename: same as the json plus _raw_data.puml.
+    5. "contents" element --> Data Processing element.
+       Filename: same as the json plus _data_processing.puml.
 
     By default, the puml code files will be saved in the same
     directory as the json/yaml file specified by data_path. If
@@ -167,7 +167,7 @@ def write_chada_tables_plantuml(
         appear in a new row of the title. You can apply CREOLE syntax
         to the title strings e.g. to change the colour, make a table,
         make a link etc. All options are here:
-            https://plantuml.com/creole
+        https://plantuml.com/creole.
         The default is None.
     theme_name : STR, optional
         The name of one of the bespoke MOCHADA themes in the
@@ -189,17 +189,18 @@ def write_chada_tables_plantuml(
         necessary to use this with svg output as these can be scaled to
         any size later.
         Docs are here:
-            https://plantuml.com/commons#4252b72e6ebcd4d4
+        https://plantuml.com/commons#4252b72e6ebcd4d4.
+
         Common values could be:
-            1.5 (to set the aspect ratio),
-            "1/3" (to set the aspect ratio)
-            "1024 width" (to set the width to 1024 pixels)
-            "100*200" (to set the output size to 100 by 200 pixels)
+
+        - 1.5 (to set the aspect ratio),
+        - "1/3" (to set the aspect ratio)
+        - "1024 width" (to set the width to 1024 pixels)
+        - "100*200" (to set the output size to 100 by 200 pixels).
 
     Returns
     -------
     None.
-
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -280,7 +281,6 @@ def write_chada_tables_whole_plantuml(
     to the first ("title") row of each other element, according to the
     bespoke MOCHADA theme specified by theme_name.
 
-
     Parameters
     ----------
     data_path : STR or pathlib.Path
@@ -322,7 +322,7 @@ def write_chada_tables_whole_plantuml(
         appear in a new row of the title. You can apply CREOLE syntax
         to the title strings e.g. to change the colour, make a table,
         make a link etc. All options are here:
-            https://plantuml.com/creole
+        https://plantuml.com/creole.
         The default is None.
     theme_name : STR, optional
         The name of one of the bespoke MOCHADA themes in the
@@ -335,17 +335,18 @@ def write_chada_tables_whole_plantuml(
         necessary to use this with svg output as these can be scaled to
         any size later.
         Docs are here:
-            https://plantuml.com/commons#4252b72e6ebcd4d4
+        https://plantuml.com/commons#4252b72e6ebcd4d4.
+
         Common values could be:
-            1.5 (to set the aspect ratio),
-            "1/3" (to set the aspect ratio)
-            "1024 width" (to set the width to 1024 pixels)
-            "100*200" (to set the output size to 100 by 200 pixels)
+
+        - 1.5 (to set the aspect ratio),
+        - "1/3" (to set the aspect ratio)
+        - "1024 width" (to set the width to 1024 pixels)
+        - "100*200" (to set the output size to 100 by 200 pixels).
 
     Returns
     -------
     None.
-
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -394,17 +395,20 @@ def write_chada_tables_single_plantuml(
 ):
     """
     Write a plantuml code file specifying a json diagram for each of
-    five different cases:
-        1. Overview element.
-           Filename: same as the json plus _overview.puml.
-        2. User Case element.
-           Filename: same as the json plus _user_case.puml.
-        3. Experiment element.
-           Filename: same as the json plus _experiment.puml.
-        4. Raw Data element.
-           Filename: same as the json plus _raw_data.puml.
-        5. Data Processing element.
-           Filename: same as the json plus _data_processing.puml.
+    five different cases.
+
+    These are:
+
+    1. Overview element.
+       Filename: same as the json plus _overview.puml.
+    2. User Case element.
+       Filename: same as the json plus _user_case.puml.
+    3. Experiment element.
+       Filename: same as the json plus _experiment.puml.
+    4. Raw Data element.
+       Filename: same as the json plus _raw_data.puml.
+    5. Data Processing element.
+       Filename: same as the json plus _data_processing.puml.
 
     By default, the puml code files will be saved in the same
     directory as the json/yaml file specified by data_path. If
@@ -417,7 +421,6 @@ def write_chada_tables_single_plantuml(
     NB. a "contents" element is NOT included in the puml code resulting
     from this function. If this is required, please use the function
     write_chada_tables_plantuml().
-
 
     Parameters
     ----------
@@ -460,7 +463,7 @@ def write_chada_tables_single_plantuml(
         appear in a new row of the title. You can apply CREOLE syntax
         to the title strings e.g. to change the colour, make a table,
         make a link etc. All options are here:
-            https://plantuml.com/creole
+        https://plantuml.com/creole.
         The default is None.
     theme_name : STR, optional
         The name of one of the bespoke MOCHADA themes in the
@@ -473,17 +476,18 @@ def write_chada_tables_single_plantuml(
         necessary to use this with svg output as these can be scaled to
         any size later.
         Docs are here:
-            https://plantuml.com/commons#4252b72e6ebcd4d4
+        https://plantuml.com/commons#4252b72e6ebcd4d4.
+
         Common values could be:
-            1.5 (to set the aspect ratio),
-            "1/3" (to set the aspect ratio)
-            "1024 width" (to set the width to 1024 pixels)
-            "100*200" (to set the output size to 100 by 200 pixels)
+
+        - 1.5 (to set the aspect ratio),
+        - "1/3" (to set the aspect ratio)
+        - "1024 width" (to set the width to 1024 pixels)
+        - "100*200" (to set the output size to 100 by 200 pixels).
 
     Returns
     -------
     None.
-
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -527,11 +531,10 @@ def handle_paths(
     return_out_base_only=False,
 ):
     """
-    Handles paths for input and output, collects strings to be
+    Handle paths for input and output, collects strings to be
     written at the top and bottom of the puml code, and supplies
     the data read from the json/yaml source file as a dict,
     if required.
-
 
     Parameters
     ----------
@@ -574,7 +577,7 @@ def handle_paths(
         appear in a new row of the title. You can apply CREOLE syntax
         to the title strings e.g. to change the colour, make a table,
         make a link etc. All options are here:
-            https://plantuml.com/creole
+        https://plantuml.com/creole.
         The default is None.
     theme_name : STR, optional
         The name of one of the bespoke MOCHADA themes in the
@@ -587,12 +590,14 @@ def handle_paths(
         necessary to use this with svg output as these can be scaled to
         any size later.
         Docs are here:
-            https://plantuml.com/commons#4252b72e6ebcd4d4
+        https://plantuml.com/commons#4252b72e6ebcd4d4.
+
         Common values could be:
-            1.5 (to set the aspect ratio),
-            "1/3" (to set the aspect ratio)
-            "1024 width" (to set the width to 1024 pixels)
-            "100*200" (to set the output size to 100 by 200 pixels)
+
+        - 1.5 (to set the aspect ratio),
+        - "1/3" (to set the aspect ratio)
+        - "1024 width" (to set the width to 1024 pixels)
+        - "100*200" (to set the output size to 100 by 200 pixels).
     return_out_base_only : BOOL, optional
         If True, return only out_base. This is useful if you just want
         to construct the full path to the puml code, e.g. if you want
@@ -611,7 +616,6 @@ def handle_paths(
         List of strings to be written at the top of the puml code.
     bottom : LIST
         List of strings to be written at the bottom of the puml code.
-
     """
     if not isinstance(data_path, pathlib.Path):
         data_path = pathlib.Path(data_path)
@@ -714,10 +718,9 @@ def handle_paths(
 
 def copy_theme_to_local_folder(theme_name, output_path):
     """
-    Makes a directory "themes" in output_path, then
+    Make a directory "themes" in output_path, then
     copies the theme "theme_name" from __THEMES_DIR__
     to output_path/themes.
-
 
     Parameters
     ----------
@@ -730,12 +733,9 @@ def copy_theme_to_local_folder(theme_name, output_path):
         Specifies the folder where the plantuml code file will be
         saved. Absolute or relative paths can be supplied.
 
-
-
     Returns
     -------
     None
-
     """
     local_themes_dir = output_path.joinpath("themes")
     if not local_themes_dir.exists():

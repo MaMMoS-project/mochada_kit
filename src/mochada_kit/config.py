@@ -1,3 +1,7 @@
+"""Configuration of path to plantuml.jar."""
+
+# ruff: noqa: D103
+
 import json
 import pathlib
 import warnings
