@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mochada_kit"
-version = "0.1.2"
+version = "0.2.0"
 description = "Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAta) workflow diagrams and tables using plantuml, with machine-readable, enhanced design based on bespoke themes."
 authors = [{ name = "Thomas G. Woodcock" }]
 maintainers = [{ name = "Thomas G. Woodcock" }]
