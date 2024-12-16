@@ -41,7 +41,6 @@ doc = [
     "matplotlib",
     "nbsphinx                     >= 0.7",
     "numpydoc",
-    "pandoc",
     "pydata-sphinx-theme",
     "sphinx                       >= 3.0.2",
     "sphinx-codeautolink[ipython] < 0.14",
