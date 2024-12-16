@@ -8,6 +8,10 @@ authors:
     given-names: Swapneel Amit
     orcid: "https://orcid.org/0000-0003-3840-955X"
     affiliation: "Max Planck Institute for the Structure and Dynamics of Matter (ROR: https://ror.org/0411b0f77)"
+  - family-names: Petrocchi
+    given-names: Andrea
+    orcid: "https://orcid.org/0009-0005-1867-6732"
+    affiliation: "Max Planck Institute for the Structure and Dynamics of Matter (ROR: https://ror.org/0411b0f77)"
   - name: The mochada_kit Contributors
     website: "https://github.com/MaMMoS-project/mochada_kit/graphs/contributors"
 cff-version: 1.2.0
