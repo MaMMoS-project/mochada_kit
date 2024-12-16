@@ -41,6 +41,7 @@ doc = [
     "matplotlib",
     "nbsphinx                     >= 0.7",
     "numpydoc",
+    "pandoc",
     "pydata-sphinx-theme",
     "sphinx                       >= 3.0.2",
     "sphinx-codeautolink[ipython] < 0.14",
@@ -49,7 +50,6 @@ doc = [
 ]
 tests = [
     "numpydoc",
-    "pandoc",
     "pytest                       >= 5.4",
     "pytest-benchmark",
     "pytest-rerunfailures",
