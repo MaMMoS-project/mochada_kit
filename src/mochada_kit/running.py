@@ -1,8 +1,6 @@
 """
 Functions to help running plantuml code against the plantuml.jar
 (which is stored on the local system).
-
-@author: tgwoodcock
 """
 
 import pathlib
@@ -22,6 +20,8 @@ def run_plantuml_code(
     skinparam_opts=None,
 ):
     """
+    Produce diagrams from plantuml code.
+
     This function takes the path to either a single file
     of plantuml code or a folder containing several
     files of plantuml code. This file/these files are then
@@ -37,7 +37,7 @@ def run_plantuml_code(
 
     This is a mild Python wrapper around the command line
     functions for plantuml, detailed here:
-        https://plantuml.com/command-line
+    https://plantuml.com/command-line.
 
     Not all the command line functionality is available in this
     function. This is intented behaviour because here, we supply
@@ -47,7 +47,6 @@ def run_plantuml_code(
     many are based on json data which is read by the plantuml code
     during processing of the diagram and relative paths are
     important.
-
 
     Parameters
     ----------
@@ -76,18 +75,21 @@ def run_plantuml_code(
     output_type : str, optional
         String specifying the output type flag to be passed to
         plantuml.jar. All options can be seen under this link:
-            https://plantuml.com/command-line#458de91d76a8569c
+        https://plantuml.com/command-line#458de91d76a8569c.
+
         Common values are:
-            "-tsvg" --> svg image
-            "-tpng" --> png image
-        The default is "-tsvg"
+
+        - "-tsvg" --> svg image
+        - "-tpng" --> png image
+
+        The default is "-tsvg".
     output_dpi : INT or None, optional
         For png output, you can use this argument to set the dpi
         of the output image e.g. to increase quality. Has no effect
         for svg output. With png output, the default dpi is 300
         (this will be the result if output_type="-tpng" and
-         output_dpi=None).
-        The default is None
+        output_dpi=None).
+        The default is None.
     skinparam_opts : DICT or None, optional
         Dict where the keys are strings giving the name of
         a specific skin parameter e.g. "svgLinkTarget" and the
@@ -95,7 +97,7 @@ def run_plantuml_code(
         skinparam e.g. "_top". The dict can contain any number
         of key/value pairs. The available skinparams are listed
         here:
-        https://plantuml-documentation.readthedocs.io/en/latest/formatting/all-skin-params.html
+        https://plantuml-documentation.readthedocs.io/en/latest/formatting/all-skin-params.html.
         The default is None.
 
     Raises
@@ -109,11 +111,6 @@ def run_plantuml_code(
     OSError
         Raised if plantuml_path was not passed AND is not
         set in the users' config.json.
-
-    Returns
-    -------
-    None.
-
     """
     if not plantuml_path:
         raise OSError(
@@ -161,7 +158,7 @@ def run_plantuml_code(
 
 def run_all_gallery_puml_code(output_type="-tsvg"):
     """
-    Runs all the plantuml code in gallery/puml_code against
+    Run all the plantuml code in gallery/puml_code against
     plantuml.jar generating .svg diagrams, which are stored in gallery.
 
     To save the diagrams as .png files, change output_type to "-tpng".
@@ -171,16 +168,14 @@ def run_all_gallery_puml_code(output_type="-tsvg"):
     output_type : STR, optional
         String specifying the output type flag to be passed to
         plantuml.jar. All options can be seen under this link:
-            https://plantuml.com/command-line#458de91d76a8569c
+        https://plantuml.com/command-line#458de91d76a8569c.
+
         Common values are:
-            "-tsvg" --> svg image
-            "-tpng" --> png image
+
+        - "-tsvg" --> svg image
+        - "-tpng" --> png image
+
         The default is "-tsvg".
-
-    Returns
-    -------
-    None.
-
     """
     c_p = (
         pathlib.Path(__file__)

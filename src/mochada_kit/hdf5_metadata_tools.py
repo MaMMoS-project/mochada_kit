@@ -2,8 +2,6 @@
 Functions to extract metadata from an hdf5 file into a json format
 and write plantuml code to display that json data, optionally with
 highlights.
-
-@author: tgwoodcock
 """
 
 import json
@@ -13,9 +11,10 @@ import h5py
 
 def get_ds_dictionaries(name, node):
     """
-    Callable as input for h5py.Group.visititems()
+    Callable as input for h5py.Group.visititems().
+
     See docs for that function here:
-    https://docs.h5py.org/en/stable/high/group.html#h5py.Group.visititems
+    https://docs.h5py.org/en/stable/high/group.html#h5py.Group.visititems.
 
     This function will be called at every node contained within
     a Group and will act on a dict "ds_dict", which must be defined
@@ -27,18 +26,12 @@ def get_ds_dictionaries(name, node):
     of the node - this is to avoid large amounts of data being present
     in the json diagram later, which would make it less easy to read.
 
-
     Parameters
     ----------
     name : STR
         The name of the node.
     node : h5py.Dataset or p5py.Group
-        The current node (dataset or group)
-
-    Returns
-    -------
-    None.
-
+        The current node (dataset or group).
     """
     global ds_dict
     if isinstance(node, h5py.Dataset):
@@ -59,11 +52,10 @@ def get_ds_dictionaries(name, node):
 
 def nested_set(dic, keys, value):
     """
-    Used iteratively to turn the "flat" dict which results from
-    using the function get_ds_dictionaries() in h5py.Group.visititems(),
-    into a nested dict, which is the correct structure for
-    representation in a plantuml json diagram.
-
+    Turn the "flat" dict which results from using the function
+    get_ds_dictionaries() in h5py.Group.visititems(),
+    iteratively into a nested dict, which is the correct structure
+    for representation in a plantuml json diagram.
 
     Parameters
     ----------
@@ -78,11 +70,6 @@ def nested_set(dic, keys, value):
         reached, at which point, the value is assigned.
     value : STR
         The value of the metadata at this key.
-
-    Returns
-    -------
-    None.
-
     """
     for key in keys[:-1]:
         dic = dic.setdefault(key, {})
@@ -98,7 +85,7 @@ def write_puml_code_for_hdf5_metadata(
     highlight_style=None,
 ):
     """
-
+    Write puml code for the hdf5 metadata to file.
 
     Parameters
     ----------
@@ -134,28 +121,27 @@ def write_puml_code_for_hdf5_metadata(
     highlight_style : STR or None, optional
         String defining a css style containing the style for one or
         more bespoke highlights e.g.:
-            '<style>
-              .h1 {
-                BackGroundColor green
-                FontColor white
-                FontStyle italic
-              }
-              .h2 {
-                BackGroundColor red
-                FontColor white
-                FontStyle bold
-              }
-            </style>'
+
+        .. code-block:: none
+
+           '<style>
+             .h1 {
+               BackGroundColor green
+               FontColor white
+               FontStyle italic
+             }
+             .h2 {
+               BackGroundColor red
+               FontColor white
+               FontStyle bold
+             }
+           </style>'
+
         The above code defines two highlight styles, h1 and h2, which
         can then be applied as stereotypes <<h1>> and <<h2>>.
         If highlight_style is not None, highlights must be a dict
         for the styles to be applied.
         The default is None.
-
-    Returns
-    -------
-    None.
-
     """
     global ds_dict
 

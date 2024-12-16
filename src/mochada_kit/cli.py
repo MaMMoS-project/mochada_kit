@@ -1,3 +1,7 @@
+"""Command line interface."""
+
+# ruff: noqa: D103
+
 import argparse
 
 import mochada_kit as mck

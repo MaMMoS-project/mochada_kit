@@ -37,15 +37,44 @@ requires-python = ">=3.6"
 dependencies = ["h5py", "pyyaml"]
 
 [project.optional-dependencies]
-dev = ["pre-commit"]
+doc = [
+    "matplotlib",
+    "nbsphinx                     >= 0.7",
+    "numpydoc",
+    "pydata-sphinx-theme",
+    "sphinx                       >= 3.0.2",
+    "sphinx-codeautolink[ipython] < 0.14",
+    "sphinx-copybutton            >= 0.2.5",
+    "sphinx-design",
+]
+tests = [
+    "numpydoc",
+    "pytest                       >= 5.4",
+    "pytest-benchmark",
+    "pytest-rerunfailures",
+    "pytest-xdist",
+]
+coverage = [
+    "coverage                     >= 5.0",
+    "pytest-cov                   >= 2.8.1",
+]
+dev = [
+    "ruff",
+    "pre-commit                   >= 1.16",
+    "mochada_kit[doc,tests,coverage]",
+]
 
 [tool.ruff]
-exclude = ["examples/python_scripts/*.py"]
+exclude = [
+        "examples/python_scripts/*.py",
+		"docs/examples/python_scripts/*.py",
+		"docs/conf.py",
+]
 
 [tool.ruff.lint]
-ignore-init-module-imports = true # do not remove unused imports in __init__ and warn instead
 select = [
   "B",   # flake8-bugbear
+  "D",   # pydocstyle
   "E",   # pycodestyle
   "F",   # Pyflakes
   "I",   # isort
@@ -66,6 +95,7 @@ ignore = [
   "UP022", # replace-stdout-stderr
   # personal preference
   "SIM108", # turnary operator instead of if else block
+  "D205", # one-blank-line-required-between-summary-line-and-description
 ]
 
 [tool.ruff.lint.isort]
@@ -77,6 +107,12 @@ known-local-folder = ["src"]
   "E501", # line too long
   "F811", # 'redefined-while-unused'; many false positives in notebooks because ipywidgets decorated functions are not recognised
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [project.readme]
 'file' = "README.md"
