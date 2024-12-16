@@ -26,7 +26,7 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
-0.2.0 (date here)
+0.2.0 (2024-12-16)
 ==================
 
 Added
