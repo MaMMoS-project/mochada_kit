@@ -38,6 +38,7 @@ dependencies = ["h5py", "pyyaml"]
 
 [project.optional-dependencies]
 doc = [
+    "matplotlib",
     "nbsphinx                     >= 0.7",
     "numpydoc",
     "pydata-sphinx-theme",
