@@ -49,6 +49,7 @@ doc = [
 ]
 tests = [
     "numpydoc",
+    "pandoc",
     "pytest                       >= 5.4",
     "pytest-benchmark",
     "pytest-rerunfailures",
