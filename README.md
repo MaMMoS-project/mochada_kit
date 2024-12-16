@@ -2,6 +2,10 @@
 
 Python code for generating MODA (MOdelling DAta) and CHADA (CHAracterisation DAta) workflow diagrams and tables using [plantuml](https://plantuml.com/), with machine-readable, enhanced design based on bespoke themes.
 
+### **Documentation** 
+
+The main documentation for mochada_kit is here: https://mammos-project.github.io/mochada_kit
+
 ### **Main uses**
 **1. Generate MODA and/or CHADA workflow diagrams with bespoke themes, making them machine readable.**
 
@@ -112,40 +116,18 @@ We can group techniques in order to provide a clear overview of more complex cas
 
 <br>
 
-### **Installation**
-Please clone this repository and install it as an editable package using pip (that way you can easily pull updates from the repo and they will be active without needing to reinstall anything):
+### **Installation and Setup**
 
-```
-cd mochada_kit
-pip install -e .
-```
-
-<br>
-
-### **Dependencies**
-- **h5py**: if you do not already have it, [h5py](https://docs.h5py.org/en/stable/index.html) will be installed by pip during installation of `mochada_kit`
-
-- **pyyaml**: if you do not already have it, [pyyaml](https://pyyaml.org/) will be installed by pip during installation of `mochada_kit`
-
-- to generate the diagrams, you need to have `plantuml.jar` saved on your system. Please see [here](https://plantuml.com/download) for download and licensing options
-
-- in order to run [plantuml](https://plantuml.com/), you also need [java](https://www.java.com/en/download/help/index_installing.html). To check if you already have `java` installed, you can type `java -version` at the terminal.
-
-<br>
-
-### **Setup**
-In order that `mochada_kit` can use plantuml, we need to provide the path to `plantuml.jar` to the Python functions. You can do this each time simply by passing in the path, or you can also generate a configuration file which will save this information in your home folder, so that you don't have to enter it in the Python functions every time. To set up the configuration, run:
-```
-mochada_kit -c -p path/to/my/plantuml.jar
-```
-and this will write `.mochada_kit/config.json` to the current user's home folder. You can now use the Python functions in `mochada_kit` and the program will already know where `plantuml.jar` is located and will be able to run it.
+Please see the detailed guides to [installation](https://mammos-project.github.io/mochada_kit/user/installation.html) and [setup](https://mammos-project.github.io/mochada_kit/user/setup.html) in the documentation.
 
 <br>
 
 ### **Getting started**
+- please refer to the [examples](https://mammos-project.github.io/mochada_kit/examples/index.html) for detailed guides on how to use mochada_kit.
+
 - to get an idea of what the workflow diagrams, tables and json diagrams look like, please have a look at the .svg images in `mochada_kit/gallery`. You can open .svg files in any browser. The plantuml (puml) code on which they are based is available in `mochada_kit/gallery/puml_code`.
 
-- detailed examples are provided as jupyter notebooks in `mochada_kit/examples` and as Python scripts in `mochada_kit/examples/python_scripts`. Here is a short description of each example:
+- the detailed examples in the documentation are also provided as jupyter notebooks in `mochada_kit/examples` and as Python scripts in `mochada_kit/examples/python_scripts`. Here is a short description of each example:
 
 |Example &nbsp; &nbsp; &nbsp;|Description &nbsp; &nbsp; &nbsp;|
 |:---|:---|
@@ -161,6 +143,8 @@ and this will write `.mochada_kit/config.json` to the current user's home folder
 <br>
 
 ### **Reference**
+
+mochada_kit can be cited according to this [guide](https://mammos-project.github.io/mochada_kit/user/citation.html).
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12623332.svg)](https://doi.org/10.5281/zenodo.12623332)
 
