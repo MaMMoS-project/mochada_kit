@@ -1,0 +1,451 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "094757fb-c86b-4581-8510-d1bb7b4408db",
+   "metadata": {},
+   "source": [
+    "## Making a CHADA/MODA workflow diagram with plantuml and  mochada_kit"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3e03d06f-946f-46ff-8f99-0cf69b80d1ec",
+   "metadata": {},
+   "source": [
+    "This example shows how to make a CHADA and/or MODA workflow diagram using [plantuml](https://plantuml.com/) and `mochada_kit`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "70e0d976-8a8e-4218-9d2c-d6fce35996bb",
+   "metadata": {},
+   "source": [
+    "#### 1. Basic plantuml activity diagrams"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1ee1b1e5-30ac-44cb-9da2-c99e28cc73b5",
+   "metadata": {},
+   "source": [
+    "CHADA/MODA workflow diagrams are made using [plantuml activity diagrams](https://plantuml.com/activity-diagram-beta). The basic syntax is as follows: we start with a `@startuml` and then have one or more activity elements, whose name is defined between a colon and a semicolon: `:name;`. If there is more than one activity element, they will be joined using a vertical arrow running from top to bottom. The code ends with `@enduml`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8af8d284-4238-4663-a311-c327cf0a99cc",
+   "metadata": {},
+   "source": [
+    "For example, this code:\n",
+    "\n",
+    "```java\n",
+    "@startuml\n",
+    ":activity 1;\n",
+    ":activity 2;\n",
+    "@enduml\n",
+    "```\n",
+    "\n",
+    "would result in a diagram where the element called `activity 1` is at the top and is joined to the other element, called `activity 2`, by a vertical arrow."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "366c6e6a-6778-4829-9001-f65f2b1f4513",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "#### 2. Applying a theme"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "750dcb25-8b98-47d8-88a2-c7b20f671fa2",
+   "metadata": {},
+   "source": [
+    "The code above would result in a diagram in which all the text and lines are black and all areas are white. \n",
+    "\n",
+    "Using a theme helps us to\n",
+    "\n",
+    "- apply parameters to the entire diagram\n",
+    "- apply different styles to different elements.\n",
+    "\n",
+    "More information on themes in general is provided [here](https://plantuml.com/theme)\n",
+    "\n",
+    "In `mochada_kit` bespoke themes for CHADA and MODA diagrams have been developed and are located in the directory `mochada_kit/themes`. To apply a theme to a plantuml diagram we need to add a line to the code above giving the name of the theme to be applied and the location of the folder where the themes reside. For example, to apply the theme `MOCHADA-CWA`, we  write:\n",
+    "\n",
+    "```java\n",
+    "@startuml\n",
+    "!theme MOCHADA-CWA from ../../themes\n",
+    ":activity 1;\n",
+    ":activity 2;\n",
+    "@enduml\n",
+    "```\n",
+    "\n",
+    "If you look in `mochada_kit/themes`, you will see that all the themes have this naming convention `puml-theme-*.puml`, where the * represents the name of the theme. In the line of code starting with `!theme` we only need the part of the theme name given by the * (without the starting `puml-theme-`and ending `.puml`). We then need to write `from` and give the location of the themes folder. If we want to store the plantuml code in `mochada_kit/gallery/puml_code` the relative location of the `mochada_kit/themes` folder is `../../themes`. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fc1f917f-626c-430a-9e80-d4220b89d929",
+   "metadata": {},
+   "source": [
+    "<div class=\"alert alert-info\">\n",
+    "\n",
+    "Note\n",
+    "\n",
+    "If you want to store your puml code somewhere else, you may want to put the absolute path to the `mochada_kit/themes` folder. This can be easily obtained by importing `mochada_kit` and printing the `_THEMES_DIR` constant. Whichever operating system you are using, this is already formatted as a posix path (with forward slashes), which is required by plantuml *e.g.*:\n",
+    "\n",
+    "```python\n",
+    "import mochada_kit as mk\n",
+    "print(mk._THEMES_DIR)\n",
+    "```\n",
+    "```bash\n",
+    "D:/folder1/folder2/mochada_kit/themes\n",
+    "```\n",
+    "\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "be4e355e-c28b-4b02-97e4-94c888ab0b2c",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "#### 3. Using stereotypes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "942c59fa-f5e4-48f4-8538-2a85e785885e",
+   "metadata": {},
+   "source": [
+    "So far, we have only applied a theme to the entire diagram. This allows us to change the background colour of the resulting figure, for example. The main advantage of using `mochada_kit` is that we can use stereotypes to apply a particular style to particular elements.\n",
+    "\n",
+    "For **CHADA**, there are 5 different types of elements, each of which requries a stereotype:\n",
+    "\n",
+    "|Number &nbsp; &nbsp; &nbsp;|Element Type &nbsp; &nbsp; &nbsp;|Stereotype Name&nbsp; &nbsp; &nbsp;|\n",
+    "|:---|:---|:---|\n",
+    "|1. | User Case | \\<\\<user_case\\>\\>|\n",
+    "|2. | Experiment | \\<\\<experiment\\>\\>|\n",
+    "|3. | Raw Data | \\<\\<raw_data\\>\\>|\n",
+    "|4. | Data Processing | \\<\\<data_processing\\>\\>|\n",
+    "|5. | Final Data | \\<\\<final_data\\>\\>|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "11824a7c-dabd-45c1-8af7-27bd06c4356c",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "For **MODA**, there are 5 different types of elements, each of which requries a stereotype:\n",
+    "\n",
+    "|Number &nbsp; &nbsp; &nbsp;|Element Type &nbsp; &nbsp; &nbsp;|Stereotype Name&nbsp; &nbsp; &nbsp;|\n",
+    "|:---|:---|:---|\n",
+    "|1. | User Case Input| \\<\\<user_case_input\\>\\>|\n",
+    "|2. | Model | \\<\\<model\\>\\>|\n",
+    "|3. | Raw Output | \\<\\<raw_ouput\\>\\>|\n",
+    "|4. | Processed Data | \\<\\<processed_data\\>\\>|\n",
+    "|5. | Data Based Model | \\<\\<data_based_model\\>\\>|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5c8113b1-28bb-4878-8a40-f4024079c9df",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "In each MOCHADA theme in `mochada_kit/themes`, *all* of these different types of element has its own style. You can see the structure of any of the themes by opening it in a text editor. Each theme contains comments, which add extra explanations."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "04ab67eb-6afe-4070-8e01-15f054c205a5",
+   "metadata": {},
+   "source": [
+    "Once we have added the line telling plantuml to use a particular theme, we only have to apply a stereotype to each element to change its appearance:\n",
+    "\n",
+    "```java\n",
+    "@startuml\n",
+    "!theme MOCHADA-CWA from ../../themes\n",
+    ":activity 1; <<user_case>>\n",
+    ":activity 2; <<experiment>>\n",
+    "@enduml\n",
+    "```\n",
+    "\n",
+    "This results in the element `activity 1` appearing pink and the element `activity 2` appearing light blue. The colours simply depend on which theme you choose.\n",
+    "\n",
+    "The important point is that the puml code is now machine readable - we can easily tell by looking at the puml code which CHADA or MODA type an element has. This will facilitate parsing the workflow diagrams in order to understand the structure of the data in terms of domain ontologies."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "36538323-27f2-4d49-a191-23daa03e5fb6",
+   "metadata": {},
+   "source": [
+    "#### 4. Basic example"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bb3f2449-d44b-4cab-a6f3-b6419f030a3f",
+   "metadata": {},
+   "source": [
+    "If we want to make a workflow diagram just showing one of each type of CHADA element and using the MOCHADA-plasma theme (*e.g.* to use as a legend), the code would look like this:\n",
+    "\n",
+    "```java\n",
+    "@startuml\n",
+    "!theme MOCHADA-plasma from ../../themes\n",
+    ":User Case; <<user_case>>\n",
+    ":Experiment; <<experiment>>\n",
+    ":Raw Data; <<raw_data>>\n",
+    ":Data Processing; <<data_processing>>\n",
+    ":Final Data; <<final_data>>\n",
+    "@enduml\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c0a6430d-e678-4428-afd6-c2cc4a8653ce",
+   "metadata": {},
+   "source": [
+    "We just need to write this code to a text file (in this case in the folder `mochada_kit/gallery/puml_code`):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "ea7c5c68-adf1-4923-bd0c-dbfd7e659a29",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pathlib"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "0a46a778-e92c-438f-b762-5a4b1ae47f12",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "puml_code = \"\"\"@startuml\n",
+    "!theme MOCHADA-plasma from ../../themes\n",
+    ":User Case; <<user_case>>\n",
+    ":Experiment; <<experiment>>\n",
+    ":Raw Data; <<raw_data>>\n",
+    ":Data Processing; <<data_processing>>\n",
+    ":Final Data; <<final_data>>\n",
+    "@enduml\n",
+    "\"\"\"\n",
+    "\n",
+    "out_file_path = pathlib.Path(\"../../gallery/puml_code/legend_chada_plasma_theme.puml\")\n",
+    "\n",
+    "with open(out_file_path, \"w\") as handle:\n",
+    "    handle.write(puml_code)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "902759b5-2101-41a1-b61a-4fec5e1df17f",
+   "metadata": {},
+   "source": [
+    "and then run this code against `plantuml.jar`. There is a convenience function for this: `mochada_kit.running.run_plantuml_code()` and we just need to supply two arguments: the path to the plantuml code and an output path (in this case the output path just goes up one step in the directory structure from the folder where the plantuml code resides *i.e.* it points to `mochada_kit/gallery`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "8494d4b2-faf2-42d9-aa5d-b9b5d57e3730",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import mochada_kit.running as mr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "e4cb8086-790f-4c44-b146-73cb3c00ce72",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mr.run_plantuml_code(\n",
+    "    pathlib.Path(\"../../gallery/puml_code/legend_chada_plasma_theme.puml\"),\n",
+    "    output_dir=pathlib.Path(\"../\"),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "972b05f9-5867-4cca-830f-301a5d8795fa",
+   "metadata": {},
+   "source": [
+    "Here's the resulting diagram:\n",
+    "\n",
+    "<img src=../../gallery/legend_chada_plasma_theme.svg>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "717da56e-accd-45f7-be85-3b35a3a87ecf",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "#### 5. Example with grouped elements"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6156980-e212-40fc-8510-efd0709641a1",
+   "metadata": {},
+   "source": [
+    "All the MOCHADA themes in `mochada_kit/themes` contain style definitions which allow us to group elements in a single characterisation or modelling technique, and to group several techniques.\n",
+    "\n",
+    "An example of this would be:\n",
+    "\n",
+    "```java\n",
+    "@startuml\n",
+    "!theme MOCHADA-plasma from ../../themes\n",
+    ":User Case; <<user_case>>\n",
+    "group Group of techniques <<group_collection>>\n",
+    "  split\n",
+    "    group Single technique 1<<group_single>>\n",
+    "      :Experiment; <<experiment>>\n",
+    "      :Raw Data; <<raw_data>>\n",
+    "      :Data Processing; <<data_processing>>\n",
+    "      :Final Data; <<final_data>>\n",
+    "      detach\n",
+    "    end group\n",
+    "  split again\n",
+    "    group Single technique 2<<group_single>>\n",
+    "      :Experiment; <<experiment>>\n",
+    "      :Raw Data; <<raw_data>>\n",
+    "      :Data Processing; <<data_processing>>\n",
+    "      :Final Data; <<final_data>>\n",
+    "      detach\n",
+    "    end group\n",
+    "  end split\n",
+    "end group\n",
+    "@enduml\n",
+    "```\n",
+    "\n",
+    "<br>\n",
+    "\n",
+    "Let's run this one too:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "ae0c3c7f-b508-455e-ae3a-d8344b05828d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "puml_code = \"\"\"@startuml\n",
+    "!theme MOCHADA-plasma from ../../themes\n",
+    ":User Case; <<user_case>>\n",
+    "group Group of techniques <<group_collection>>\n",
+    "  split\n",
+    "    group Single technique 1<<group_single>>\n",
+    "      :Experiment; <<experiment>>\n",
+    "      :Raw Data; <<raw_data>>\n",
+    "      :Data Processing; <<data_processing>>\n",
+    "      :Final Data; <<final_data>>\n",
+    "      detach\n",
+    "    end group\n",
+    "  split again\n",
+    "    group Single technique 2<<group_single>>\n",
+    "      :Experiment; <<experiment>>\n",
+    "      :Raw Data; <<raw_data>>\n",
+    "      :Data Processing; <<data_processing>>\n",
+    "      :Final Data; <<final_data>>\n",
+    "      detach\n",
+    "    end group\n",
+    "  end split\n",
+    "end group\n",
+    "@enduml\n",
+    "\"\"\"\n",
+    "\n",
+    "out_file_path = pathlib.Path(\n",
+    "    \"../../gallery/puml_code/legend_chada_plasma_theme_with_groups.puml\"\n",
+    ")\n",
+    "\n",
+    "with open(out_file_path, \"w\") as handle:\n",
+    "    handle.write(puml_code)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "0cfc2899-4804-487c-ac76-841b3d6eeb88",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mr.run_plantuml_code(\n",
+    "    pathlib.Path(\"../../gallery/puml_code/legend_chada_plasma_theme_with_groups.puml\"),\n",
+    "    output_dir=pathlib.Path(\"../\"),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4d9cf412-79dc-4abd-bfaf-2bd673c697ef",
+   "metadata": {},
+   "source": [
+    "And here's the resulting diagram:\n",
+    "\n",
+    "<img src=../../gallery/legend_chada_plasma_theme_with_groups.svg>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "15b71a6d-fbad-41d2-8641-f4c0ca84803b",
+   "metadata": {},
+   "source": [
+    "<br>\n",
+    "\n",
+    "#### 6. Next steps"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c9bba603-78f1-4c52-bf21-a184439a153d",
+   "metadata": {},
+   "source": [
+    "- To learn how to draw more complex diagrams, please refer to the plantuml website on [activity diagrams](https://plantuml.com/activity-diagram-beta)\n",
+    "- Please check out the other diagrams in `mochada_kit/gallery` with accompanying plantuml code in `mochada_kit/gallery/puml_code`\n",
+    "- There is a separate jupyter notebook on using hyperlinks in CHADA and MODA workflow diagrams `mochada_kit/examples/using_hyperlinks_in_workflow_digarams.ipynb`"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

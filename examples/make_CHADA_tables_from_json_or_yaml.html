@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Drawing CHADA tables as a plantuml json diagram from a single json or yaml file — mochada_kit 0.1.2 documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-codeautolink.css?v=125d5c1c" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<script src="../_static/documentation_options.js?v=b14783f5"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=f281be69"></script>
+<script src="../_static/design-tabs.js?v=f930bc37"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'examples/make_CHADA_tables_from_json_or_yaml';</script>
+<link href="../_static/mochada_kit_favicon.png" rel="icon"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="json_diagram_from_hdf5_metadata.html" rel="next" title="Generating a plantuml json diagram using metadata extracted from an hdf5 file"/>
+<link href="using_hyperlinks_in_workflow_diagrams.html" rel="prev" title="Using hyperlinks in MODA and CHADA workflow diagrams"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="0.1.2" name="docsearch:version"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search the docs ..." autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search the docs ..." spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="col-lg-3 navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../index.html">
+<img alt="mochada_kit" class="logo__image only-light" src="../_static/mochada_kit_logo.png"/>
+<img alt="mochada_kit" class="logo__image only-dark pst-js-only" src="../_static/mochada_kit_logo_dark.png"/>
+</a></div>
+</div>
+<div class="col-lg-9 navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<button aria-label="On this page" class="pst-navbar-icon sidebar-toggle secondary-toggle">
+<span class="fa-solid fa-outdent"></span>
+</button>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__start sidebar-primary__section">
+<div class="sidebar-primary-item">
+<nav aria-label="Section Navigation" class="bd-docs-nav bd-links">
+<p aria-level="1" class="bd-links__title" role="heading">Section Navigation</p>
+<div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/setup.html">Setup</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="make_workflow_diagram.html">Making a CHADA/MODA workflow diagram with plantuml and mochada_kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_hyperlinks_in_workflow_diagrams.html">Using hyperlinks in MODA and CHADA workflow diagrams</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Drawing CHADA tables as a plantuml json diagram from a single json or yaml file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json_diagram_from_hdf5_metadata.html">Generating a plantuml json diagram using metadata extracted from an hdf5 file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generating_mochada_themes.html">Generating bespoke MOCHADA themes for MODA and/or CHADA diagrams and tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_and_MODA_legend_all_themes.html">Displaying a legend with MODA and CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_legend_all_themes.html">Displaying a legend with CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MODA_legend_all_themes.html">Displaying a legend with MODA elements for all MOCHADA themes in a single diagram</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project/mochada_kit/blob/main/LICENSE">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project">MaMMoS Organisation on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mammos-project.github.io">MaMMoS Project Homepage</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://emmc.eu/moda/">MODA Current Working Agreement</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://characterisation.eu/publications-output/">CHADA Current Working Agreement</a></li>
+</ul>
+</div>
+</nav></div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../user/index.html">User guide</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">Examples</a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">Drawing CHADA tables as a plantuml json diagram from a single json or yaml file</span></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<section id="Drawing-CHADA-tables-as-a-plantuml-json-diagram-from-a-single-json-or-yaml-file">
+<h1>Drawing CHADA tables as a plantuml json diagram from a single json or yaml file<a class="headerlink" href="#Drawing-CHADA-tables-as-a-plantuml-json-diagram-from-a-single-json-or-yaml-file" title="Link to this heading">#</a></h1>
+<p>In this example we will see how to use convenience functions in <code class="docutils literal notranslate"><span class="pre">mochada_kit/tables</span></code> to help us draw <a class="reference external" href="https://plantuml.com/json">plantuml json diagrams</a> showing CHADA tables from a single <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">json</a> or <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">yaml</a> file as input.</p>
+<section id="1.-Why-should-we-do-this?">
+<h2>1. Why should we do this?<a class="headerlink" href="#1.-Why-should-we-do-this?" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>CHADA tables can be prepared using a word processor (<em>e.g.</em> LibreOffice Writer or Microsoft Word). Any formatting can be applied and we can export the resulting document as a pdf. We could even make a template using whatever colour scheme we choose, in order to speed up the process.</p></li>
+<li><p>Both the LibreOffice Open Document Text (.odt) and Microsoft Word (.docx) formats are now openly described and have ISO standards. This means that they are both machine readable. This is desirable for interaction between CHADA tables and the development of ontologies.</p></li>
+</ul>
+<p><strong>OK, so why should we draw CHADA tables with plantuml from json/yaml?</strong></p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/JSON">json</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">yaml</a> are very simple text file formats, which are arguably easier to parse than .odt or .docx. This may simplify the interaction with ontology development. <code class="docutils literal notranslate"><span class="pre">json</span></code> is very well established for data exchange but has a slightly more complex structure than <code class="docutils literal notranslate"><span class="pre">yaml</span></code>, which is designed to be easy to read and write for humans.</p></li>
+<li><p>using the functions in <code class="docutils literal notranslate"><span class="pre">mochada_kit/tables</span></code> we can:</p>
+<ul class="simple">
+<li><p>apply a theme to the json diagram so that the appearance of the tables is similar to our workflow diagram</p></li>
+<li><p>make an overview of all tables joined to a “contents” element</p></li>
+<li><p>make several diagrams in which one of the main tables is joined to the “contents” element and the diagram contains hyperlinks so that you can easily switch between different tables. This extra interactivity may be more attractive for data repositories rather than a static pdf or document format.</p></li>
+<li><p>make individual tables without a “contents” element to insert into a document report. There is a dedicated theme for this where the <code class="docutils literal notranslate"><span class="pre">MaximumWidth</span></code> parameter for json diagrams has been increased to fit the table better to the width of A4 paper.</p></li>
+</ul>
+</li>
+</ol>
+<p>Let’s have a look at these options.</p>
+<p>First, we import the necessary modules:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.html#module-mochada_kit.running" title="mochada_kit.running"><span class="nn">mochada_kit.running</span></a> <span class="k">as</span> <span class="nn">mr</span>
+<span class="kn">import</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.html#module-mochada_kit.tables" title="mochada_kit.tables"><span class="nn">mochada_kit.tables</span></a> <span class="k">as</span> <span class="nn">mt</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="2.-Plotting-all-CHADA-tables-joined-to-a-contents-element">
+<h2>2. Plotting all CHADA tables joined to a contents element<a class="headerlink" href="#2.-Plotting-all-CHADA-tables-joined-to-a-contents-element" title="Link to this heading">#</a></h2>
+<p><strong>2a Templates</strong></p>
+<p>The folder <code class="docutils literal notranslate"><span class="pre">mochada_kit/templates</span></code> contains <code class="docutils literal notranslate"><span class="pre">json</span></code> and equivalent <code class="docutils literal notranslate"><span class="pre">yaml</span></code> files as templates for the CHADA tables. The files <code class="docutils literal notranslate"><span class="pre">chada_tables_template.json</span></code> and <code class="docutils literal notranslate"><span class="pre">chada_tables_template.yaml</span></code> contain all the headings in the tables but only empty strings for the content. The files <code class="docutils literal notranslate"><span class="pre">chada_tables_template_tips.json</span></code> and <code class="docutils literal notranslate"><span class="pre">chada_tables_template_tips.yaml</span></code> contain all the headings in the tables and for each heading there is some text giving tips about how to fill in the content. Whether you
+choose to start from a <code class="docutils literal notranslate"><span class="pre">json</span></code> file or a <code class="docutils literal notranslate"><span class="pre">yaml</span></code> file, <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code> will plot the tables into a <a class="reference external" href="https://plantuml.com/json">plantuml json diagram</a>. Let’s see how to do this.</p>
+<p></p><p><strong>2b Saving and Loading</strong></p>
+<p>We shall use the function <code class="docutils literal notranslate"><span class="pre">mochada_kit.tables.write_chada_tables_whole_plantuml()</span></code>, which writes plantuml code for a json diagram consisting of a contents element showing the names of all the CHADA tables, joined to elements showing each of the tables. For all options, please see the docstring of the function in <code class="docutils literal notranslate"><span class="pre">mochada_kit/tables.py</span></code>.</p>
+<p>We will supply some arguments to the function as follows:</p>
+<ul class="simple">
+<li><p>the first argument (<code class="docutils literal notranslate"><span class="pre">data_path</span></code>) must be the path to a <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">yaml</span></code> file containing the data to be plotted. Supply either a string or a pathlib.Path</p></li>
+<li><p>to save the plantuml code file in a <em>different</em> folder to the <code class="docutils literal notranslate"><span class="pre">json</span></code>/<code class="docutils literal notranslate"><span class="pre">yaml</span></code> source file, we need to supply the argument <code class="docutils literal notranslate"><span class="pre">out_path</span></code>, which points to the folder where we want to store the plantuml code, either as an absolute or relative path (either as a string or a pathlib.Path). If a relative path is supplied, it is assumed to be relative to the parent folder of data_path.</p></li>
+<li><p>with a json source file we have two options:</p>
+<ol class="arabic simple">
+<li><p>we can supply the argument <code class="docutils literal notranslate"><span class="pre">load_path</span></code> as a path, and the json data will be loaded dynamically, or</p></li>
+<li><p>we can supply <code class="docutils literal notranslate"><span class="pre">load_path=None</span></code> and the json data will be written into the puml code.</p></li>
+</ol>
+</li>
+</ul>
+<p></p><p>For a <code class="docutils literal notranslate"><span class="pre">json</span></code> source file, these various options are summarised in the table below:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>out_path</p></th>
+<th class="head"><p>load_path</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>puml code and json are in the same folder, json data written into puml code (<em>i.e.</em> not loaded dynamically)</p></td>
+</tr>
+<tr class="row-odd"><td><p>None</p></td>
+<td><p>path</p></td>
+<td><p>puml code and json are in the same folder, json data loaded dynamically</p></td>
+</tr>
+<tr class="row-even"><td><p>path</p></td>
+<td><p>path</p></td>
+<td><p>puml code and json are in different folders, json data loaded dynamically</p></td>
+</tr>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>None</p></td>
+<td><p>puml code and json are in different folders, json data written into puml code (<em>i.e.</em> not loaded dynamically)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p><p>With a <code class="docutils literal notranslate"><span class="pre">yaml</span></code> source file, load_path is ignored and the data are always written into the puml code:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>out_path</p></th>
+<th class="head"><p>load_path</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>puml code and yaml are in the same folder, yaml data written into puml code (<em>i.e.</em> not loaded dynamically)</p></td>
+</tr>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>None</p></td>
+<td><p>puml code and yaml are in different folders, yaml data written into puml code (<em>i.e.</em> not loaded dynamically)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p><p>The differences between the three arguments as absolute and relative paths is emphasised in the table below:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Absolute Path</p></th>
+<th class="head"><p>Relative Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>data_path</p></td>
+<td><p>full path to .json/.yaml</p></td>
+<td><p>path to .json/.yaml relative to the current working directory</p></td>
+</tr>
+<tr class="row-odd"><td><p>out_path</p></td>
+<td><p>full path to the output puml code (.puml)</p></td>
+<td><p>path to output .puml relative to the parent folder of data_path</p></td>
+</tr>
+<tr class="row-even"><td><p>load_path</p></td>
+<td><p>full path to .json/.yaml</p></td>
+<td><p>path to .json/.yaml relative to out_path</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p><ul class="simple">
+<li><p>In this notebook, we will use a <code class="docutils literal notranslate"><span class="pre">json</span></code> source file but all the functions in <code class="docutils literal notranslate"><span class="pre">mochada_kit.tables</span></code> work with <code class="docutils literal notranslate"><span class="pre">yaml</span></code> source data too - simply set the argument data_path to point to a <code class="docutils literal notranslate"><span class="pre">yaml</span></code> file.</p></li>
+<li><p>As we are going to store all the examples in <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/puml_code</span></code> and we want the examples to run on any machine, we use relative paths like this:</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../templates/chada_tables_template_tips.json"</span>
+<span class="p">)</span>  <span class="c1"># path to the json/yaml relative to the current working directory</span>
+
+<span class="n">out_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../gallery/puml_code"</span>
+<span class="p">)</span>  <span class="c1"># path to the folder where the output puml code is stored (relative to the parent folder of data_path)</span>
+
+<span class="n">load_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../templates/chada_tables_template_tips.json"</span>
+<span class="p">)</span>  <span class="c1"># relative path from out_path to data_path</span>
+</pre></div>
+</div>
+</div>
+<p></p><p><strong>2c Names</strong></p>
+<ul class="simple">
+<li><p>By default, the name of the puml code output file will be the same as that of the <code class="docutils literal notranslate"><span class="pre">json</span></code>/<code class="docutils literal notranslate"><span class="pre">yaml</span></code> input file.</p></li>
+<li><p>If you would like a diffrent name, you can supply the <code class="docutils literal notranslate"><span class="pre">out_name</span></code> argument as a string of your choice. This only the filename <em>without</em> an extension and is not a path.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_name</span> <span class="o">=</span> <span class="s2">"chada_tables_template_tips_all"</span>
+</pre></div>
+</div>
+</div>
+<p></p><p><strong>2d Themes and formatting</strong></p>
+<ul class="simple">
+<li><p>as default, the theme <code class="docutils literal notranslate"><span class="pre">MOCHADA-plasma</span></code> will be applied to the tables. If we want to change this, we can supply the name of another theme <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">theme_name="viridis"</span></code> (only the part of the theme name after “puml-theme-MOCHADA-” and before “.puml” is needed).</p></li>
+<li><p>for all the MOCHADA themes created by <code class="docutils literal notranslate"><span class="pre">mochada_kit/examples/generating_mochada_themes.ipynb</span></code>, the MaximumWidth parameter, which controls text wrapping in json diagrams, is set to 300. This is a good default if you don’t want the elements to be too wide <em>e.g.</em> when there are several layers of data. For some applications, you may want the elements to be wider and for this reason two extra themes have been manually generated. These are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MOCAHDA-plasma_A4w</span></code>, where MaximumWidth=400, which is suitable for fitting a single json element onto an A4 page</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MOCHADA-plasma_wide</span></code>, where MaximumWidth=600, which is suitable for fitting a single json element onto a wide screen/computer monitor</p></li>
+</ul>
+</li>
+</ul>
+<p>Let’s apply <code class="docutils literal notranslate"><span class="pre">MOCHADA-plasma_wide</span></code> here by supplying the parameter <code class="docutils literal notranslate"><span class="pre">theme_name</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># writes code for a single diagram showing all 5 tables joined to a contents element</span>
+
+<a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.write_chada_tables_whole_plantuml.html#mochada_kit.tables.write_chada_tables_whole_plantuml" title="mochada_kit.tables.write_chada_tables_whole_plantuml"><span class="n">mt</span><span class="o">.</span><span class="n">write_chada_tables_whole_plantuml</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span>
+    <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="o">=</span><span class="n">out_name</span><span class="p">,</span>
+    <span class="n">theme_name</span><span class="o">=</span><span class="s2">"plasma_wide"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p></p><p><strong>2e Running the code to generate a diagram</strong></p>
+<p>Having written the puml code for the diagram, we can now run it to generate the diagram. We can get the path to the stem of the output file (<em>i.e.</em> without the extension) using the function <code class="docutils literal notranslate"><span class="pre">mochada_kit.tables.handle_paths()</span></code> with out defined paths, <strong>and</strong> the option <code class="docutils literal notranslate"><span class="pre">return_out_base_only=True</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_base</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.handle_paths.html#mochada_kit.tables.handle_paths" title="mochada_kit.tables.handle_paths"><span class="n">mt</span><span class="o">.</span><span class="n">handle_paths</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span>
+    <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="o">=</span><span class="n">out_name</span><span class="p">,</span>
+    <span class="n">return_out_base_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then we can run the diagram and store it in the <code class="docutils literal notranslate"><span class="pre">gallery</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">out_base</span><span class="p">)</span> <span class="o">+</span> <span class="s2">".puml"</span><span class="p">),</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here’s the diagram:</p>
+<p><img alt="444307c9dc5e409b8c3316b46fdc8e1b" src="../_images/chada_tables_template_tips_all.svg"/></p>
+<p></p></section>
+<section id="3.-Plotting-one-CHADA-table-joined-to-a-contents-element-with-hyperlinks-to-the-other-tables">
+<h2>3. Plotting one CHADA table joined to a contents element with hyperlinks to the other tables<a class="headerlink" href="#3.-Plotting-one-CHADA-table-joined-to-a-contents-element-with-hyperlinks-to-the-other-tables" title="Link to this heading">#</a></h2>
+<p>Here we use the function <code class="docutils literal notranslate"><span class="pre">mochada_kit.tables.write_chada_tables_plantuml()</span></code> with similar arguments to the case above. Hyperlinks are included by default. If we want to make the diagrams without hyperlinks, we can supply <code class="docutils literal notranslate"><span class="pre">linked=False</span></code> to the function.</p>
+<p>In this case, 5 different puml code files will be generated (for the tables <code class="docutils literal notranslate"><span class="pre">overview</span></code>, <code class="docutils literal notranslate"><span class="pre">user_case</span></code>, <code class="docutils literal notranslate"><span class="pre">experiment</span></code>, <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> and <code class="docutils literal notranslate"><span class="pre">data_processing</span></code>) and a suffix <em>e.g.</em> “_overview.puml” will be added to the name specified below:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_name_2</span> <span class="o">=</span> <span class="s2">"chada_tables_template_tips"</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># writes code for 5 different diagrams with hyperlinks on a contents element</span>
+
+<a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.write_chada_tables_plantuml.html#mochada_kit.tables.write_chada_tables_plantuml" title="mochada_kit.tables.write_chada_tables_plantuml"><span class="n">mt</span><span class="o">.</span><span class="n">write_chada_tables_plantuml</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span> <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span> <span class="n">out_name</span><span class="o">=</span><span class="n">out_name_2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_base_2</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.handle_paths.html#mochada_kit.tables.handle_paths" title="mochada_kit.tables.handle_paths"><span class="n">mt</span><span class="o">.</span><span class="n">handle_paths</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span>
+    <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="o">=</span><span class="n">out_name_2</span><span class="p">,</span>
+    <span class="n">return_out_base_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can run each diagram in turn:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"overview"</span><span class="p">,</span> <span class="s2">"user_case"</span><span class="p">,</span> <span class="s2">"experiment"</span><span class="p">,</span> <span class="s2">"raw_data"</span><span class="p">,</span> <span class="s2">"data_processing"</span><span class="p">]:</span>
+    <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">out_base_2</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.puml"</span><span class="p">),</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here’s the “experiment” diagram as an example:</p>
+<p><img alt="6dbb124b2d0c412d9a043ea70b8f9afb" src="../_images/chada_tables_template_tips_experiment.svg"/></p>
+<p>This time, we used the standard <code class="docutils literal notranslate"><span class="pre">plasma</span></code> theme, rather than <code class="docutils literal notranslate"><span class="pre">plasma_wide</span></code> and therefore the json elements appear narrower than in the first diagram.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We can see that the “contents” element contains hyperlinks. These don’t work when embedded in a jupyter notebook (or the documentation) but if you open the .svg file in a browser, you can use the links to navigate between the various tables.</p>
+</div>
+<p></p></section>
+<section id="4.-Plotting-individual-CHADA-tables-without-a-contents-element">
+<h2>4. Plotting individual CHADA tables without a contents element<a class="headerlink" href="#4.-Plotting-individual-CHADA-tables-without-a-contents-element" title="Link to this heading">#</a></h2>
+<p>Here we use the theme <code class="docutils literal notranslate"><span class="pre">plasma_A4w</span></code> as we may want to paste the diagrams into a word processor document.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_name_3</span> <span class="o">=</span> <span class="s2">"chada_tables_template_tips_single"</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># writes code for 5 diagrams each showing a single table without a contents element (useful to paste into a document etc.)</span>
+
+<a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.write_chada_tables_single_plantuml.html#mochada_kit.tables.write_chada_tables_single_plantuml" title="mochada_kit.tables.write_chada_tables_single_plantuml"><span class="n">mt</span><span class="o">.</span><span class="n">write_chada_tables_single_plantuml</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span>
+    <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="o">=</span><span class="n">out_name_3</span><span class="p">,</span>
+    <span class="n">theme_name</span><span class="o">=</span><span class="s2">"plasma_A4w"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_base_3</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.tables.handle_paths.html#mochada_kit.tables.handle_paths" title="mochada_kit.tables.handle_paths"><span class="n">mt</span><span class="o">.</span><span class="n">handle_paths</span></a><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span>
+    <span class="n">load_path</span><span class="o">=</span><span class="n">load_path</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="o">=</span><span class="n">out_name_3</span><span class="p">,</span>
+    <span class="n">return_out_base_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"overview"</span><span class="p">,</span> <span class="s2">"user_case"</span><span class="p">,</span> <span class="s2">"experiment"</span><span class="p">,</span> <span class="s2">"raw_data"</span><span class="p">,</span> <span class="s2">"data_processing"</span><span class="p">]:</span>
+    <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">out_base_3</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.puml"</span><span class="p">),</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here’s the “experiment” diagram as an example:</p>
+<p><img alt="e15a2faf68ed4c76b81c08b4ea617aea" src="../_images/chada_tables_template_tips_single_experiment.svg"/></p>
+<p></p></section>
+<section id="5.-Advanced-formatting-of-table-contents">
+<h2>5. Advanced formatting of table contents<a class="headerlink" href="#5.-Advanced-formatting-of-table-contents" title="Link to this heading">#</a></h2>
+<p>To round off this example notebook, let’s have a look at how we can add some advanced formatting to the table data, rather than just plain text.</p>
+<p>Even though <code class="docutils literal notranslate"><span class="pre">mochada_kit/data/demo_formatting.json</span></code> has the correct format for CHADA tables, instead of using the convenience functions in <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code> to generate all the CHADA tables, we’ll just write the puml code for one table in this case. The code below results in a contents element joined to the “experiment” element, which contains the advanced formatting. Further explanations for this diagram are given below.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@startjson
+!theme MOCHADA-plasma from ../../themes
+#highlight "0. Overview" &lt;&lt;overview&gt;&gt;
+#highlight "1. User Case" &lt;&lt;user_case&gt;&gt;
+#highlight "2. Experiment" &lt;&lt;experiment&gt;&gt;
+#highlight "3. Raw Data" &lt;&lt;raw_data&gt;&gt;
+#highlight "4. Data Processing" &lt;&lt;data_processing&gt;&gt;
+#highlight "2. Experiment" / "2. Experiment" &lt;&lt;experiment&gt;&gt;
+!$DEF_JSON={"status":"No data found"}
+!$DATA = %load_json("../../data/demo_formatting.json", $DEF_JSON)
+{
+  "Overview" : " ",
+  "1. User Case" : " ",
+  "2. Experiment" : $DATA.experiment,
+  "3. Raw Data" : " ",
+  "4. Data Processing" : " "
+}
+@endjson
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">puml_code</span> <span class="o">=</span> <span class="s2">"""@startjson</span>
+<span class="s2">!theme MOCHADA-plasma from ../../themes</span>
+<span class="s2">#highlight "0. Overview" &lt;&lt;overview&gt;&gt;</span>
+<span class="s2">#highlight "1. User Case" &lt;&lt;user_case&gt;&gt;</span>
+<span class="s2">#highlight "2. Experiment" &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">#highlight "3. Raw Data" &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">#highlight "4. Data Processing" &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">#highlight "2. Experiment" / "2. Experiment" &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">!$DEF_JSON={"status":"No data found"}</span>
+<span class="s2">!$DATA = </span><span class="si">%lo</span><span class="s2">ad_json("../../data/demo_formatting.json", $DEF_JSON)</span>
+<span class="s2">{</span>
+<span class="s2">  "Overview" : " ",</span>
+<span class="s2">  "1. User Case" : " ",</span>
+<span class="s2">  "2. Experiment" : $DATA.experiment,</span>
+<span class="s2">  "3. Raw Data" : " ",</span>
+<span class="s2">  "4. Data Processing" : " "</span>
+<span class="s2">}</span>
+<span class="s2">@endjson</span>
+<span class="s2">"""</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../../gallery/puml_code/demo_formatting.puml"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">puml_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="s2">"../../gallery/puml_code/demo_formatting.puml"</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">display</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"../../gallery/demo_formatting.svg"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_make_CHADA_tables_from_json_or_yaml_44_0.svg" src="../_images/examples_make_CHADA_tables_from_json_or_yaml_44_0.svg"/>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The link in the above image does not work when embedded in a jupyter notebook (or the documentation) but if you open the svg image in your browser, the link will take you the image <code class="docutils literal notranslate"><span class="pre">mochada_kit_/gallery/json_SEM_metadata_with_highlights.svg</span></code>.</p>
+</div>
+<p>The contents of <code class="docutils literal notranslate"><span class="pre">mochada_kit/data/demo_formatting.json</span></code> are shown below.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+  "overview" : " ",
+  "user_case" : " ",
+  "experiment" : {
+    "2. Experiment" : " ",
+    "2.1 Probe/\\nPhysics of Interaction" : "Electron beam. 20 kV accelerating voltage. Secondary electrons, backscattered electrons",
+    "2.2 Interaction Volume" : "Pear shaped, approximately 5 micrometres deep and wide\\nlatex: &lt;latex&gt;\\large{y = ax^{2} + bx + c\\pi}&lt;/latex&gt;",
+    "2.3 Calibration Process" : "Nd&lt;sub&gt;2&lt;/sub&gt;Fe&lt;sub&gt;14&lt;/sub&gt;B\\nascci math: &lt;math&gt;y = ax^2 + bx + c&lt;/math&gt;",
+    "2.4 Detector" : "1. SE: Everheart-Thornley detector.\\n2. BSE: Annular detector\\nImage: &lt;img:../../data/MaMMoS_logo.png{scale=0.5}&gt;",
+    "2.5 Signal" : "&lt;#gray,#red&gt;|= |= table |= header |\\n| a | table | row |\\n&lt;#yellow&gt;| b | table | row |",
+    "2.6 Measurement time" : "&lt;i&gt;Hello&lt;/i&gt; 3.5 &lt;U+00B1&gt; 0.2 &lt;U+03BC&gt;m",
+    "2.7 Measurement parameters" : "[[./json_SEM_metadata_with_highlights.svg{View metadata} Link]]"
+  },
+  "raw_data" : " ",
+  "data_processing" : " "
+}
+</pre></div>
+</div>
+<p>Various types of formatting have been applied here: 1. plain text 2. latex equations 3. ascii math equations 4. html tags for sub- and superscripts, italics, <em>etc.</em> 5. html image tag (the link must be a relative path from the .puml code file to the image in this case) 6. a creole table with formatting 7. a hyperlink to another image (the link must be a relative path from the output.svg image to the linked image in this case)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Note that escape characters:</strong> <code class="docutils literal notranslate"><span class="pre">\n</span></code> <strong>must be double escaped:</strong> <code class="docutils literal notranslate"><span class="pre">\\n</span></code> <strong>in the json/yaml source file in order to have an effect in the final diagram</strong>.</p>
+</div>
+<p>Please see the <a class="reference external" href="https://plantuml.com/sitemap">plantuml website</a> for more details on formatting.</p>
+</section>
+</section>
+</article>
+<footer class="prev-next-footer d-print-none">
+<div class="prev-next-area">
+<a class="left-prev" href="using_hyperlinks_in_workflow_diagrams.html" title="previous page">
+<i class="fa-solid fa-angle-left"></i>
+<div class="prev-next-info">
+<p class="prev-next-subtitle">previous</p>
+<p class="prev-next-title">Using hyperlinks in MODA and CHADA workflow diagrams</p>
+</div>
+</a>
+<a class="right-next" href="json_diagram_from_hdf5_metadata.html" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Generating a plantuml json diagram using metadata extracted from an hdf5 file</p>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</a>
+</div>
+</footer>
+</div>
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="sidebar-secondary-item">
+<div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
+<i class="fa-solid fa-list"></i> On this page
+  </div>
+<nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#1.-Why-should-we-do-this?">1. Why should we do this?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#2.-Plotting-all-CHADA-tables-joined-to-a-contents-element">2. Plotting all CHADA tables joined to a contents element</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#3.-Plotting-one-CHADA-table-joined-to-a-contents-element-with-hyperlinks-to-the-other-tables">3. Plotting one CHADA table joined to a contents element with hyperlinks to the other tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#4.-Plotting-individual-CHADA-tables-without-a-contents-element">4. Plotting individual CHADA tables without a contents element</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#5.-Advanced-formatting-of-table-contents">5. Advanced formatting of table contents</a></li>
+</ul>
+</nav></div>
+<div class="sidebar-secondary-item">
+<div class="tocsection sourcelink">
+<a href="../_sources/examples/make_CHADA_tables_from_json_or_yaml.ipynb.txt">
+<i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+</div>
+</div></div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2024-2024, The mochada_kit Contributors.
+      <br/>
+</p>
+</div>
+<div class="footer-item">
+<p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+</p>
+</div>
+</div>
+<div class="footer-items__end">
+<div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+</div>
+</div>
+</footer>
+</body>
+</html>

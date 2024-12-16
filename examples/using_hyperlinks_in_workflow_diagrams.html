@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Using hyperlinks in MODA and CHADA workflow diagrams — mochada_kit 0.1.2 documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-codeautolink.css?v=125d5c1c" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<script src="../_static/documentation_options.js?v=b14783f5"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=f281be69"></script>
+<script src="../_static/design-tabs.js?v=f930bc37"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'examples/using_hyperlinks_in_workflow_diagrams';</script>
+<link href="../_static/mochada_kit_favicon.png" rel="icon"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="make_CHADA_tables_from_json_or_yaml.html" rel="next" title="Drawing CHADA tables as a plantuml json diagram from a single json or yaml file"/>
+<link href="make_workflow_diagram.html" rel="prev" title="Making a CHADA/MODA workflow diagram with plantuml and mochada_kit"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="0.1.2" name="docsearch:version"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search the docs ..." autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search the docs ..." spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="col-lg-3 navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../index.html">
+<img alt="mochada_kit" class="logo__image only-light" src="../_static/mochada_kit_logo.png"/>
+<img alt="mochada_kit" class="logo__image only-dark pst-js-only" src="../_static/mochada_kit_logo_dark.png"/>
+</a></div>
+</div>
+<div class="col-lg-9 navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<button aria-label="On this page" class="pst-navbar-icon sidebar-toggle secondary-toggle">
+<span class="fa-solid fa-outdent"></span>
+</button>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__start sidebar-primary__section">
+<div class="sidebar-primary-item">
+<nav aria-label="Section Navigation" class="bd-docs-nav bd-links">
+<p aria-level="1" class="bd-links__title" role="heading">Section Navigation</p>
+<div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/setup.html">Setup</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="make_workflow_diagram.html">Making a CHADA/MODA workflow diagram with plantuml and mochada_kit</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Using hyperlinks in MODA and CHADA workflow diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_CHADA_tables_from_json_or_yaml.html">Drawing CHADA tables as a plantuml json diagram from a single json or yaml file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json_diagram_from_hdf5_metadata.html">Generating a plantuml json diagram using metadata extracted from an hdf5 file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generating_mochada_themes.html">Generating bespoke MOCHADA themes for MODA and/or CHADA diagrams and tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_and_MODA_legend_all_themes.html">Displaying a legend with MODA and CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_legend_all_themes.html">Displaying a legend with CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MODA_legend_all_themes.html">Displaying a legend with MODA elements for all MOCHADA themes in a single diagram</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project/mochada_kit/blob/main/LICENSE">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project">MaMMoS Organisation on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mammos-project.github.io">MaMMoS Project Homepage</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://emmc.eu/moda/">MODA Current Working Agreement</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://characterisation.eu/publications-output/">CHADA Current Working Agreement</a></li>
+</ul>
+</div>
+</nav></div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../user/index.html">User guide</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">Examples</a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">Using hyperlinks in MODA and CHADA workflow diagrams</span></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<section id="Using-hyperlinks-in-MODA-and-CHADA-workflow-diagrams">
+<h1>Using hyperlinks in MODA and CHADA workflow diagrams<a class="headerlink" href="#Using-hyperlinks-in-MODA-and-CHADA-workflow-diagrams" title="Link to this heading">#</a></h1>
+<p>Hyperlinks can be applied to text within an activity element or to the element itself. Hyperlinks can point to an exteral website (URL) or to a local file <em>e.g.</em> another diagram or image. This feature can be used to enrich activity diagrams with further information without spoiling their appearance.</p>
+<section id="1.-Initial-diagram-code-WITHOUT-hyperlinks">
+<h2>1. Initial diagram code WITHOUT hyperlinks<a class="headerlink" href="#1.-Initial-diagram-code-WITHOUT-hyperlinks" title="Link to this heading">#</a></h2>
+<p>Here’s the puml code for a CHADA workflow diagram for SEM with combined EBSD and EDX:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@startuml
+!theme MOCHADA-plasma from ../../themes
+:Bulk sample or thin film; &lt;&lt;user_case&gt;&gt;
+group SEM-EBSD-EDX &lt;&lt;group_collection&gt;&gt;
+  :Set up experimental geometry:\n sample tilt (&lt;U+00B0&gt;), working distance (mm),\ndetector distance (mm); &lt;&lt;experiment&gt;&gt;
+  :Acquire electron image (SE, BSE, FSE); &lt;&lt;experiment&gt;&gt;
+  :Electron image(s); &lt;&lt;raw_data&gt;&gt;
+  :Define rectangular ROI, step size,\ndetector and indexing parameters; &lt;&lt;experiment&gt;&gt;
+  split
+    group EBSD &lt;&lt;group_single&gt;&gt;
+      :Acquire EBSD patterns at all points in ROI; &lt;&lt;experiment&gt;&gt;
+      :EBSD pattern for each point; &lt;&lt;raw_data&gt;&gt;
+      :Hough indexing (automatic); &lt;&lt;data_processing&gt;&gt;
+    end group
+  split again
+    group EDX &lt;&lt;group_single&gt;&gt;
+      :Acquire EDX spectra at all points in ROI; &lt;&lt;experiment&gt;&gt;
+      :EDX spectrum for each point; &lt;&lt;raw_data&gt;&gt;
+      :Analyse composition (automatic) //e.g.//:\nno. counts for element 1 &gt; x; &lt;&lt;data_processing&gt;&gt;
+    end group
+  end split
+  :Assign phase and orientation to each point\n(automatic); &lt;&lt;data_processing&gt;&gt;
+  :Euler angles and phase ID\nfor each point in map; &lt;&lt;final_data&gt;&gt;
+  :Analysis of orientations (user controlled); &lt;&lt;data_processing&gt;&gt;
+  :Orientation maps, Pole figures\nQuantitative measures //e.g.// grain size; &lt;&lt;final_data&gt;&gt;
+  detach
+end group
+@enduml
+</pre></div>
+</div>
+<p>Let’s write this to file and run it:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.html#module-mochada_kit.running" title="mochada_kit.running"><span class="nn">mochada_kit.running</span></a> <span class="k">as</span> <span class="nn">mr</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Newline characters within the name of an activity element must be double escaped in a multiline Python string:</strong> <code class="docutils literal notranslate"><span class="pre">\\n</span></code></p>
+<p>(you do not have to do this if you are writing the puml code in a text editor)</p>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">puml_code</span> <span class="o">=</span> <span class="s2">"""@startuml</span>
+<span class="s2">!theme MOCHADA-plasma from ../../themes</span>
+<span class="s2">:Bulk sample or thin film; &lt;&lt;user_case&gt;&gt;</span>
+<span class="s2">group SEM-EBSD-EDX &lt;&lt;group_collection&gt;&gt;</span>
+<span class="s2">  :Set up experimental geometry:</span><span class="se">\\</span><span class="s2">n sample tilt (&lt;U+00B0&gt;), working distance (mm),</span><span class="se">\\</span><span class="s2">ndetector distance (mm); &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  :Acquire electron image (SE, BSE, FSE); &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  :Electron image(s); &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">  :Define rectangular ROI, step size,</span><span class="se">\\</span><span class="s2">ndetector and indexing parameters; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  split</span>
+<span class="s2">    group EBSD &lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Acquire EBSD patterns at all points in ROI; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :EBSD pattern for each point; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Hough indexing (automatic); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">    end group</span>
+<span class="s2">  split again</span>
+<span class="s2">    group EDX &lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Acquire EDX spectra at all points in ROI; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :EDX spectrum for each point; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Analyse composition (automatic) //e.g.//:</span><span class="se">\\</span><span class="s2">nno. counts for element 1 &gt; x; &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">    end group</span>
+<span class="s2">  end split</span>
+<span class="s2">  :Assign phase and orientation to each point</span><span class="se">\\</span><span class="s2">n(automatic); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">  :Euler angles and phase ID</span><span class="se">\\</span><span class="s2">nfor each point in map; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">  :Analysis of orientations (user controlled); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">  :Orientation maps, Pole figures</span><span class="se">\\</span><span class="s2">nQuantitative measures //e.g.// grain size; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">  detach</span>
+<span class="s2">end group</span>
+<span class="s2">@enduml</span>
+<span class="s2">"""</span>
+
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../gallery/puml_code/chada_workflow_SEM_EBSD_EDX_nested_techniques.puml"</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">puml_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+        <span class="s2">"../../gallery/puml_code/chada_workflow_SEM_EBSD_EDX_nested_techniques.puml"</span>
+    <span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here’s the resulting diagram (we have to use ipython display rather than Markdown to display svg files which have line breaks within elements properly):</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">display</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"../../gallery/chada_workflow_SEM_EBSD_EDX_nested_techniques.svg"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_using_hyperlinks_in_workflow_diagrams_10_0.svg" src="../_images/examples_using_hyperlinks_in_workflow_diagrams_10_0.svg"/>
+</div>
+</div>
+</section>
+<section id="2.-Adding-hyperlinks">
+<h2>2. Adding hyperlinks<a class="headerlink" href="#2.-Adding-hyperlinks" title="Link to this heading">#</a></h2>
+<p>We can add hyperlinks to any text element or to an element itself.</p>
+<p>Let’s demonstrate this functionality by:</p>
+<ol class="arabic simple">
+<li><p>linking the title of the single technique group “EBSD” to a local file showing the CHADA tables for EBSD (<code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/chada_tables_SEM-EBSD.svg</span></code>), and</p></li>
+<li><p>linking the element “Acquire electron image (SE, BSE, FSE)” to a local file showing the metadata for acquiring images as a json diagram (<code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/json_SEM_metadata_with_highlights.svg</span></code>)</p></li>
+</ol>
+<p>To do this, we just need to modify two lines of the original puml source code like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@startuml
+!theme MOCHADA-plasma from ../../themes
+:Bulk sample or thin film; &lt;&lt;user_case&gt;&gt;
+group SEM-EBSD-EDX &lt;&lt;group_collection&gt;&gt;
+  :Set up experimental geometry:\n sample tilt (&lt;U+00B0&gt;), working distance (mm),\ndetector distance (mm); &lt;&lt;experiment&gt;&gt;
+  [[./json_SEM_metadata_with_highlights.svg{View metadata}]]:Acquire electron image (SE, BSE, FSE); &lt;&lt;experiment&gt;&gt;
+  :Electron image(s); &lt;&lt;raw_data&gt;&gt;
+  :Define rectangular ROI, step size,\ndetector and indexing parameters; &lt;&lt;experiment&gt;&gt;
+  split
+    group [[./chada_tables_SEM-EBSD.svg{View EBSD CHADA} EBSD]] &lt;&lt;group_single&gt;&gt;
+      :Acquire EBSD patterns at all points in ROI; &lt;&lt;experiment&gt;&gt;
+      :EBSD pattern for each point; &lt;&lt;raw_data&gt;&gt;
+      :Hough indexing (automatic); &lt;&lt;data_processing&gt;&gt;
+    end group
+  split again
+    group EDX &lt;&lt;group_single&gt;&gt;
+      :Acquire EDX spectra at all points in ROI; &lt;&lt;experiment&gt;&gt;
+      :EDX spectrum for each point; &lt;&lt;raw_data&gt;&gt;
+      :Analyse composition (automatic) //e.g.//:\nno. counts for element 1 &gt; x; &lt;&lt;data_processing&gt;&gt;
+    end group
+  end split
+  :Assign phase and orientation to each point\n(automatic); &lt;&lt;data_processing&gt;&gt;
+  :Euler angles and phase ID\nfor each point in map; &lt;&lt;final_data&gt;&gt;
+  :Analysis of orientations (user controlled); &lt;&lt;data_processing&gt;&gt;
+  :Orientation maps, Pole figures\nQuantitative measures //e.g.// grain size; &lt;&lt;final_data&gt;&gt;
+  detach
+end group
+@enduml
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In the above code, line 6 now additionally contains <code class="docutils literal notranslate"><span class="pre">[[./json_SEM_metadata_with_highlights.svg{View</span> <span class="pre">metadata}]]</span></code>. This is located at the beginning of the line <em>before</em> the definition of the activity element and therefore the link applies to the whole element. After the two square brackets, the hyperlink is defined. The hyperlink to a local file can be an absolute path or a relative path with respect to the location of the final diagram file (rather than the puml source code). Anything in
+curly braces after the link definition will appear as a tooltip when the user hovers the mouse over the element.</p></li>
+<li><p>In line 10, the title of the group <code class="docutils literal notranslate"><span class="pre">EBSD</span></code> has been wrapped in the link definition: <code class="docutils literal notranslate"><span class="pre">[[./chada_tables_SEM-EBSD.svg{View</span> <span class="pre">EBSD</span> <span class="pre">CHADA}EBSD]]</span></code>. This means that the hyperlink applies to the text <code class="docutils literal notranslate"><span class="pre">EBSD</span></code> <em>i.e.</em> to the title of the group, rather than to the whole group element. Again we have specified a relative path to a local file, some text for the tooltip, and this time, additionally the text for the link, which will appear underlined in the diagram.</p></li>
+<li><p>As we have used relative links, as long as the three images are in the same folder, the links will always work.</p></li>
+<li><p>Whatever operating system we use, we specify links using posix paths <em>i.e.</em> with forward slashes.</p></li>
+<li><p>For more information on using hyperlinks in plantuml diagrams, see <a class="reference external" href="https://plantuml.com/link">here</a>.</p></li>
+</ul>
+<p>Let’s write (remembering to double escape newline characteres in multiline Python strings) and run this code to see what the diagram looks like:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">puml_code</span> <span class="o">=</span> <span class="s2">"""@startuml</span>
+<span class="s2">!theme MOCHADA-plasma from ../../themes</span>
+<span class="s2">:Bulk sample or thin film; &lt;&lt;user_case&gt;&gt;</span>
+<span class="s2">group SEM-EBSD-EDX &lt;&lt;group_collection&gt;&gt;</span>
+<span class="s2">  :Set up experimental geometry:</span><span class="se">\\</span><span class="s2">n sample tilt (&lt;U+00B0&gt;), working distance (mm),</span><span class="se">\\</span><span class="s2">ndetector distance (mm); &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  [[./json_SEM_metadata_with_highlights.svg{View metadata}]]:Acquire electron image (SE, BSE, FSE); &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  :Electron image(s); &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">  :Define rectangular ROI, step size,</span><span class="se">\\</span><span class="s2">ndetector and indexing parameters; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">  split</span>
+<span class="s2">    group "[[./chada_tables_SEM-EBSD.svg{View EBSD CHADA} EBSD]]" &lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Acquire EBSD patterns at all points in ROI; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :EBSD pattern for each point; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Hough indexing (automatic); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">    end group</span>
+<span class="s2">  split again</span>
+<span class="s2">    group EDX &lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Acquire EDX spectra at all points in ROI; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :EDX spectrum for each point; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Analyse composition (automatic) //e.g.//:</span><span class="se">\\</span><span class="s2">nno. counts for element 1 &gt; x; &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">    end group</span>
+<span class="s2">  end split</span>
+<span class="s2">  :Assign phase and orientation to each point</span><span class="se">\\</span><span class="s2">n(automatic); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">  :Euler angles and phase ID</span><span class="se">\\</span><span class="s2">nfor each point in map; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">  :Analysis of orientations (user controlled); &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">  :Orientation maps, Pole figures</span><span class="se">\\</span><span class="s2">nQuantitative measures //e.g.// grain size; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">  detach</span>
+<span class="s2">end group</span>
+<span class="s2">@enduml</span>
+<span class="s2">"""</span>
+
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../gallery/puml_code/chada_workflow_SEM_EBSD_EDX_nested_techniques_with_hyperlinks.puml"</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">puml_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+        <span class="s2">"../../gallery/puml_code/chada_workflow_SEM_EBSD_EDX_nested_techniques_with_hyperlinks.puml"</span>
+    <span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
+    <span class="n">SVG</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"../../gallery/chada_workflow_SEM_EBSD_EDX_nested_techniques_with_hyperlinks.svg"</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_using_hyperlinks_in_workflow_diagrams_17_0.svg" src="../_images/examples_using_hyperlinks_in_workflow_diagrams_17_0.svg"/>
+</div>
+</div>
+<ul class="simple">
+<li><p>The only difference in the appearance of the diagram is that the name of the single technique group “EBSD” is now underlined, to show that it is a hyperlink.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>The hyperlinks don’t work when the diagram is displayed in a jupyter notebook (or the documentation).</strong></p>
+<p>Please open the file in your browser to try the links.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/chada_workflow_SEM_EBSD_EDX_nested_techniques_with_hyperlinks.svg</span></code></p>
+</div>
+<ul class="simple">
+<li><p>You should see that clicking the element <code class="docutils literal notranslate"><span class="pre">Acquire</span> <span class="pre">electron</span> <span class="pre">images</span></code> takes you to a json diagram showing the metadata with highlights, and that clicking the name of the single technique group <code class="docutils literal notranslate"><span class="pre">EBSD</span></code> takes you to a json diagram showing the CHADA tables for EBSD.</p></li>
+<li><p>The links open in the same tab with these settings, but this behaviour can be changed, see <a class="reference external" href="https://plantuml.com/link">here</a>.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</article>
+<footer class="prev-next-footer d-print-none">
+<div class="prev-next-area">
+<a class="left-prev" href="make_workflow_diagram.html" title="previous page">
+<i class="fa-solid fa-angle-left"></i>
+<div class="prev-next-info">
+<p class="prev-next-subtitle">previous</p>
+<p class="prev-next-title">Making a CHADA/MODA workflow diagram with plantuml and mochada_kit</p>
+</div>
+</a>
+<a class="right-next" href="make_CHADA_tables_from_json_or_yaml.html" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Drawing CHADA tables as a plantuml json diagram from a single json or yaml file</p>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</a>
+</div>
+</footer>
+</div>
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="sidebar-secondary-item">
+<div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
+<i class="fa-solid fa-list"></i> On this page
+  </div>
+<nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#1.-Initial-diagram-code-WITHOUT-hyperlinks">1. Initial diagram code WITHOUT hyperlinks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#2.-Adding-hyperlinks">2. Adding hyperlinks</a></li>
+</ul>
+</nav></div>
+<div class="sidebar-secondary-item">
+<div class="tocsection sourcelink">
+<a href="../_sources/examples/using_hyperlinks_in_workflow_diagrams.ipynb.txt">
+<i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+</div>
+</div></div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2024-2024, The mochada_kit Contributors.
+      <br/>
+</p>
+</div>
+<div class="footer-item">
+<p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+</p>
+</div>
+</div>
+<div class="footer-items__end">
+<div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+</div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Making a CHADA/MODA workflow diagram with plantuml and mochada_kit — mochada_kit 0.1.2 documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet"/>
+<link href="../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-codeautolink.css?v=125d5c1c" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsphinx-code-cells.css?v=2aa19091" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<link as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" rel="preload"/>
+<script src="../_static/documentation_options.js?v=b14783f5"></script>
+<script src="../_static/doctools.js?v=9bcbadda"></script>
+<script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=f281be69"></script>
+<script src="../_static/design-tabs.js?v=f930bc37"></script>
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'examples/make_workflow_diagram';</script>
+<link href="../_static/mochada_kit_favicon.png" rel="icon"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="using_hyperlinks_in_workflow_diagrams.html" rel="next" title="Using hyperlinks in MODA and CHADA workflow diagrams"/>
+<link href="index.html" rel="prev" title="Examples"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="0.1.2" name="docsearch:version"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search the docs ..." autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search the docs ..." spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="col-lg-3 navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../index.html">
+<img alt="mochada_kit" class="logo__image only-light" src="../_static/mochada_kit_logo.png"/>
+<img alt="mochada_kit" class="logo__image only-dark pst-js-only" src="../_static/mochada_kit_logo_dark.png"/>
+</a></div>
+</div>
+<div class="col-lg-9 navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<button aria-label="On this page" class="pst-navbar-icon sidebar-toggle secondary-toggle">
+<span class="fa-solid fa-outdent"></span>
+</button>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="../user/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/MaMMoS-project/mochada_kit" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__start sidebar-primary__section">
+<div class="sidebar-primary-item">
+<nav aria-label="Section Navigation" class="bd-docs-nav bd-links">
+<p aria-level="1" class="bd-links__title" role="heading">Section Navigation</p>
+<div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/setup.html">Setup</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Making a CHADA/MODA workflow diagram with plantuml and mochada_kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_hyperlinks_in_workflow_diagrams.html">Using hyperlinks in MODA and CHADA workflow diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_CHADA_tables_from_json_or_yaml.html">Drawing CHADA tables as a plantuml json diagram from a single json or yaml file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json_diagram_from_hdf5_metadata.html">Generating a plantuml json diagram using metadata extracted from an hdf5 file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generating_mochada_themes.html">Generating bespoke MOCHADA themes for MODA and/or CHADA diagrams and tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_and_MODA_legend_all_themes.html">Displaying a legend with MODA and CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHADA_legend_all_themes.html">Displaying a legend with CHADA elements for all MOCHADA themes in a single diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MODA_legend_all_themes.html">Displaying a legend with MODA elements for all MOCHADA themes in a single diagram</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project/mochada_kit/blob/main/LICENSE">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MaMMoS-project">MaMMoS Organisation on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mammos-project.github.io">MaMMoS Project Homepage</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://emmc.eu/moda/">MODA Current Working Agreement</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://characterisation.eu/publications-output/">CHADA Current Working Agreement</a></li>
+</ul>
+</div>
+</nav></div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+</div>
+<div id="rtd-footer-container"></div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../user/index.html">User guide</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">Examples</a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">Making a CHADA/MODA workflow diagram with plantuml and mochada_kit</span></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<section id="Making-a-CHADA/MODA-workflow-diagram-with-plantuml-and-mochada_kit">
+<h1>Making a CHADA/MODA workflow diagram with plantuml and mochada_kit<a class="headerlink" href="#Making-a-CHADA/MODA-workflow-diagram-with-plantuml-and-mochada_kit" title="Link to this heading">#</a></h1>
+<p>This example shows how to make a CHADA and/or MODA workflow diagram using <a class="reference external" href="https://plantuml.com/">plantuml</a> and <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code>.</p>
+<section id="1.-Basic-plantuml-activity-diagrams">
+<h2>1. Basic plantuml activity diagrams<a class="headerlink" href="#1.-Basic-plantuml-activity-diagrams" title="Link to this heading">#</a></h2>
+<p>CHADA/MODA workflow diagrams are made using <a class="reference external" href="https://plantuml.com/activity-diagram-beta">plantuml activity diagrams</a>. The basic syntax is as follows: we start with a <code class="docutils literal notranslate"><span class="pre">@startuml</span></code> and then have one or more activity elements, whose name is defined between a colon and a semicolon: <code class="docutils literal notranslate"><span class="pre">:name;</span></code>. If there is more than one activity element, they will be joined using a vertical arrow running from top to bottom. The code ends with <code class="docutils literal notranslate"><span class="pre">@enduml</span></code>.</p>
+<p>For example, this code:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@startuml</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="nd">@enduml</span>
+</pre></div>
+</div>
+<p>would result in a diagram where the element called <code class="docutils literal notranslate"><span class="pre">activity</span> <span class="pre">1</span></code> is at the top and is joined to the other element, called <code class="docutils literal notranslate"><span class="pre">activity</span> <span class="pre">2</span></code>, by a vertical arrow.</p>
+</section>
+<section id="2.-Applying-a-theme">
+<h2>2. Applying a theme<a class="headerlink" href="#2.-Applying-a-theme" title="Link to this heading">#</a></h2>
+<p>The code above would result in a diagram in which all the text and lines are black and all areas are white.</p>
+<p>Using a theme helps us to</p>
+<ul class="simple">
+<li><p>apply parameters to the entire diagram</p></li>
+<li><p>apply different styles to different elements.</p></li>
+</ul>
+<p>More information on themes in general is provided <a class="reference external" href="https://plantuml.com/theme">here</a></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code> bespoke themes for CHADA and MODA diagrams have been developed and are located in the directory <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code>. To apply a theme to a plantuml diagram we need to add a line to the code above giving the name of the theme to be applied and the location of the folder where the themes reside. For example, to apply the theme <code class="docutils literal notranslate"><span class="pre">MOCHADA-CWA</span></code>, we write:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@startuml</span>
+<span class="o">!</span><span class="n">theme</span><span class="w"> </span><span class="n">MOCHADA</span><span class="o">-</span><span class="n">CWA</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">themes</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="nd">@enduml</span>
+</pre></div>
+</div>
+<p>If you look in <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code>, you will see that all the themes have this naming convention <code class="docutils literal notranslate"><span class="pre">puml-theme-*.puml</span></code>, where the * represents the name of the theme. In the line of code starting with <code class="docutils literal notranslate"><span class="pre">!theme</span></code> we only need the part of the theme name given by the * (without the starting <code class="docutils literal notranslate"><span class="pre">puml-theme-</span></code>and ending <code class="docutils literal notranslate"><span class="pre">.puml</span></code>). We then need to write <code class="docutils literal notranslate"><span class="pre">from</span></code> and give the location of the themes folder. If we want to store the plantuml code in <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/puml_code</span></code> the relative
+location of the <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code> folder is <code class="docutils literal notranslate"><span class="pre">../../themes</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to store your puml code somewhere else, you may want to put the absolute path to the <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code> folder. This can be easily obtained by importing <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code> and printing the <code class="docutils literal notranslate"><span class="pre">_THEMES_DIR</span></code> constant. Whichever operating system you are using, this is already formatted as a posix path (with forward slashes), which is required by plantuml <em>e.g.</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mochada_kit</span> <span class="k">as</span> <span class="nn">mk</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mk</span><span class="o">.</span><span class="n">_THEMES_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>D:/folder1/folder2/mochada_kit/themes
+</pre></div>
+</div>
+</div>
+</section>
+<section id="3.-Using-stereotypes">
+<h2>3. Using stereotypes<a class="headerlink" href="#3.-Using-stereotypes" title="Link to this heading">#</a></h2>
+<p>So far, we have only applied a theme to the entire diagram. This allows us to change the background colour of the resulting figure, for example. The main advantage of using <code class="docutils literal notranslate"><span class="pre">mochada_kit</span></code> is that we can use stereotypes to apply a particular style to particular elements.</p>
+<p>For <strong>CHADA</strong>, there are 5 different types of elements, each of which requries a stereotype:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Number</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Stereotype Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ol class="arabic simple">
+<li></li>
+</ol>
+</td>
+<td><p>User Case</p></td>
+<td><p>&lt;&lt;user_case&gt;&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p>Experiment</p></td>
+<td><p>&lt;&lt;experiment&gt;&gt;</p></td>
+</tr>
+<tr class="row-even"><td><ol class="arabic simple" start="3">
+<li></li>
+</ol>
+</td>
+<td><p>Raw Data</p></td>
+<td><p>&lt;&lt;raw_data&gt;&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="4">
+<li></li>
+</ol>
+</td>
+<td><p>Data Processing</p></td>
+<td><p>&lt;&lt;data_processing&gt;&gt;</p></td>
+</tr>
+<tr class="row-even"><td><ol class="arabic simple" start="5">
+<li></li>
+</ol>
+</td>
+<td><p>Final Data</p></td>
+<td><p>&lt;&lt;final_data&gt;&gt;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For <strong>MODA</strong>, there are 5 different types of elements, each of which requries a stereotype:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Number</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Stereotype Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ol class="arabic simple">
+<li></li>
+</ol>
+</td>
+<td><p>User Case Input</p></td>
+<td><p>&lt;&lt;user_case_input&gt;&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="2">
+<li></li>
+</ol>
+</td>
+<td><p>Model</p></td>
+<td><p>&lt;&lt;model&gt;&gt;</p></td>
+</tr>
+<tr class="row-even"><td><ol class="arabic simple" start="3">
+<li></li>
+</ol>
+</td>
+<td><p>Raw Output</p></td>
+<td><p>&lt;&lt;raw_ouput&gt;&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="4">
+<li></li>
+</ol>
+</td>
+<td><p>Processed Data</p></td>
+<td><p>&lt;&lt;processed_data&gt;&gt;</p></td>
+</tr>
+<tr class="row-even"><td><ol class="arabic simple" start="5">
+<li></li>
+</ol>
+</td>
+<td><p>Data Based Model</p></td>
+<td><p>&lt;&lt;data_based_model&gt;&gt;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In each MOCHADA theme in <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code>, <em>all</em> of these different types of element has its own style. You can see the structure of any of the themes by opening it in a text editor. Each theme contains comments, which add extra explanations.</p>
+<p>Once we have added the line telling plantuml to use a particular theme, we only have to apply a stereotype to each element to change its appearance:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@startuml</span>
+<span class="o">!</span><span class="n">theme</span><span class="w"> </span><span class="n">MOCHADA</span><span class="o">-</span><span class="n">CWA</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">themes</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">user_case</span><span class="o">&gt;&gt;</span>
+<span class="p">:</span><span class="n">activity</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">experiment</span><span class="o">&gt;&gt;</span>
+<span class="nd">@enduml</span>
+</pre></div>
+</div>
+<p>This results in the element <code class="docutils literal notranslate"><span class="pre">activity</span> <span class="pre">1</span></code> appearing pink and the element <code class="docutils literal notranslate"><span class="pre">activity</span> <span class="pre">2</span></code> appearing light blue. The colours simply depend on which theme you choose.</p>
+<p>The important point is that the puml code is now machine readable - we can easily tell by looking at the puml code which CHADA or MODA type an element has. This will facilitate parsing the workflow diagrams in order to understand the structure of the data in terms of domain ontologies.</p>
+</section>
+<section id="4.-Basic-example">
+<h2>4. Basic example<a class="headerlink" href="#4.-Basic-example" title="Link to this heading">#</a></h2>
+<p>If we want to make a workflow diagram just showing one of each type of CHADA element and using the MOCHADA-plasma theme (<em>e.g.</em> to use as a legend), the code would look like this:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@startuml</span>
+<span class="o">!</span><span class="n">theme</span><span class="w"> </span><span class="n">MOCHADA</span><span class="o">-</span><span class="n">plasma</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">themes</span>
+<span class="p">:</span><span class="n">User</span><span class="w"> </span><span class="n">Case</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">user_case</span><span class="o">&gt;&gt;</span>
+<span class="p">:</span><span class="n">Experiment</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">experiment</span><span class="o">&gt;&gt;</span>
+<span class="p">:</span><span class="n">Raw</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">raw_data</span><span class="o">&gt;&gt;</span>
+<span class="p">:</span><span class="n">Data</span><span class="w"> </span><span class="n">Processing</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">data_processing</span><span class="o">&gt;&gt;</span>
+<span class="p">:</span><span class="n">Final</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">final_data</span><span class="o">&gt;&gt;</span>
+<span class="nd">@enduml</span>
+</pre></div>
+</div>
+<p>We just need to write this code to a text file (in this case in the folder <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/puml_code</span></code>):</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">puml_code</span> <span class="o">=</span> <span class="s2">"""@startuml</span>
+<span class="s2">!theme MOCHADA-plasma from ../../themes</span>
+<span class="s2">:User Case; &lt;&lt;user_case&gt;&gt;</span>
+<span class="s2">:Experiment; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">:Raw Data; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">:Data Processing; &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">:Final Data; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">@enduml</span>
+<span class="s2">"""</span>
+
+<span class="n">out_file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../../gallery/puml_code/legend_chada_plasma_theme.puml"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">puml_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>and then run this code against <code class="docutils literal notranslate"><span class="pre">plantuml.jar</span></code>. There is a convenience function for this: <code class="docutils literal notranslate"><span class="pre">mochada_kit.running.run_plantuml_code()</span></code> and we just need to supply two arguments: the path to the plantuml code and an output path (in this case the output path just goes up one step in the directory structure from the folder where the plantuml code resides <em>i.e.</em> it points to <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.html#module-mochada_kit.running" title="mochada_kit.running"><span class="nn">mochada_kit.running</span></a> <span class="k">as</span> <span class="nn">mr</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../../gallery/puml_code/legend_chada_plasma_theme.puml"</span><span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here’s the resulting diagram:</p>
+<p><img alt="5d86b9a0010f4206a3d3c8d7ca3fa460" src="../_images/legend_chada_plasma_theme.svg"/></p>
+</section>
+<section id="5.-Example-with-grouped-elements">
+<h2>5. Example with grouped elements<a class="headerlink" href="#5.-Example-with-grouped-elements" title="Link to this heading">#</a></h2>
+<p>All the MOCHADA themes in <code class="docutils literal notranslate"><span class="pre">mochada_kit/themes</span></code> contain style definitions which allow us to group elements in a single characterisation or modelling technique, and to group several techniques.</p>
+<p>An example of this would be:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@startuml</span>
+<span class="o">!</span><span class="n">theme</span><span class="w"> </span><span class="n">MOCHADA</span><span class="o">-</span><span class="n">plasma</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">themes</span>
+<span class="p">:</span><span class="n">User</span><span class="w"> </span><span class="n">Case</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">user_case</span><span class="o">&gt;&gt;</span>
+<span class="n">group</span><span class="w"> </span><span class="n">Group</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">techniques</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">group_collection</span><span class="o">&gt;&gt;</span>
+<span class="w">  </span><span class="n">split</span>
+<span class="w">    </span><span class="n">group</span><span class="w"> </span><span class="n">Single</span><span class="w"> </span><span class="n">technique</span><span class="w"> </span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">group_single</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Experiment</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">experiment</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Raw</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">raw_data</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Data</span><span class="w"> </span><span class="n">Processing</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">data_processing</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Final</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">final_data</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="n">detach</span>
+<span class="w">    </span><span class="n">end</span><span class="w"> </span><span class="n">group</span>
+<span class="w">  </span><span class="n">split</span><span class="w"> </span><span class="n">again</span>
+<span class="w">    </span><span class="n">group</span><span class="w"> </span><span class="n">Single</span><span class="w"> </span><span class="n">technique</span><span class="w"> </span><span class="mi">2</span><span class="o">&lt;&lt;</span><span class="n">group_single</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Experiment</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">experiment</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Raw</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">raw_data</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Data</span><span class="w"> </span><span class="n">Processing</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">data_processing</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="p">:</span><span class="n">Final</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="n">final_data</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="n">detach</span>
+<span class="w">    </span><span class="n">end</span><span class="w"> </span><span class="n">group</span>
+<span class="w">  </span><span class="n">end</span><span class="w"> </span><span class="n">split</span>
+<span class="n">end</span><span class="w"> </span><span class="n">group</span>
+<span class="nd">@enduml</span>
+</pre></div>
+</div>
+<p>Let’s run this one too:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">puml_code</span> <span class="o">=</span> <span class="s2">"""@startuml</span>
+<span class="s2">!theme MOCHADA-plasma from ../../themes</span>
+<span class="s2">:User Case; &lt;&lt;user_case&gt;&gt;</span>
+<span class="s2">group Group of techniques &lt;&lt;group_collection&gt;&gt;</span>
+<span class="s2">  split</span>
+<span class="s2">    group Single technique 1&lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Experiment; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :Raw Data; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Data Processing; &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">      :Final Data; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">      detach</span>
+<span class="s2">    end group</span>
+<span class="s2">  split again</span>
+<span class="s2">    group Single technique 2&lt;&lt;group_single&gt;&gt;</span>
+<span class="s2">      :Experiment; &lt;&lt;experiment&gt;&gt;</span>
+<span class="s2">      :Raw Data; &lt;&lt;raw_data&gt;&gt;</span>
+<span class="s2">      :Data Processing; &lt;&lt;data_processing&gt;&gt;</span>
+<span class="s2">      :Final Data; &lt;&lt;final_data&gt;&gt;</span>
+<span class="s2">      detach</span>
+<span class="s2">    end group</span>
+<span class="s2">  end split</span>
+<span class="s2">end group</span>
+<span class="s2">@enduml</span>
+<span class="s2">"""</span>
+
+<span class="n">out_file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="s2">"../../gallery/puml_code/legend_chada_plasma_theme_with_groups.puml"</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file_path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">puml_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><a class="sphinx-codeautolink-a" href="../reference/generated/mochada_kit.running.run_plantuml_code.html#mochada_kit.running.run_plantuml_code" title="mochada_kit.running.run_plantuml_code"><span class="n">mr</span><span class="o">.</span><span class="n">run_plantuml_code</span></a><span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../../gallery/puml_code/legend_chada_plasma_theme_with_groups.puml"</span><span class="p">),</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>And here’s the resulting diagram:</p>
+<p><img alt="c811435cc6e54854a35cf969d070ddac" src="../_images/legend_chada_plasma_theme_with_groups.svg"/></p>
+</section>
+<section id="6.-Next-steps">
+<h2>6. Next steps<a class="headerlink" href="#6.-Next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>To learn how to draw more complex diagrams, please refer to the plantuml website on <a class="reference external" href="https://plantuml.com/activity-diagram-beta">activity diagrams</a></p></li>
+<li><p>Please check out the other diagrams in <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery</span></code> with accompanying plantuml code in <code class="docutils literal notranslate"><span class="pre">mochada_kit/gallery/puml_code</span></code></p></li>
+<li><p>There is a separate jupyter notebook on using hyperlinks in CHADA and MODA workflow diagrams <code class="docutils literal notranslate"><span class="pre">mochada_kit/examples/using_hyperlinks_in_workflow_digarams.ipynb</span></code></p></li>
+</ul>
+</section>
+</section>
+</article>
+<footer class="prev-next-footer d-print-none">
+<div class="prev-next-area">
+<a class="left-prev" href="index.html" title="previous page">
+<i class="fa-solid fa-angle-left"></i>
+<div class="prev-next-info">
+<p class="prev-next-subtitle">previous</p>
+<p class="prev-next-title">Examples</p>
+</div>
+</a>
+<a class="right-next" href="using_hyperlinks_in_workflow_diagrams.html" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Using hyperlinks in MODA and CHADA workflow diagrams</p>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</a>
+</div>
+</footer>
+</div>
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="sidebar-secondary-item">
+<div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
+<i class="fa-solid fa-list"></i> On this page
+  </div>
+<nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#1.-Basic-plantuml-activity-diagrams">1. Basic plantuml activity diagrams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#2.-Applying-a-theme">2. Applying a theme</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#3.-Using-stereotypes">3. Using stereotypes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#4.-Basic-example">4. Basic example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#5.-Example-with-grouped-elements">5. Example with grouped elements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#6.-Next-steps">6. Next steps</a></li>
+</ul>
+</nav></div>
+<div class="sidebar-secondary-item">
+<div class="tocsection sourcelink">
+<a href="../_sources/examples/make_workflow_diagram.ipynb.txt">
+<i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+</div>
+</div></div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer="" src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2024-2024, The mochada_kit Contributors.
+      <br/>
+</p>
+</div>
+<div class="footer-item">
+<p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+</p>
+</div>
+</div>
+<div class="footer-items__end">
+<div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+</div>
+</div>
+</footer>
+</body>
+</html>
