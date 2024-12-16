@@ -197,10 +197,6 @@ def write_chada_tables_plantuml(
         - "1/3" (to set the aspect ratio)
         - "1024 width" (to set the width to 1024 pixels)
         - "100*200" (to set the output size to 100 by 200 pixels).
-
-    Returns
-    -------
-    None.
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -343,10 +339,6 @@ def write_chada_tables_whole_plantuml(
         - "1/3" (to set the aspect ratio)
         - "1024 width" (to set the width to 1024 pixels)
         - "100*200" (to set the output size to 100 by 200 pixels).
-
-    Returns
-    -------
-    None.
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -484,10 +476,6 @@ def write_chada_tables_single_plantuml(
         - "1/3" (to set the aspect ratio)
         - "1024 width" (to set the width to 1024 pixels)
         - "100*200" (to set the output size to 100 by 200 pixels).
-
-    Returns
-    -------
-    None.
     """
     t_d, out_base, top, bottom = handle_paths(
         data_path,
@@ -732,10 +720,6 @@ def copy_theme_to_local_folder(theme_name, output_path):
     output_path : pathlib.Path
         Specifies the folder where the plantuml code file will be
         saved. Absolute or relative paths can be supplied.
-
-    Returns
-    -------
-    None
     """
     local_themes_dir = output_path.joinpath("themes")
     if not local_themes_dir.exists():

@@ -32,10 +32,6 @@ def get_ds_dictionaries(name, node):
         The name of the node.
     node : h5py.Dataset or p5py.Group
         The current node (dataset or group).
-
-    Returns
-    -------
-    None.
     """
     global ds_dict
     if isinstance(node, h5py.Dataset):
@@ -74,10 +70,6 @@ def nested_set(dic, keys, value):
         reached, at which point, the value is assigned.
     value : STR
         The value of the metadata at this key.
-
-    Returns
-    -------
-    None.
     """
     for key in keys[:-1]:
         dic = dic.setdefault(key, {})
@@ -150,10 +142,6 @@ def write_puml_code_for_hdf5_metadata(
         If highlight_style is not None, highlights must be a dict
         for the styles to be applied.
         The default is None.
-
-    Returns
-    -------
-    None.
     """
     global ds_dict
 

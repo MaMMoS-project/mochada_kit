@@ -111,10 +111,6 @@ def run_plantuml_code(
     OSError
         Raised if plantuml_path was not passed AND is not
         set in the users' config.json.
-
-    Returns
-    -------
-    None.
     """
     if not plantuml_path:
         raise OSError(
@@ -180,10 +176,6 @@ def run_all_gallery_puml_code(output_type="-tsvg"):
         - "-tpng" --> png image
 
         The default is "-tsvg".
-
-    Returns
-    -------
-    None.
     """
     c_p = (
         pathlib.Path(__file__)
