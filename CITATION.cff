@@ -11,7 +11,7 @@ authors:
   - name: The mochada_kit Contributors
     website: "https://github.com/MaMMoS-project/mochada_kit/graphs/contributors"
 cff-version: 1.2.0
-date-released: "2024-07-02"
+date-released: "2024-12-16"
 doi: 10.5281/zenodo.12547640
 keywords:
   - research
@@ -24,4 +24,4 @@ license: MIT
 message: "If you use this software, please cite it using these metadata."
 repository-code: "https://github.com/MaMMoS-project/mochada_kit"
 title: "mochada_kit"
-version: 0.1.1
+version: 0.2.0
