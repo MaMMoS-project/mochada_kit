@@ -146,7 +146,7 @@ Please see the detailed guides to [installation](https://mammos-project.github.i
 
 mochada_kit can be cited according to this [guide](https://mammos-project.github.io/mochada_kit/user/citation.html).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12623332.svg)](https://doi.org/10.5281/zenodo.12623332)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12547640.svg)](https://doi.org/10.5281/zenodo.12547640)
 
 This package is being developed as part of the EU project: [MaMMoS](https://mammos-project.github.io/index.html)
 
