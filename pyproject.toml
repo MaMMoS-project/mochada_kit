@@ -144,3 +144,4 @@ tests = { features = ["tests"], solve-group = "default" }
 python = "3.12.*"
 pandoc = ">=3.6.2,<4"
 plantuml = ">=1.2025.0,<2"
+openjdk = ">=23.0.2,<24"
