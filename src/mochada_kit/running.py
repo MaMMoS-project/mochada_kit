@@ -130,7 +130,7 @@ def run_plantuml_code(
     if not code_path.exists():
         raise OSError("The code_path supplied is not an existing path.")
 
-    cmd = ["java", "-jar", plantuml_path, output_type, code_path]
+    cmd = [plantuml_path, output_type, code_path]
 
     if output_dir and isinstance(output_dir, (pathlib.Path, str)):
         output_dir = (
