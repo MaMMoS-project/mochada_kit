@@ -123,3 +123,24 @@ mochada_kit = "mochada_kit.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+mochada_kit = { path = ".", editable = true }
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+coverage = { features = ["coverage"], solve-group = "default" }
+dev = { features = ["dev", "doc", "tests", "coverage"], solve-group = "default" }
+doc = { features = ["doc"], solve-group = "default" }
+tests = { features = ["tests"], solve-group = "default" }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+python = "3.12.*"
+pandoc = ">=3.6.2,<4"
+plantuml = ">=1.2025.0,<2"
