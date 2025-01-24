@@ -38,37 +38,37 @@ dependencies = ["h5py", "pyyaml"]
 
 [project.optional-dependencies]
 doc = [
-    "matplotlib",
-    "nbsphinx                     >= 0.7",
-    "numpydoc",
-    "pydata-sphinx-theme",
-    "sphinx                       >= 3.0.2",
-    "sphinx-codeautolink[ipython] < 0.14",
-    "sphinx-copybutton            >= 0.2.5",
-    "sphinx-design",
+  "matplotlib",
+  "nbsphinx                     >= 0.7",
+  "numpydoc",
+  "pydata-sphinx-theme",
+  "sphinx                       >= 3.0.2",
+  "sphinx-codeautolink[ipython] < 0.14",
+  "sphinx-copybutton            >= 0.2.5",
+  "sphinx-design",
 ]
 tests = [
-    "numpydoc",
-    "pytest                       >= 5.4",
-    "pytest-benchmark",
-    "pytest-rerunfailures",
-    "pytest-xdist",
+  "numpydoc",
+  "pytest                       >= 5.4",
+  "pytest-benchmark",
+  "pytest-rerunfailures",
+  "pytest-xdist",
 ]
 coverage = [
-    "coverage                     >= 5.0",
-    "pytest-cov                   >= 2.8.1",
+  "coverage                     >= 5.0",
+  "pytest-cov                   >= 2.8.1",
 ]
 dev = [
-    "ruff",
-    "pre-commit                   >= 1.16",
-    "mochada_kit[doc,tests,coverage]",
+  "ruff",
+  "pre-commit                   >= 1.16",
+  "mochada_kit[doc,tests,coverage]",
 ]
 
 [tool.ruff]
 exclude = [
-        "examples/python_scripts/*.py",
-		"docs/examples/python_scripts/*.py",
-		"docs/conf.py",
+  "examples/python_scripts/*.py",
+  "docs/examples/python_scripts/*.py",
+  "docs/conf.py",
 ]
 
 [tool.ruff.lint]
@@ -95,7 +95,7 @@ ignore = [
   "UP022", # replace-stdout-stderr
   # personal preference
   "SIM108", # turnary operator instead of if else block
-  "D205", # one-blank-line-required-between-summary-line-and-description
+  "D205",   # one-blank-line-required-between-summary-line-and-description
 ]
 
 [tool.ruff.lint.isort]
@@ -123,3 +123,35 @@ mochada_kit = "mochada_kit.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+mochada_kit = { path = ".", editable = true }
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+coverage = { features = ["coverage"], solve-group = "default" }
+dev = { features = [
+  "dev",
+  "doc",
+  "tests",
+  "coverage",
+], solve-group = "default" }
+doc = { features = ["doc"], solve-group = "default" }
+tests = { features = ["tests"], solve-group = "default" }
+
+[tool.pixi.tasks]
+configure = "mochada_kit config -p $(which plantuml)"
+example = { cmd = "jupyter-lab examples/make_workflow_diagram.ipynb", depends-on = [
+  "configure",
+] }
+demo = "plantuml --version"
+
+[tool.pixi.dependencies]
+python = "3.12.*"
+plantuml = ">=1.2025.0,<2"
+openjdk = ">=23.0.2,<24"
+jupyterlab = ">=4.3.4"
