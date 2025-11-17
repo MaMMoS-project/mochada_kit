@@ -26,6 +26,14 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.1 (2025-11-17)
+==================
+
+Changed
+-------
+
+- Minor update to themes.
+
 0.2.0 (2024-12-16)
 ==================
 
