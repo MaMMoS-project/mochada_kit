@@ -3,7 +3,7 @@
 '' colormap in matplotlib.
 '' The colormap was evaluated at 0, 0.333, 0.667 and 1 to obtain the colours.
 ''
-'' Author: Thomas G. Woodcock
+'' Author: The mochada_kit Contributors
 ''
 '' Definition block:
 ''   here we define some variables for the style. These can easily be changed
